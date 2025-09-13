@@ -1,14 +1,11 @@
 {% load static %}
 <header>
   <div class="logo">
-    <img src="{% static '/assets/image/nextLogo.png' %}" alt="Logo">
+    <img src="{% static '/assets/image/nextLogo.png' %}" alt="Logo" />
   </div>
   <nav>
     <ul>
       <li><a href="{% url 'index' %}">Home</a></li>
-      <li><a href="{% url 'blog' %}">Blog</a></li>
-      <li><a href="{% url 'contact' %}">Contact</a></li>
-      <li><a href="{% url 'event' %}">Event</a></li>
     </ul>
   </nav>
 </header>
