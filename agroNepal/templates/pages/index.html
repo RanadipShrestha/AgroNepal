@@ -1,3 +1,9 @@
-{% extends "base.html" %} {% load static %} {% block content %}
-<img src="{% static 'assets/image/HeroImage.jpg' %}" alt="heroimage" />
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="heroSection">
+  <div class="heroText">Welcome to AgroNepal</div>
+  <button class="heroBtn">Get Started</button>
+</div>
 {% endblock content %}
