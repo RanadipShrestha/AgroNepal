@@ -7,13 +7,11 @@
     <title>{% block title %}AgroNepal{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'assets/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/header.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
   </head>
   <body>
-    {% include "includes/header.html" %}
-    <main>{% block content %}
-      {% endblock content %}</main>
+    {% block header %} {% include "includes/header.html" %} {% endblock header %}
 
-    <!-- Footer -->
-    {% include "includes/footer.html" %}
+    <main>{% block content %}{% endblock content %}</main>
   </body>
 </html>

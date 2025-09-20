@@ -1,7 +1,7 @@
 {% load static %}
 <header class="navbar">
   <div class="logo">
-    <img src="{% static 'assets/image/Logo.png' %}" alt="Company Logo" />
+    <img src="{% static 'assets/image/Logo.png' %}" alt="Logo" />
   </div>
   <nav class="nav-links">
     <ul>
@@ -9,6 +9,6 @@
     </ul>
   </nav>
   <div class="btn">
-    <a href="">Get Start</a>
+    <a href="{% url 'login' %}">Get Start</a>
   </div>
 </header>
