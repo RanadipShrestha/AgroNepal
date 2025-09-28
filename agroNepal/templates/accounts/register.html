@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register{% endblock title %}
+{% block header %}{% endblock header %}
+{% block body_class %}loginBody{% endblock body_class %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/register.css' %}" />
+
+<div class="body">
+  <div class="register-main">
+  <!-- Left Image -->
+  <div class="register-image">
+    <p class="register-image-text">Empowering Farmers, Growing Together</p>
+  </div>
+
+  <!-- Right Form -->
+  <div class="register-form-container">
+    <h2>Register for AgroNepal</h2>
+
+    <form action="{% url 'register' %}" method="POST">
+      {% csrf_token %}
+      
+      <!-- First Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" name="first_name"/>
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" id="last_name" name="last_name" />
+        </div>
+      </div>
+
+      <!-- Second Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="username">User Name</label>
+          <input type="text" id="username" name="username"/>
+          
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" />
+        </div>
+      </div>
+
+      <!-- Third Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phone_number">Phone Number</label>
+          <input type="text" id="phone_number" name="phone_number" />
+        </div>
+        <div class="form-group">
+          <label for="land_address">Land Address</label>
+          <input type="text" id="land_address" name="land_address" />
+        </div>
+      </div>
+
+      <!-- Email Full Width -->
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required />
+      
+      <!-- Password Row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password1">Password</label>
+          <input type="password" id="password1" name="password1" required />
+          
+        </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password</label>
+          <input type="password" id="password2" name="password2" required />
+          
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="register-btn">Register</button>
+    </form>
+
+    <!-- Login Redirect -->
+    <div class="login-redirect">
+      Already have an account? <a href="{% url 'login' %}">Login here</a>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock content %}
