@@ -1,7 +1,144 @@
-.body{
+.body {
+  display: flex;
+  justify-content: center;   
+  align-items: center;      
+  min-height: 100vh;        
+  background: linear-gradient(to right, #a8e063, #56ab2f);
+}
+
+.register-main {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1000px;   
+  animation: slideIn 1s ease-in-out;
+}
+
+.register-image {
+  flex: 1;  
+  background: url("../image/HeroImage.jpg") no-repeat center center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(to right, #a8e063, #56ab2f);
+  color: white;
+  padding: 60px;
+}
+
+.register-image-text {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  max-width: 300px;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.register-form-container {
+  flex: 1; 
+  background-color: #fff;
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.register-form-container h2 {
+  margin-bottom: 20px;
+  color: #103d10;
+  text-align: center;
+}
+
+.register-form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form-container label {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.register-form-container input {
+  margin-top: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.register-form-container input:focus {
+  border-color: #56ab2f;
+  outline: none;
+}
+
+
+.register-btn {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #103d10;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.register-btn:hover {
+  background-color: #145a14;
+}
+
+.login-redirect {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.login-redirect a {
+  color: #103d10;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.login-redirect a:hover {
+  text-decoration: underline;
+}
+
+
+@media (max-width: 768px) {
+  .register-main {
+    flex-direction: column;
+    max-width: 95%;
+  }
+  .register-image {
+    min-height: 200px;
+  }
+  .form-row {
+    flex-direction: column;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

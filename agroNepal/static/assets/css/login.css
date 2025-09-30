@@ -1,9 +1,9 @@
 .body {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh; 
-  background: linear-gradient(to right, #a5e063, #56ab2f);
+  justify-content: center;  
+  align-items: center;       
+  min-height: 100vh;        
+  background: linear-gradient(to right, #a8e063, #56ab2f);
 }
 
 .login-container {
@@ -13,12 +13,14 @@
   display: flex;
   overflow: hidden;
   width: 100%;
-  max-width: 1000px;
+  max-width: 1000px;     
   min-height: 550px;
+  animation: slideIn 1s ease-in-out;
 }
 
 .image-side {
   flex: 1;
+  background: url("../image/HeroImage.jpg") no-repeat center center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,7 +38,7 @@
 }
 
 .form-side {
-  flex: 1; 
+  flex: 1;
   background-color: #fff;
   padding: 35px;
   display: flex;
@@ -49,10 +51,12 @@
   color: #103d10;
   text-align: center;
 }
+
 .form-side form {
   display: flex;
   flex-direction: column;
 }
+
 .form-side label {
   margin-top: 10px;
   font-weight: bold;
@@ -85,6 +89,7 @@
   cursor: pointer;
   transition: background 0.3s;
 }
+
 .login-btn:hover {
   background-color: #145a14;
 }
@@ -94,6 +99,7 @@
   text-align: center;
   font-size: 0.9rem;
 }
+
 .login-redirect a {
   color: #103d10;
   font-weight: bold;
@@ -102,4 +108,25 @@
 
 .login-redirect a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    max-width: 95%;
+  }
+  .image-side {
+    min-height: 200px;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
