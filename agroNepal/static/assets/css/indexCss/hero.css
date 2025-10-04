@@ -1,0 +1,69 @@
+.heroSection {
+  position: relative;
+  width: 100%;
+  min-height: 91vh;
+  background: url("../../image/HeroImage.jpg") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.heroText {
+  font-size: 3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  margin: 0 0 20px 0;
+}
+
+.heroBtn {
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  background: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.heroBtn:hover {
+  background: #45a049;
+  transform: scale(1.05);
+}
+
+/* -------- Responsive Hero -------- */
+@media (max-width: 992px) {
+  .heroText {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroText {
+    font-size: 2rem;
+  }
+  .heroBtn {
+    font-size: 1rem;
+    padding: 12px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroText {
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+  }
+  .heroBtn {
+    font-size: 0.9rem;
+    padding: 10px 22px;
+  }
+}

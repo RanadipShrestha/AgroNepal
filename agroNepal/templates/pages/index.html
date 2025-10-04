@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block content %}
-<div class="heroSection">
-  <div class="heroText">Welcome to AgroNepal</div>
-  <button class="heroBtn">Get Started</button>
-</div>
+  {% include "pages/includesIndex/hero.html" %}
+  {% include "pages/includesIndex/who_we_are.html" %}
 {% endblock content %}

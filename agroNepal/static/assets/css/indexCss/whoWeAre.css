@@ -1,0 +1,114 @@
+.whoWeAre-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 80px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.aboutTitle{
+  width: 100%;
+  text-align: center;
+}
+
+.aboutTitle h1{
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.aboutTitle h2{
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #4caf50;
+}
+
+.card{
+  position: relative;
+  width: 550px;
+  height: 550px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  transition: transform 0.6s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  background: #fff;
+}
+
+.card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.card .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(76, 175, 80, 0.6);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  border-radius: 20px;
+}
+
+.card:hover .overlay {
+  opacity: 1;
+}
+
+.card .text {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+}
+.description{
+  color: #fff;
+}
+.card .btn {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  padding: 12px 28px;
+  background: #ffffffcc;
+  color: #4caf50;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 30px;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.card:hover .btn {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+@media (max-width: 992px) {
+  .card {
+    width: 45%;
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 90%;
+    height: 300px;
+  }
+  .card .text {
+    font-size: 1.5rem;
+  }
+  .card .btn {
+    padding: 10px 22px;
+  }
+}
