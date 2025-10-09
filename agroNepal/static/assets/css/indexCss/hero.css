@@ -40,13 +40,6 @@
   transform: scale(1.05);
 }
 
-/* -------- Responsive Hero -------- */
-@media (max-width: 992px) {
-  .heroText {
-    font-size: 2.5rem;
-  }
-}
-
 @media (max-width: 768px) {
   .heroText {
     font-size: 2rem;
