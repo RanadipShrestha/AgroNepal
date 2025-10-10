@@ -1,25 +1,40 @@
 {% load static %}
+
 <div class="whoWeAre-container">
-  <div class="aboutTitle">
-    <h1>Who We are?</h1>
-    <h2>Why to Choose Us?</h2>
-  </div>
-  
-  <div class="card">
-    <img src="{% static 'assets/image/HeroImage.jpg' %}" alt="Tree Image" />
-    <div class="overlay">
-      <div class="text">Who We Are?</div>
-      <p class="description">We are one of the best agricultural website </p>
-    </div>
-    <a href="#" class="btn">Read More</a>
+  <div class="whoWeAre-aboutTitle">
+    <h1>Who We Are?</h1>
+    <h2>Why Choose Us?</h2>
   </div>
 
-  <div class="card">
-    <img src="{% static 'assets/image/HeroImage.jpg' %}" alt="Farming Image" />
-    <div class="overlay">
-      <div class="text">Why Choose Us?</div>
-      <p class="description">We are one of the best agricultural website </p>
+  <!-- Card 1 -->
+  <div class="whoWeAre-card">
+    <img src="{% static 'assets/image/HeroImage.jpg' %}" alt="Tree Image" />
+    
+    <div class="whoWeAre-overlay">
+      <div class="whoWeAre-overlay-content">
+        <h1 class="whoWeAre-text">Who We Are?</h1>
+        <p class="whoWeAre-description">
+          We are one of the best agricultural websites helping farmers grow smarter.
+        </p>
+      </div>
     </div>
-    <a href="#" class="btn">Read More</a>
+
+    <a href="#" class="whoWeAre-btn">Read More</a>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="whoWeAre-card">
+    <img src="{% static 'assets/image/HeroImage.jpg' %}" alt="Farming Image" />
+    
+    <div class="whoWeAre-overlay">
+      <div class="whoWeAre-overlay-content">
+        <h1 class="whoWeAre-text">Why Choose Us?</h1>
+        <p class="whoWeAre-description">
+          We provide trusted insights, modern tools, and expert farming solutions.
+        </p>
+      </div>
+    </div>
+
+    <a href="#" class="whoWeAre-btn">Read More</a>
   </div>
 </div>

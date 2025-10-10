@@ -1,4 +1,4 @@
-.whoWeAre-container{
+.whoWeAre-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -7,25 +7,22 @@
   padding: 0 20px;
 }
 
-.aboutTitle{
+.whoWeAre-aboutTitle {
   width: 100%;
   text-align: center;
 }
 
-.aboutTitle h1{
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #333;
+.whoWeAre-aboutTitle h1 {
+  font-size: 40px;
   margin-bottom: 10px;
 }
 
-.aboutTitle h2{
-  font-size: 1.5rem;
-  font-weight: 500;
+.whoWeAre-aboutTitle h2 {
+  font-size: 29px;
   color: #4caf50;
 }
 
-.card{
+.whoWeAre-card {
   position: relative;
   width: 550px;
   height: 550px;
@@ -37,51 +34,58 @@
   background: #fff;
 }
 
-.card img{
+.whoWeAre-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  display: block;
 }
 
-.card .overlay {
+.whoWeAre-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(76, 175, 80, 0.6);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
+  background-color: rgba(76, 175, 80, 0.6);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   opacity: 0;
   transition: opacity 0.5s ease;
   border-radius: 20px;
-  padding: 20px;
   text-align: center;
+  padding: 0 20px;
 }
 
-.card:hover .overlay {
+.whoWeAre-card:hover .whoWeAre-overlay {
   opacity: 1;
 }
 
-.card .text {
+.whoWeAre-overlay-content {
   color: #fff;
-  font-size: 1.8rem;
-  font-weight: 700;
+  text-align: center;
+}
+
+.whoWeAre-text {
+  color: #fff;
+  font-size: 35px;
+  font-weight: bold;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
-.card .description {
+
+.whoWeAre-description {
   color: #fff;
-  font-size: 1rem;
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.5;
   max-width: 80%;
-  opacity: 0.9;
+  margin: 0 auto;
+  opacity: 0.95;
 }
-.card .btn {
+
+.whoWeAre-btn {
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -95,27 +99,28 @@
   opacity: 0;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-.card:hover .btn {
+
+.whoWeAre-card:hover .whoWeAre-btn {
   opacity: 1;
   transform: translateX(-50%) translateY(-10px);
 }
 
-@media (max-width: 992px) {
-  .card {
-    width: 45%;
-    height: 350px;
-  }
+.whoWeAre-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 @media (max-width: 768px) {
-  .card {
+  .whoWeAre-card {
     width: 90%;
     height: 300px;
   }
-  .card .text {
-    font-size: 1.5rem;
+
+  .whoWeAre-text {
+    font-size: 24px;
   }
-  .card .btn {
+
+  .whoWeAre-btn {
     padding: 10px 22px;
   }
 }
