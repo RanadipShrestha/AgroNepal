@@ -2,9 +2,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 80px;
+  gap: 70px;
   margin: 50px auto;
   padding: 0 20px;
+  max-width: 1500px; 
 }
 
 .whoWeAre-aboutTitle {
@@ -24,11 +25,11 @@
 
 .whoWeAre-card {
   position: relative;
-  width: 550px;
-  height: 550px;
+  width: 600px; 
+  height: 550px; 
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   transition: transform 0.6s ease, box-shadow 0.4s ease;
   cursor: pointer;
   background: #fff;
@@ -107,7 +108,7 @@
 
 .whoWeAre-card:hover {
   transform: scale(1.03);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
