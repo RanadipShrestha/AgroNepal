@@ -1,0 +1,91 @@
+.guideContainer {
+  max-width: 1270px;
+  margin: auto;
+  padding: 30px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.guideContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  text-align: center;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: 1;
+}
+
+.box {
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.box img {
+  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.box img:hover {
+  transform: scale(1.05);
+}
+
+.steps {
+  display: flex;
+  flex: 1;
+  min-width: 300px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.step {
+  background-color: #d6f7d6;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  padding: 15px 20px;
+}
+
+.step:hover {
+  transform: scale(1.05);
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.step-header span {
+  background-color: #156a15;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.step p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #333;
+}
