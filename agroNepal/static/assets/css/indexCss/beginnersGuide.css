@@ -4,9 +4,9 @@
   padding: 30px;
 }
 
-h1 {
+.guide-title {
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 28px;
 }
 
 .guideContent {
@@ -73,7 +73,7 @@ h1 {
 }
 
 .step-header span {
-  background-color: #156a15;
+  background-color: #a1eca1;
   font-weight: bold;
   width: 30px;
   height: 30px;
@@ -88,4 +88,10 @@ h1 {
   margin: 0;
   font-size: 0.95rem;
   color: #333;
+}
+
+@media(max-wirdth: 480px){
+  .guideContent{
+    flex-direction: column;
+  }
 }

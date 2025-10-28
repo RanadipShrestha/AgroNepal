@@ -75,7 +75,7 @@
   background: #3b8f41;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .service-card img {
     height: 240px;
   }

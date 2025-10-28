@@ -10,3 +10,6 @@ def login(request):
 
 def register(request):
   return render(request, 'accounts/register.html')
+
+def about(request):
+    return render(request, 'pages/about.html')
