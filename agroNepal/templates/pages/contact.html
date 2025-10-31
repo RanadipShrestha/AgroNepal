@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block content %}
+<!-- FAQ Section -->
+<div class="faq-section">
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq">
+    <div class="faq-item">
+      <button class="faq-question">Why Trust Us?</button>
+      <div class="faq-answer">
+        We are one of the most reliable agriculture companies in Nepal, offering sustainable and organic farming solutions trusted by thousands of farmers.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Do You Provide Organic Products?</button>
+      <div class="faq-answer">
+        Absolutely! All our products are eco-friendly and certified organic to help you grow naturally and healthily.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question"> Where Are You Located?</button>
+      <div class="faq-answer">
+        Our main office is in Pokhara, but we operate and deliver across all regions of Nepal.
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!----Feedback Secion---->
+    <div class="feedback-section">
+      <div class="form-container">
+        <div class="left">
+          <h3>Get in Touch</h3>
+          <p>
+            Have questions or suggestions? We'd love to hear from you. Our team
+            is here to help farmers, distributors, and agricultural innovators
+            grow with confidence. Contact us for partnerships, product
+            information, or any inquiries related to sustainable agriculture.
+          </p>
+          <p>
+            📍 Address: Pokhara, Nepal <br />
+            📞 Phone: +977 9800000000 <br />
+            ✉️ Email: info@greenagro.com
+          </p>
+        </div>
+
+        <div class="right">
+          <h3>Give Feedback</h3>
+          <form method="POST">
+            <div class="name-fields">
+              <div class="fields">
+                <label for="first_name">First Name</label>
+                <input
+                  type="text"
+                  name="first_name"
+                  placeholder="First Name"
+                  required
+                />
+              </div>
+              <div class="fields">
+                <label for="last_name">Last Name</label>
+                <input
+                  type="text"
+                  name="last_name"
+                  placeholder="Last Name"
+                  required
+                />
+              </div>
+            </div>
+
+            <label for="subject" class="subject">Subject</label>
+            <input type="text" class="subject" placeholder="Subject" required />
+
+            <label for="email" class="email">Email</label>
+            <input type="email" name="email" placeholder="Email" required />
+            <label for="message" class="message">Message</label>
+            <textarea
+              name="message"
+              placeholder="Your message..."
+              required
+            ></textarea>
+            <button type="submit" class="submitBtn">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endblock content %}
+  </div>
+</div>

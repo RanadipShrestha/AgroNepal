@@ -5,4 +5,5 @@ urlpatterns = [
   path("login/", login, name="login"),
   path("register/", register, name="register"),
   path("about/", about, name="about"),
+  path("contact/", contact, name="contact"),
 ]

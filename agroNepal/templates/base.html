@@ -26,6 +26,10 @@
     <link rel="stylesheet" href="{% static 'assets/css/aboutUsCss/whyChooseUs.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/aboutUsCss/provider.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/aboutUsCss/teamMember.css' %}" />
+
+    <!--Other pages Css-->
+        <link rel="stylesheet" href="{% static 'assets/css/contact.css' %}" />
+
   </head>
   <body>
     {% block header %} 
@@ -40,4 +44,6 @@
     </main>
   </body>
   {% include "includes/footer.html" %} 
+  <!---All Pages Js--->
+  <script src="{% static 'assets/js/pages/contact.js' %}"></script>
 </html>
