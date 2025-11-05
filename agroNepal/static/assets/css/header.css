@@ -3,15 +3,19 @@
   align-items: center;
   justify-content: space-between;
   background-color: #103d10;
+  padding: 0 40px;
   height: 70px;
-  padding: 12px 40px;
-  box-sizing: border-box;
 }
 
 .logo img {
   height: 50px;
   width: auto;
   display: block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links ul {
@@ -24,8 +28,9 @@
 
 .nav-links ul li a {
   color: white;
-  text-emphasis: none;
+  text-decoration: none;
   font-weight: bold;
+  text-decoration: none;
 }
 .nav-links ul li a:hover {
   color: #8be36e;
@@ -41,4 +46,69 @@
 
 .btn a:hover {
   background-color: #49b913;
+}
+
+.hamburger {
+  display: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.hamburger::before {
+  content: "☰";
+  font-size: 28px;
+}
+
+.hamburger.open::before {
+  content: "✖";
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0 20px;
+    height: 60px;
+  }
+  .nav-links,
+  .btn {
+    display: none;
+  }
+  .nav-links.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #103d10;
+    padding-top: 120px;
+    z-index: 1;
+    animation: fadeIn 0.3s ease forwards;
+  }
+  .hamburger {
+    display: block;
+    z-index: 2;
+  }
+
+
+  .nav-links.active ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .btn.active {
+    display: block;
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
 }

@@ -6,4 +6,5 @@ urlpatterns = [
   path("register/", register, name="register"),
   path("about/", about, name="about"),
   path("contact/", contact, name="contact"),
+  path("event/", event, name="event"),
 ]
