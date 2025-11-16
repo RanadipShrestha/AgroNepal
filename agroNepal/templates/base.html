@@ -44,7 +44,12 @@
       {% endblock content %}
     </main>
   </body>
-  {% include "includes/footer.html" %} 
+  {% block footer %} 
+
+    {% include "includes/footer.html" %} 
+
+    {% endblock footer %}
+  
   <!---All Pages Js--->
   <script src="{% static 'assets/js/pages/contact.js' %}"></script>
 </html>

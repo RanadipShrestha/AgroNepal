@@ -1,7 +1,17 @@
-document.querySelectorAll(".faq-question").forEach((q) => {
-  q.addEventListener("click", () => {
-    const answer = q.nextElementSibling;
-    const isActive = answer.classList.toggle("active");
-    answer.style.maxHeight = isActive ? `${answer.scrollHeight}px` : null;
+const questions = document.querySelectorAll(".faq-question");
+
+questions.forEach((question) => {
+  question.addEventListener("click", () => {
+    const answer = question.nextElementSibling;
+
+    if (answer.classList.contains("active")) {
+      answer.classList.remove("active");
+      answer.style.maxHeight = null;
+    }
+
+    else {
+      answer.classList.add("active");
+      answer.style.maxHeight = answer.scrollHeight + "px";
+    }
   });
 });

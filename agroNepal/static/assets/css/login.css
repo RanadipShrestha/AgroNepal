@@ -52,6 +52,22 @@
   text-align: center;
 }
 
+.messages{
+  margin-bottom: 15px;
+}
+
+.alert{
+  background: #ffe5e5;
+  color: #d00000;
+  border: 1px solid #ff4d4d;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
 .form-side form {
   display: flex;
   flex-direction: column;
@@ -64,7 +80,9 @@
 }
 
 .form-side input[type="text"],
-.form-side input[type="password"] {
+.form-side input[type="password"],
+.form-side input[type="email"]
+ {
   margin-top: 5px;
   padding: 10px;
   border: 1px solid #ccc;
