@@ -24,7 +24,16 @@ def register(request):
             else:
                 return redirect("login")
         else:
-            messages.error(request, "Please Enter all fields", extra_tags="fields-message")
+            if form.errors.get('password2'):
+                messages.error(request, "The passwords you entered do not match. Please try again.")
+            elif form.errors.get('username'):
+                messages.error(request, "This username is already taken. Please choose a different one.")
+            elif form.errors.get('email'):
+                messages.error(request, "This email is already registered or invalid.")
+            elif form.errors.get('password1'):
+                messages.error(request, "Your password is too weak. Please use at least 8 characters with letters and numbers.")
+            else:
+                messages.error(request, "Please fill in all required fields correctly.")
     else:
         form = CustomUserCreationForm()
 

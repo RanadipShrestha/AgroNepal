@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="blog-hero">
+  <img src="{% static 'assets/image/blogHeroBackground.jpg' %}" alt="ajldfakdfa">
+  <h1>Share your knowledge and help Others</h1>
+</div>
+
+<div class="search-container">
+  <div class="search-box">
+    <form method="GET">
+      <input type="text" name="search" placeholder="Search blog posts..." value="{{ search_data }}">
+      <button type="submit" style="background: none; border: none; cursor: pointer;">
+        <i class="fas fa-search search-icon"></i>
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="blog-container">
+  <div class="blogs">
+    {% if blogs %}
+      {% for blog in blogs %}
+        <div class="blog-card">
+          <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+          <div class="blog-content">
+            <p class="author"> By : {{blog.author.username}}
+            <h3>{{blog.title}}</h3>
+            <p class="blog-description">{{blog.description|truncatewords:30}}</p>
+            <a href="" class="read-more">Read More</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+         <p>No blog posts found{% if search_query %} for "{{ search_query }}"{% endif %}.</p>
+    {% endif %}
+  </div>
+
+
+  <!--sidebar-->
+  <div class="sidebar">
+    <h2>Recent Blogs</h2>
+    {% for recent_blog in recent_blogs %}
+      <div class="recent-item">
+       <img src="{{ recent_blog.image.url }}" alt="{{ recent_blog.title }}">
+       <div>
+        <a href="">
+          <p class="date">{{recent_blog.title|truncatewords:5}}</p>
+        </a>
+        <p>{{ recent_blog.create_date}}</p>
+      </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

@@ -9,10 +9,16 @@
     <!-- Font Awesome CDN for social icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <style>
+      ::selection {
+      background-color: green;
+      color: white;
+      }
+</style>
 
     <link rel="stylesheet" href="{% static 'assets/css/base.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/header.css' %}" />
-    <link rel="stylesheet" href="{% static 'assets/css/footer.css' %}" />
+    
     
     <!--All Index files Css-->
     <link rel="stylesheet" href="{% static 'assets/css/indexCss/hero.css' %}" />
@@ -27,9 +33,13 @@
     <link rel="stylesheet" href="{% static 'assets/css/aboutUsCss/provider.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/aboutUsCss/teamMember.css' %}" />
 
+    <!--Blog page css-->
+    <link rel="stylesheet" href="{% static 'assets/css/blog/blog.css' %}" />
+
+
     <!--Other pages Css-->
-        <link rel="stylesheet" href="{% static 'assets/css/contact.css' %}" />
-        <link rel="stylesheet" href="{% static 'assets/css/event.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/contact.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/event.css' %}" />
 
   </head>
   <body>
