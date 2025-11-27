@@ -3,12 +3,13 @@ from user.models import CustomUser
 from django.utils.text import slugify
 # Create your models here.
 
+#---------------------------------Blog Model------------------------------------------
 class Blog(models.Model):
   image = models.ImageField(upload_to="img/blog", null=True, blank=True)
   title = models.CharField(max_length=255)
   slug = models.SlugField(unique=True, blank=True)
   description = models.TextField()
-  author = models.ForeignKey(CustomUser, on_delete=models.CASCADE,related_name="blogs")
+  author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
   create_date = models.DateField(auto_now_add=True)
   updated_date = models.DateTimeField(auto_now=True)
   blog_content = models.TextField()
@@ -28,3 +29,15 @@ class Blog(models.Model):
     while Blog.objects.filter(slug=slug).exists():
       num+=1
     return slug
+
+#-----------------------------------Comment Model-----------------------------------------
+class Comment(models.Model):
+  blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
+  user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='comments')
+  text = models.TextField()
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+
+  def __str__(self):
+    return f"{self.user.username} comment on {self.blog}"

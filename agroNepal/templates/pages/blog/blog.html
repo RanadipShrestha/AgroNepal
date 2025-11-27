@@ -27,7 +27,7 @@
             <p class="author"> By : {{blog.author.username}}
             <h3>{{blog.title}}</h3>
             <p class="blog-description">{{blog.description|truncatewords:30}}</p>
-            <a href="" class="read-more">Read More</a>
+            <a href='{% url "readMoreBlog" slug=blog.slug %}' class="read-more">Read More</a>
           </div>
         </div>
       {% endfor %}
@@ -44,7 +44,7 @@
       <div class="recent-item">
        <img src="{{ recent_blog.image.url }}" alt="{{ recent_blog.title }}">
        <div>
-        <a href="">
+        <a href='{% url "readMoreBlog" slug=recent_blog.slug %}'>
           <p class="date">{{recent_blog.title|truncatewords:5}}</p>
         </a>
         <p>{{ recent_blog.create_date}}</p>

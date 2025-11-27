@@ -29,11 +29,11 @@ def register(request):
             elif form.errors.get('username'):
                 messages.error(request, "This username is already taken. Please choose a different one.")
             elif form.errors.get('email'):
-                messages.error(request, "This email is already registered or invalid.")
+                messages.error(request, "This email is already registered.")
             elif form.errors.get('password1'):
                 messages.error(request, "Your password is too weak. Please use at least 8 characters with letters and numbers.")
             else:
-                messages.error(request, "Please fill in all required fields correctly.")
+                messages.error(request, "Please fill in all required fields.")
     else:
         form = CustomUserCreationForm()
 
@@ -53,7 +53,7 @@ def login(request):
 
 
             if user.is_superuser or user.is_staff:
-                return redirect('admin')
+                return redirect('index')
             else:
                 return redirect('userDashboard')
 

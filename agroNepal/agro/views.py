@@ -1,6 +1,7 @@
-from django.shortcuts import render
-from .models import Blog
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Blog, Comment
 from django.db.models import Q
+from django.contrib import messages
 # Create your views here.
 
 def index(request):
@@ -40,3 +41,48 @@ def blog(request):
 
 def event(request):
   return render(request, "pages/event.html")
+
+
+def blog_detail(request, slug):
+  blog = get_object_or_404(Blog, slug=slug)
+  comments = blog.comments.all()
+  context = {
+    'blog':blog,
+    'comments':comments,
+  }
+  return render(request, 'pages/blog/readmoreBlog.html', context)
+
+
+def add_comment(request, slug):
+  if request.method == "POST":
+    blog = get_object_or_404(Blog, slug=slug)
+    comment_text = request.POST.get("comment_text")
+
+    if comment_text:
+      Comment.objects.create(
+        blog=blog,
+        user = request.user,
+        text = comment_text
+      )
+      messages.success(request, "Comment done successfully", extra_tags="commentSuccess")
+    else:
+      messages.error(request, "The comment fields is empty", extra_tags="emptyComment")
+    
+  return redirect("readMoreBlog", slug=slug)
+
+
+def delete_comment(request, comment_id):
+    if request.method == 'POST':
+        comment = get_object_or_404(Comment, id=comment_id)
+        
+        # Check if user is the comment owner or staff
+        if request.user == comment.user or request.user.is_staff:
+            blog_slug = comment.blog.slug
+            comment.delete()
+            messages.success(request, 'Comment deleted successfully!')
+            return redirect('readMoreBlog', slug=blog_slug)
+        else:
+            messages.error(request, 'You do not have permission to delete this comment.')
+            return redirect('readMoreBlog', slug=comment.blog.slug)
+    
+    return redirect('blog')
