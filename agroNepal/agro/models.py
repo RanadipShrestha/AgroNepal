@@ -41,3 +41,15 @@ class Comment(models.Model):
 
   def __str__(self):
     return f"{self.user.username} comment on {self.blog}"
+
+#-----------------Contact Model--------------------
+
+class Contact(models.Model):
+  first_name = models.CharField(max_length=50)
+  last_name = models.CharField(max_length=50)
+  subject = models.CharField(max_length=255)
+  email = models.EmailField(max_length=254)
+  message = models.TextField()
+
+  def __str__(self):
+    return f"{self.first_name} fill the Contact Form with subject: {self.subject}"

@@ -1,4 +1,14 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    {% if 'contact-success' in message.tags %}
+      <div class="success-message-box">
+                <span>{{ message }}</span>
+            </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
 <!-- FAQ Section -->
 <div class="faq-section">
   <h2>Frequently Asked Questions</h2>
@@ -47,6 +57,7 @@ sale it our farmers sell it.
         <div class="right">
           <h3>Give Feedback</h3>
           <form method="POST">
+            {% csrf_token %}
             <div class="name-fields">
               <div class="fields">
                 <label for="first_name">First Name</label>
@@ -69,7 +80,7 @@ sale it our farmers sell it.
             </div>
 
             <label for="subject" class="subject">Subject</label>
-            <input type="text" class="subject" placeholder="Subject" required />
+            <input type="text" name="subject" class="subject" placeholder="Subject" required />
 
             <label for="email" class="email">Email</label>
             <input type="email" name="email" placeholder="Email" required />
@@ -84,6 +95,14 @@ sale it our farmers sell it.
         </div>
       </div>
     </div>
-    {% endblock content %}
   </div>
 </div>
+
+<script>
+  setTimeout(() => {
+    document.querySelectorAll(".success-message-box").forEach(message => {
+      message.remove();
+    });
+  }, 3000);
+</script>
+{% endblock content %}

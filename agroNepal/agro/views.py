@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Blog, Comment
+from .models import Blog, Comment, Contact
 from django.db.models import Q
 from django.contrib import messages
 # Create your views here.
@@ -17,7 +17,22 @@ def about(request):
     return render(request, 'pages/about.html')
 
 def contact(request):
-   return render(request, "pages/contact.html")
+  if request.method == "POST":
+    first_name = request.POST.get("first_name")
+    last_name = request.POST.get("last_name")
+    email = request.POST.get("email")
+    subject = request.POST.get("subject")
+    message = request.POST.get("message")
+
+    Contact.objects.create(first_name=first_name, last_name=last_name, email=email, subject=subject, message=message)
+
+    messages.success(request, "Thank you for your feedback! We will get back to you soon.",extra_tags='contact-success')
+    return redirect('contact')
+  
+  
+  return render(request, "pages/contact.html")
+
+
 
 def blog(request):
   search_data = request.GET.get('search', '')
