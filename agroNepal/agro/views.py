@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Blog, Comment, Contact
+from .models import Blog, Comment, Contact, Event
 from django.db.models import Q
 from django.contrib import messages
 # Create your views here.
@@ -54,8 +54,6 @@ def blog(request):
    }
   return render(request, "pages/blog/blog.html", context)
 
-def event(request):
-  return render(request, "pages/event.html")
 
 
 def blog_detail(request, slug):
@@ -101,3 +99,12 @@ def delete_comment(request, comment_id):
             return redirect('readMoreBlog', slug=comment.blog.slug)
     
     return redirect('blog')
+
+
+def event(request):
+  events = Event.objects.all()
+  context = {
+    "events":events
+  }
+  return render(request, "pages/event.html", context)
+

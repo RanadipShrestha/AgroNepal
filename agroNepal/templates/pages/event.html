@@ -5,55 +5,36 @@
   <div class="container">
     <h1 class="section-title">Upcoming Events</h1>
     <p class="section-subtitle">Discover agriculture-focused events happening around Nepal.</p> 
-
     <div class="event-grid">
+      {% for event in events %} 
       <div class="event-card">
-        <img src="{% static 'assets/image/IndexBlog.jpg' %}" alt="" class="event-img">
+        <img src="{{ event.image.url }}" alt="{{event.name}}" class="event-img">
         <div class="event-body">
-          <h2 class="evnet-title">Event In Pokhara</h2>
+          <h2 class="event-title">Event Name : {{event.name}}</h2>
           <p class="event-details">
-            <span>Event Date : 2025-11-05</span>
-            <span>Special Guest : Ranadip Shrestha</span>
+            <span>Event Date : {{event.date}}</span>
+            <span>Special Guest : {{event.guest}}</span>
           </p>
-          <p class="event-details-extra">
-            <span>Location : Pokhara</span>
-            <span>Event Time : 2025-11-20</span>
-            <span>Event Duration : 1 Hours</span>
+          <p class="event-details">
+            <span>Location : {{event.location}}</span>
           </p>
+          <p class="event-details">
+            <span>Event Start Time : {{event.eventStartTime}}</span>
+            <span>Event Duration : {{ event.event_duration }}</span> 
+          </p>
+          <p  class="event-details">
+            <span style="font-weight:600; color: #2a774bff;">Total Ticket : {{event.total_ticket}}</span>
+            <span style="font-weight:600; color: #2a774bff;">Available Ticket : {{event.available_ticket}}</span></p>
           <p class="event-description">
-            This is The discription.
+            {{event.description|truncatewords:35}}
           </p>
-
           <div class="event-footer">
-            <span class="event-price">Rs : 10000</span>
-            <button class="btn-buy">Buy Now</button>
+            <span class="event-price">Rs : {{event.price}}</span>
+            <button class="btn-buy">Readmore / Buy Now</button>
           </div>
         </div>
       </div>
-    
-        <div class="event-card">
-        <img src="{% static 'assets/image/IndexBlog.jpg' %}" alt="" class="event-img">
-        <div class="event-body">
-          <h2 class="evnet-title">Event In Pokhara</h2>
-          <p class="event-details">
-            <span>Event Date : 2025-11-05</span>
-            <span>Special Guest : Ranadip Shrestha</span>
-          </p>
-          <p class="event-details-extra">
-            <span>Location : Pokhara</span>
-            <span>Event Time : 2025-11-20</span>
-            <span>Event Duration : 1 Hours</span>
-          </p>
-          <p class="event-description">
-            This is The discription.
-          </p>
-
-          <div class="event-footer">
-            <span class="event-price">Rs : 10000</span>
-            <button class="btn-buy">Buy Now</button>
-          </div>
-        </div>
-      </div>
+      {% endfor %} 
     </div>
   </div>
 </div>
