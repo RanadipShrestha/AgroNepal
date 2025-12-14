@@ -1,6 +1,7 @@
 from django.db import models
 from user.models import CustomUser
 from django.utils.text import slugify
+import uuid
 # Create your models here.
 
 #---------------------------------Blog Model------------------------------------------
@@ -74,9 +75,8 @@ class Event(models.Model):
   available_ticket = models.IntegerField()
   
 
-
   def __str__(self):
-    return f"The Name of the event is {self.name} and tje guest is {self.guest}"
+    return f"The Name of the event is '{self.name}' and the guest is '{self.guest}'"
   
   def save(self, *args, **kwargs):
     if not self.slug:
@@ -98,3 +98,5 @@ class Event(models.Model):
     self.available_ticket -= 1
     self.save()
     return True
+  
+  

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Buy Ticket - {{ event.name }}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/ticket_buy.css' %}">
+
+<div class="ticket-buy-container">
+    <div class="ticket-card">
+        <div class="ticket-content">
+            <!-- Left side - Event Image -->
+            <div class="ticket-buy-image-section">
+                <div class="ticket-buy-image">
+                    {% if event.image %}
+                        <img src="{{ event.image.url }}" alt="{{ event.name }}" />
+                    {% else %}
+                        <div class="placeholder-image">
+                            <span>Event Image</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right side - Event Details -->
+            <div class="ticket-buy-info-section">
+                <div class="ticket-buy-content">
+                    <div class="ticket-buy-header">
+                        <h1 class="ticket-buy-title">{{ event.name }}</h1>
+                        <div class="price-tag">
+                            <span class="price-amount">Rs:  {{ event.price }}</span>
+                        </div>
+                    </div>
+
+                    <div class="ticket-buy-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Event Date :</span>
+                            <span class="detail-value">{{ event.date|date:"M.  d, Y" }}</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Special Guest :</span>
+                            <span class="detail-value">{{ event.guest }}</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Location :</span>
+                            <span class="detail-value">{{ event.location }}</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Event Start Time :</span>
+                            <span class="detail-value">{{ event.date }}</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">Event Duration :</span>
+                            <span class="detail-value">{{ event.event_duration }}</span>
+                        </div>
+                    </div>
+
+                    <div class="ticket-info">
+                        <div class="ticket-stats">
+                            <span class="ticket-stat">
+                                <strong>Total Ticket :</strong> {{ event.total_tickets|default:"1000" }}
+                            </span>
+                            <span class="ticket-stat">
+                                <strong>Available Ticket :</strong> {{ event.available_tickets|default:"1000" }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buy Now Button and Pay with eSewa - positioned at bottom -->
+                <div class="payment-section">
+                    
+
+                    <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+                        <input type="hidden" name="amount" value="{{ event.price }}">
+                        <input type="hidden" name="tax_amount" value="0">
+                        <input type="hidden" name="total_amount" value="{{ event.price }}">
+                        <input type="hidden" name="transaction_uuid" value="{{ transaction_uuid }}">  <!-- ✅ FIXED -->
+                        <input type="hidden" name="product_code" value="EPAYTEST">
+                        <input type="hidden" name="product_service_charge" value="0">
+                        <input type="hidden" name="product_delivery_charge" value="0">
+                        <input type="hidden" name="success_url" value="http://localhost:8000/payment/success/">
+                        <input type="hidden" name="failure_url" value="http://localhost:8000/payment/failure/">
+                        <input type="hidden" name="signed_field_names" value="total_amount,transaction_uuid,product_code">
+                        <input type="hidden" name="signature" value="{{ signature }}">
+                        <button type="submit" class="buy-btn">Buy Now with eSewa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="description-section">
+            <h3 class="description-title">Description</h3>
+            <p class="description-text">{{ event.description }}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

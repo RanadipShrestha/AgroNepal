@@ -28,7 +28,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# Session configuration
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 3600  # 1 hour
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 
 # Application definition
 
@@ -41,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'agro',
     'user',
+    'payment',
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'

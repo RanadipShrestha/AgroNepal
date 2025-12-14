@@ -30,7 +30,7 @@
           </p>
           <div class="event-footer">
             <span class="event-price">Rs : {{event.price}}</span>
-            <button class="btn-buy">Readmore / Buy Now</button>
+            <a href='{% url "buy_ticket" event.id %}' class="btn-buy">Readmore / Buy Now</a>
           </div>
         </div>
       </div>

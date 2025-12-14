@@ -106,5 +106,5 @@ def event(request):
   context = {
     "events":events
   }
-  return render(request, "pages/event.html", context)
+  return render(request, "pages/event/event.html", context)
 
