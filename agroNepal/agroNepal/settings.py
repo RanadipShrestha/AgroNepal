@@ -63,7 +63,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'agroNepal.urls'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/user/login'
 
 TEMPLATES = [
     {

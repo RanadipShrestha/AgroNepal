@@ -85,12 +85,12 @@ def buy_ticket(request, id):
 
 
 def payment_success(request):
-    """
-    Handle successful payment callback from eSewa
-    """
+    #esewa la payment data send garxa Base64 encoded string ma in URL parameter data
     encoded_data = request.GET.get('data')
     
+    # Check data xa ki nai
     if not encoded_data:
+        #if data xaina vana paymenet_error page me render gardena with all those details
         return render(request, 'pages/event/payment_error.html', {
             'error_title': 'Payment Data Missing',
             'error_message': "We didn't receive payment confirmation from eSewa. Please try again or contact support.",
@@ -98,8 +98,14 @@ def payment_success(request):
         })
     
     try:
+        ''' esewa la Base64(JSON) format ma data send garxa 
+            We need to decode Base64 and get JSON string then parse to python dictionary 
+        '''
+        # First ma decode gara ko and get raw bytes
         decoded_bytes = base64.b64decode(encoded_data)
+        # Second ma chai convert that bytes to string 
         decoded_str = decoded_bytes.decode('utf-8')
+        # Thired ma chai parse that json string to python dictionary 
         payment_data = json.loads(decoded_str)
         
         if not verify_signature_from_esewa(payment_data):

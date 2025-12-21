@@ -15,7 +15,19 @@
     </ul>
   </nav>
   <div class="btn">
+    {% if user.is_authenticated %}
+      {% if user.is_staff or user.is_superuser %}
+        <a href='' class="user-initials">
+          {{ user.first_name|first|upper }}{{ user.last_name|first|upper}}
+        </a>
+      {% else %}
+        <a href='' class="user-initials"> 
+            {{ user.first_name }} {{user.last_name}}
+        </a>
+      {% endif %}
+    {% else %}
     <a href="{% url 'login' %}">Get Start</a>
+    {% endif %}
   </div>
   <div class="hamburger" onclick="toggleMenu()"></div>
 </header>
