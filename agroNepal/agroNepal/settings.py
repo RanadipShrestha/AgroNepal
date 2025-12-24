@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'agro',
     'user',
     'payment',
+    'userDashboard',
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'

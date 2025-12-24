@@ -1,0 +1,26 @@
+.main-container {
+  display: flex;
+  height: calc(100vh - 65px);
+  margin-top: 65px;
+  overflow: hidden;
+}
+.content-area {
+  margin-left: 220px;
+  flex: 1;
+  width: calc(100% - 220px);
+  height: calc(98vh - 65px);
+  overflow-y: auto;
+  background-color: #f5f7fa;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .content-area {
+    margin-left: 0;
+    width: 100%;
+  }
+  .wellcome-message {
+    display: none;
+    background-color: aqua;
+  }
+}

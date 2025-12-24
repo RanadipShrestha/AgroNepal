@@ -1,0 +1,14 @@
+{% load static %}
+<div class="sidebar-container">
+  <aside class="userDashboardSidebar">
+    <ul>
+      <li><a href='{% url "userdashboard" %}' class="{% if request.resolver_match.url_name == 'userdashboard' %}active{% endif %}"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+    </ul>
+
+    <div class="sidebar-bottom">
+      <a href="{% url 'index' %}" class="sidebar-back-btn">
+       Back to Home
+      </a>
+    </div>
+  </aside>
+</div>

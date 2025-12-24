@@ -17,11 +17,11 @@
   <div class="btn">
     {% if user.is_authenticated %}
       {% if user.is_staff or user.is_superuser %}
-        <a href='' class="user-initials">
+        <a href='{% url "userdashboard" %}' class="user-initials">
           {{ user.first_name|first|upper }}{{ user.last_name|first|upper}}
         </a>
       {% else %}
-        <a href='' class="user-initials"> 
+        <a href='{% url "userDashboard" %}' class="user-initials"> 
             {{ user.first_name }} {{user.last_name}}
         </a>
       {% endif %}

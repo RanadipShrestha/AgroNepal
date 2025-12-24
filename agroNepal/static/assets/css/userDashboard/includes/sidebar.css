@@ -1,0 +1,103 @@
+.userDashboardSidebar {
+  width: 220px;
+  background-color: #2e8b57;
+  color: white;
+  height: calc(100vh - 65px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  position: fixed;
+  top: 65px;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  z-index: 15;
+}
+
+.userDashboardSidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.userDashboardSidebar ul li {
+  margin-bottom: 10px;
+}
+
+.userDashboardSidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  text-decoration: none;
+  color: white;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  margin: 10px 10px;
+}
+
+.userDashboardSidebar ul li a:hover {
+  background-color: #2e6947;
+}
+
+.userDashboardSidebar ul li a.active {
+  background-color: #459112;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.userDashboardSidebar ul li a i {
+  font-size: 16px;
+}
+
+.userDashboardSidebar ul li a.active i {
+  color: #ffffff;
+}
+
+.sidebar-bottom {
+  padding: 16px;
+  border-top: 2px solid white;
+  
+}
+
+.sidebar-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 0;
+  width: 80%;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.sidebar-back-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .userDashboardSidebar {
+    left: -220px;
+  }
+
+  .userDashboardSidebar.active {
+    left: 0;
+  }
+}
