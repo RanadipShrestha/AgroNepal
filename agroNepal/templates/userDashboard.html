@@ -9,11 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-  <link rel="stylesheet" href="{% static 'assets/css/userDashboard/userDashboard.css' %}" />
-    <!-- Base CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/userDashboard/userDashboard.css' %}" />
+
+
+    <!-- Includes files css -->
     <link rel="stylesheet" href="{% static 'assets/css/userDashboard/includes/header.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/userDashboard/includes/sidebar.css' %}" />
 
+    <!----Dashboard css--------->
+    <link rel="stylesheet" href="{% static 'assets/css/userDashboard/Dashboard/plantedCrop.css' %}" />
     
   </head>
   <body>
@@ -26,7 +30,11 @@
       </div>
     </div>
   </body>
+  <!-------Includes Js part --------------->
   <script src="{% static 'assets/js/userDashboard/includes/header.js' %}"></script>
   <script src="{% static 'assets/js/userDashboard/includes/profileButton.js' %}"></script>
   <script src="{% static 'assets/js/userDashboard/includes/sidebar.js' %}"></script>
+
+  <!----Dashboard Part JS------->
+  <script src="{% static 'assets/js/userDashboard/plantedCrop.js' %}"></script>
 </html>

@@ -3,6 +3,7 @@
   <aside class="userDashboardSidebar">
     <ul>
       <li><a href='{% url "userdashboard" %}' class="{% if request.resolver_match.url_name == 'userdashboard' %}active{% endif %}"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+      <li><a href='{% url "crop" %}' class="{% if request.resolver_match.url_name == 'crop' %}active{% endif %}"><i class="fa-solid fa-seedling"></i> Crop</a></li>
     </ul>
 
     <div class="sidebar-bottom">

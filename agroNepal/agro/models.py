@@ -1,7 +1,7 @@
 from django.db import models
 from user.models import CustomUser
 from django.utils.text import slugify
-import uuid
+from datetime import timedelta
 # Create your models here.
 
 #---------------------------------Blog Model------------------------------------------
@@ -99,4 +99,35 @@ class Event(models.Model):
     self.save()
     return True
   
-  
+#------------------Crop-----------------
+class Crop(models.Model):
+  name = models.CharField(max_length=50)
+  description = models.TextField(blank=True, null=True)
+
+  def __str__(self):
+    return self.name
+
+#---------Crop Schedule-----------
+class CropSchedule(models.Model):
+    crop = models.ForeignKey(Crop, on_delete=models.CASCADE, related_name="schedules")
+    day_number = models.PositiveIntegerField(help_text="Kun din ma k garna")
+    task = models.TextField(help_text="Watering, Pesticide")
+
+    class Meta:
+        ordering = ['day_number']
+    
+    def __str__(self):
+        return f'{self.crop.name} - Day {self.day_number}: {self.task}'
+    
+#-----------------------user Crop add 'Yo user crop add vana ko chai user la kunai pani crop plant garxa like "Rice hola banana hola" tayo data yo userCropAdd ma store huxa----------------
+
+class UserCropAdd(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="user_crops")
+    crop = models.ForeignKey(Crop, on_delete=models.CASCADE, related_name="user_crops")
+    planted_date = models.DateField()
+    notes = models.TextField(blank=True, null=True)
+    is_task_hidden = models.BooleanField(default=False) 
+
+    def __str__(self):
+      return f"{self.user.username} - {self.crop.name} planted crop on {self.planted_date}"
+    

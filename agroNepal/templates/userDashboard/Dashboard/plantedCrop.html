@@ -1,0 +1,158 @@
+{% extends "userDashboard.html" %}
+{% load static %}
+{% block content %}
+<div class="crop-management-container">
+  <!-- Messages Display Section -->
+  {% if messages %}
+    <div class="messages-container">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} {% if 'cropAddedSuccessfully' in message.tags or 'cropDeletedSuccessfully' in message.tags %}alert-success{% else %}alert-danger{% endif %}">
+          <span class="alert-message">{{ message }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="crop-management-header">
+    <div>
+      <h1 class="page-title">My Crops</h1>
+      <p class="page-description">
+        Manage your planted crops and add new ones to track their progress
+      </p>
+    </div>
+    <button type="button" id="addCropBtn" class="add-crop-btn">
+     + Add Crop
+    </button>
+  </div>
+
+  <!-- Planted Crops List -->
+  <div class="planted-crops-section">
+    <h2 class="section-title">Your Planted Crops</h2>
+    {% if user_crops %}
+      <div class="crops-grid">
+        {% for user_crop in user_crops %}
+        <div class="crop-card">
+          <div class="crop-card-header">
+            <h3 class="crop-name">{{ user_crop.crop.name }}</h3>
+            <span class="crop-date">{{ user_crop.planted_date|date:"M d, Y" }}</span>
+          </div>
+          <div class="crop-card-body">
+            {% if user_crop.notes %}
+              <p class="crop-notes"><strong>Notes:</strong> {{ user_crop.notes }}</p>
+            {% else %}
+              <p class="crop-notes text-muted">No notes added</p>
+            {% endif %}
+          </div>
+          <div class="crop-card-footer">
+            <span class="days-planted">
+              Planted {{ user_crop.planted_date|timesince }} ago
+            </span>
+            <button type="button" class="delete-crop-btn" 
+        data-crop-id="{{ user_crop.id }}"
+        data-crop-name="{{ user_crop.crop.name }}">
+  Delete
+</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h3>No crops planted yet</h3>
+        <p>Start by adding your first crop to begin tracking</p>
+        <button type="button" class="empty-add-btn" onclick="document.getElementById('addCropBtn').click()">
+          Add Your First Crop
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+
+<!----------Add Crop part -------------->
+<div id="addCropModal" class="modal">
+  <div class="modal-content large-modal">
+    <div class="modal-header">
+      <h2>Add New Crop</h2>
+      <button type="button" class="close-btn" id="closeModalBtn">x</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-description">
+        Add crop to receive personalized notifications and tasks and track you Expense and Sales according to your Planted Date. 
+      </p>
+      <form id="addCropForm" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="addCropSelect" class="form-label">Select Crop: </label>
+          <select id="addCropSelect" name="crop" class="form-select" required>
+            <option value="">Choose a crop...</option>
+            {% for crop in crops %}
+              <option value="{{ crop.id }}">{{ crop.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="addCropDateInput" class="form-label">Planted Date:</label>
+          <input
+            type="date"
+            id="addCropDateInput"
+            name="planted_date"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="addCropNoteInput" class="form-label">Notes (Optional):</label>
+          <textarea
+            id="addCropNoteInput"
+            name="notes"
+            class="form-textarea"
+            placeholder="Add any additional notes about this crop..."
+          ></textarea>
+        </div>
+
+        <button type="button" id="submitBtn" class="submit-btn">Save Crop</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!------ Confirmation Modal ------->
+<div id="confirmationModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Confirm Crop Addition</h2>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to add this crop?</p>
+      
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="cancelBtn" class="modal-btn cancel-btn">Cancel</button>
+      <button type="button" id="confirmBtn" class="modal-btn confirm-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!------ Delete Confirmation Modal with Form -------------->
+<div id="deleteModal" class="modal">
+  <form id="deleteForm" method="POST" action="{% url 'delete_crop' %}">
+    {% csrf_token %}
+    <input type="hidden" name="crop_id" id="deleteCropId">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirm Deletion</h2>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <strong id="deleteCropName"></strong>?</p>
+        <p class="text-muted">This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelDeleteBtn" class="modal-btn cancel-btn">Cancel</button>
+        <button type="submit" class="modal-btn confirm-btn">Delete</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock content %}
