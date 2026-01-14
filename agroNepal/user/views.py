@@ -20,8 +20,6 @@ def register(request):
             user = authenticate(request, email=email, password=password)
             if user:
                 auth_login(request, user)
-                return redirect("index")
-            else:
                 return redirect("login")
         else:
             if form.errors.get('password2'):
@@ -50,13 +48,10 @@ def login(request):
 
         if user is not None:
             auth_login(request, user)
-
-
             if user.is_superuser or user.is_staff:
-                return redirect('index')
+                return redirect('admindashboard')
             else:
-                return redirect('userDashboard')
-
+                return redirect('userdashboard')
         else:
             messages.error(request, 'Invalid email or password.', extra_tags="invalidPasswordoremail")
             return render(request, 'accounts/login.html')

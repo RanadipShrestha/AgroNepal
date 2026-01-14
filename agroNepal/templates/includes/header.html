@@ -21,8 +21,8 @@
           {{ user.first_name|first|upper }}{{ user.last_name|first|upper}}
         </a>
       {% else %}
-        <a href='{% url "userDashboard" %}' class="user-initials"> 
-            {{ user.first_name }} {{user.last_name}}
+        <a href='{% url "userdashboard" %}' class="user-initials"> 
+            {{ user.first_name|first|upper }} {{user.last_name|first|upper}}
         </a>
       {% endif %}
     {% else %}

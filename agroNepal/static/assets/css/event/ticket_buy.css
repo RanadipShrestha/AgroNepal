@@ -169,6 +169,19 @@
     line-height: 1.6;
     margin: 0;
 }
+.buy-btn{
+   background: #2e8b57;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 700;
+  padding: 12px 28px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(46, 139, 87, 0.3);
+  text-transform: uppercase; 
+}
 
 @media (max-width: 480px) {
     .ticket-content {

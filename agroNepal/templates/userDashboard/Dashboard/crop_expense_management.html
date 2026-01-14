@@ -1,0 +1,339 @@
+{% extends "userDashboard.html" %} {% load static %} {% block content %}
+
+
+<div class="crop-management-container">
+  <!-- Messages Display Section -->
+  {% if messages %}
+  <div class="messages-container">
+    {% for message in messages %}
+    <div
+      class="alert alert-{{ message.tags }} {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %}"
+    >
+      <span class="alert-message">{{ message }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="crop-management-header">
+    <div>
+      <h1 class="page-title">Crop Expense Tracker</h1>
+      <p class="page-description">
+        Track and manage all your crop expenses. Add new expenses and monitor
+        your spending.
+      </p>
+    </div>
+    <button type="button" id="addExpenseBtn" class="add-crop-btn">
+      + Add Expense
+    </button>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-container" style="margin-bottom: 30px">
+    <div class="search-wrapper">
+      <input
+        type="text"
+        id="searchInput"
+        class="search-bar"
+        placeholder="Search by crop name..."
+      />
+      <div class="searchIcon">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expense Records List -->
+  <div class="planted-crops-section">
+    <h2 class="section-title">Your Expense Records</h2>
+    {% if crops_data %} {% for crop_data in crops_data %}
+    <div class="crop-group" data-crop-name="{{ crop_data.crop_name|lower }}">
+      <div class="crop-header-wrapper">
+        <div class="crop-info">
+          <h3 class="crop-name">{{ crop_data.crop_name }}</h3>
+          <span class="crop-date"
+            >Planted: {{ crop_data.planted_date|date:"M d, Y" }}</span
+          >
+          {% if crop_data.notes %}
+          <span
+            class="crop-notes"
+            style="
+              display: block;
+              font-size: 13px;
+              color: #718096;
+              margin-top: 3px;
+            "
+          >
+            {{ crop_data.notes }}
+          </span>
+          {% endif %}
+        </div>
+        <button
+          type="button"
+          class="delete-all-btn"
+          data-crop-id="{{ crop_data.user_crop_id }}"
+        >
+          <i class="fas fa-trash-alt"></i>
+          <span>Delete All</span>
+        </button>
+      </div>
+
+      <div class="card-grid">
+        {% for expense in crop_data.expenses %}
+        <div class="info-card">
+          <div class="amount-section">
+            <span class="amount-label">Amount:</span>
+            <span class="amount-value">Rs: {{ expense.amount }}</span>
+          </div>
+          <div class="information-section">
+            <span class="label">Spend Date:</span>
+            <span class="value">{{ expense.spend_date }}</span>
+          </div>
+          {% if expense.note %}
+          <div class="information-note-section">
+            <span class="note-label">Note:</span>
+            <p class="note-text">{{ expense.note }}</p>
+          </div>
+          {% endif %}
+          <div class="actions-btn">
+            <button
+              type="button"
+              class="delete-expense-sale-btn"
+              data-expense-id="{{ expense.id }}"
+              data-crop-name="{{ crop_data.crop_name }}"
+            >
+              <i class="fas fa-trash-alt"></i>
+              <span>Delete</span>
+            </button>
+            <button
+              type="button"
+              class="edit-expense-sale-btn"
+              data-expense-id="{{ expense.id }}"
+              data-crop-name="{{ crop_data.crop_name }}"
+              data-amount="{{ expense.amount }}"
+              data-spend-date="{{ expense.spend_date }}"
+              data-note="{{ expense.note|default_if_none:'' }}"
+            >
+              <i class="fas fa-edit"></i>
+              <span>Edit</span>
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="empty-state">
+      <h3>No expenses recorded yet</h3>
+      <p>Start by adding your first expense to begin tracking</p>
+      <button
+        type="button"
+        class="empty-add-btn"
+        onclick="document.getElementById('addExpenseBtn').click()"
+      >
+        Add Your First Expense
+      </button>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Add Expense Modal -->
+<div id="addExpenseModal" class="modal">
+  <div class="modal-content large-modal">
+    <div class="modal-header">
+      <h2>Add New Expense</h2>
+      <button type="button" class="close-btn" id="closeModalBtn">x</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-description">
+        Track your crop expenses by adding amount, date, and notes for better
+        financial management.
+      </p>
+      <form id="addExpenseForm" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="user_crop" class="form-label"
+            >Select Your Planted Crop:</label
+          >
+          <select id="user_crop" name="user_crop" class="form-select" required>
+            <option value="">Choose a crop...</option>
+            {% for user_crop in user_crops %}
+            <option value="{{ user_crop.id }}">
+              {{ user_crop.crop.name }} - Planted: {{user_crop.planted_date }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="amount" class="form-label">Amount (RS):</label>
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            class="form-input"
+            placeholder="1000"
+            required
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <div class="form-group">
+          <label for="spend_date" class="form-label">Spend Date:</label>
+          <input
+            type="date"
+            id="spend_date"
+            name="spend_date"
+            class="form-input"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="note" class="form-label">Note (Optional):</label>
+          <textarea
+            id="note"
+            name="note"
+            class="form-textarea"
+            placeholder="e.g., water, food, pesticide, fertilizer..."
+          ></textarea>
+        </div>
+        <button type="button" class="submit-btn" id="submitExpenseBtn">
+          Save Expense
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Expense Modal -->
+<div id="editExpenseModal" class="modal">
+  <div class="modal-content large-modal">
+    <div class="modal-header">
+      <h2>Edit Expense</h2>
+      <button type="button" class="close-btn" id="closeEditModalBtn">x</button>
+    </div>
+    <div class="modal-body">
+      <form id="editExpenseForm" method="POST" action="{% url 'editExpense' %}">
+        {% csrf_token %}
+        <input type="hidden" id="editExpenseId" name="expense_id" />
+        <div class="form-group">
+          <label for="edit_amount" class="form-label">Amount (RS):</label>
+          <input
+            type="number"
+            id="edit_amount"
+            name="amount"
+            class="form-input"
+            required
+            min="0"
+            step="0.01"
+          />
+        </div>
+        <div class="form-group">
+          <label for="edit_spend_date" class="form-label">Spend Date:</label>
+          <input
+            type="date"
+            id="edit_spend_date"
+            name="spend_date"
+            class="form-input"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="edit_note" class="form-label">Note (Optional):</label>
+          <textarea id="edit_note" name="note" class="form-textarea"></textarea>
+        </div>
+        <button type="button" class="submit-btn" id="updateExpenseBtn">
+          Update Expense
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Confirm Action</h2>
+    </div>
+    <div class="modal-body">
+      <p id="confirmationText" style="text-align: center">Are you sure?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="modal-btn cancel-btn" id="cancelBtn">
+        Cancel
+      </button>
+      <button type="button" class="modal-btn confirm-btn" id="confirmBtn">
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Expense Modal -->
+<div id="deleteExpenseModal" class="modal">
+  <form id="deleteExpenseForm" method="POST" action="{% url 'deleteExpense' %}">
+    {% csrf_token %}
+    <input type="hidden" name="expense_id" id="deleteExpenseId" />
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirm Deletion</h2>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure you want to delete this expense for
+          <strong id="deleteExpenseCropName"></strong>?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="modal-btn cancel-btn"
+          id="cancelDeleteExpenseBtn"
+        >
+          Cancel
+        </button>
+        <button type="submit" class="modal-btn confirm-btn">Delete</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Delete All Expenses Modal -->
+<div id="deleteAllModal" class="modal">
+  <form
+    id="deleteAllForm"
+    method="POST"
+    action="{% url 'deleteCropExpenses' %}"
+  >
+    {% csrf_token %}
+    <input type="hidden" name="crop_id" id="deleteAllCropId" />
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Confirm Deletion</h2>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete ALL expenses for this crop?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="modal-btn cancel-btn"
+          id="cancelDeleteAllBtn"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="modal-btn confirm-btn"
+          style="background: #ef4444"
+        >
+          Delete All
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+{% endblock content %}

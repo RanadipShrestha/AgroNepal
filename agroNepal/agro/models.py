@@ -131,3 +131,28 @@ class UserCropAdd(models.Model):
     def __str__(self):
       return f"{self.user.username} - {self.crop.name} planted crop on {self.planted_date}"
     
+
+    #-----------CropExpense
+class CropExpense(models.Model):
+    user_crop = models.ForeignKey(UserCropAdd, on_delete=models.CASCADE, related_name="crop_expenses")
+    amount = models.FloatField()
+    spend_date = models.DateField()
+    note = models.TextField(blank=True, null=True, help_text="e.g., water, food, pesticide")
+
+    def __str__(self):
+        return f"Expense Rs: {self.amount} for {self.user_crop.crop.name}"
+    
+
+class CropSale(models.Model):
+    user_crop = models.ForeignKey(UserCropAdd, on_delete=models.CASCADE, related_name="crop_sales")
+    amount = models.FloatField(help_text="Total income from selling")
+    quantity = models.FloatField(blank=True, null=True, help_text="In kg")
+    sale_date = models.DateField()
+    buyer_name = models.CharField(max_length=100, blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-sale_date']
+
+    def __str__(self):
+        return f"Sale ₹{self.amount} for {self.user_crop.crop.name} ({self.user_crop.planted_date})"
