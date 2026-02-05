@@ -7,11 +7,6 @@ from django.contrib import messages
 def index(request):
   return render(request, "pages/index.html")
 
-def login(request):
-  return render(request, 'accounts/login.html')
-
-def register(request):
-  return render(request, 'accounts/register.html')
 
 def about(request):
     return render(request, 'pages/about.html')

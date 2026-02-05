@@ -87,8 +87,6 @@ def cropExpense(request):
             messages. error(request, f'Error adding expense: {str(e)}')
             return redirect('cropExpense')
     
-    # GET request - Display expenses
-    # Get all user crops with their expenses
     user_crops_with_expenses = UserCropAdd.objects.filter(
         user=request.user,
         crop_expenses__isnull=False  # Changed from cropexpense to crop_expenses
@@ -102,7 +100,7 @@ def cropExpense(request):
             'user_crop_id': user_crop.id,
             'crop_name': user_crop.crop. name,
             'planted_date': user_crop.planted_date,
-            'notes': user_crop.notes,  # Location/field info if you have it
+            'notes': user_crop.notes,  
             'expenses': expenses
         })
     
@@ -116,9 +114,8 @@ def cropExpense(request):
     return render(request, "userDashboard/Dashboard/crop_expense_management.html", context)
 
 
-
+#Delete a single Expense
 def deleteExpense(request):
-    """Delete a single expense"""
     if request.method == 'POST': 
         expense_id = request. POST.get('expense_id')
         expense = get_object_or_404(CropExpense, pk=expense_id, user_crop__user=request.user)
@@ -127,23 +124,15 @@ def deleteExpense(request):
         messages.success(request, f'Expense for {crop_name} deleted successfully.')
     return redirect('cropExpense')
 
-
+#Delect all the Expense
 def deleteCropExpenses(request):
-    """Delete all expenses for a specific user crop"""
     if request.method == 'POST': 
         crop_id = request.POST.get('crop_id')
         try:
             user_crop = get_object_or_404(UserCropAdd, id=crop_id, user=request.user)
-            
-            crop_name = user_crop.crop.name
-            planted_date = user_crop.planted_date.strftime('%Y-%m-%d')
-            
-            deleted_count = CropExpense.objects.filter(user_crop=user_crop).delete()[0]
-            
-            if deleted_count > 0:
-                messages.success(request, f'Successfully deleted {deleted_count} expense(s) for {crop_name} planted on {planted_date}.')
-            else:
-                messages.info(request, f'No expenses found for {crop_name} planted on {planted_date}.')
+
+            CropExpense.objects.filter(user_crop=user_crop).delete()
+            messages.success(request, 'All expenses Deleted ', extra_tags="expense_delete")
                 
         except Exception as e:
             messages.error(request, f'Error deleting expenses: {str(e)}')

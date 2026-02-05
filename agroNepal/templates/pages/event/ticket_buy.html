@@ -71,7 +71,7 @@
                     </div>
                 </div>
 
-                <!-- Buy Now Button and Pay with eSewa - positioned at bottom -->
+                <!-- Buy Now Button and Pay with eSewa -->
                 <div class="payment-section">
                     
 
@@ -79,7 +79,7 @@
                         <input type="hidden" name="amount" value="{{ event.price }}">
                         <input type="hidden" name="tax_amount" value="0">
                         <input type="hidden" name="total_amount" value="{{ event.price }}">
-                        <input type="hidden" name="transaction_uuid" value="{{ transaction_uuid }}">  <!-- ✅ FIXED -->
+                        <input type="hidden" name="transaction_uuid" value="{{ transaction_uuid }}">  
                         <input type="hidden" name="product_code" value="EPAYTEST">
                         <input type="hidden" name="product_service_charge" value="0">
                         <input type="hidden" name="product_delivery_charge" value="0">

@@ -10,16 +10,14 @@ import hashlib
 import base64
 import json
 
-
+#Verify the data comming from the esewa. 
 def verify_signature_from_esewa(payment_data):
-    """
-    Verify the signature from eSewa to ensure payment data is authentic
-    """
     try:
+        # Checking there is signature or not in the data
         received_signature = payment_data.get('signature')
         if not received_signature:
             return False
-        
+        # Getting the signed fields
         signed_field_names = payment_data.get('signed_field_names')
         if not signed_field_names:
             return False
@@ -35,13 +33,16 @@ def verify_signature_from_esewa(payment_data):
         secret_key = "8gBm/:&EnhH.1/q"
         
         expected_signature = hmac.new(
+            #Converting the secret_key into bytes 
             secret_key.encode('utf-8'),
+            #Converting the message into bytes
             message.encode('utf-8'),
+            #Hashing algorithm
             hashlib.sha256
         ).digest()
         
         expected_signature_base64 = base64.b64encode(expected_signature).decode('utf-8')
-        
+        #If the signatures is same then valid
         return received_signature == expected_signature_base64
         
     except Exception:
@@ -50,9 +51,6 @@ def verify_signature_from_esewa(payment_data):
 
 @login_required
 def buy_ticket(request, id):
-    """
-    Display payment form for ticket purchase
-    """
     event = get_object_or_404(Event, id=id)
     user = request.user
     
@@ -72,9 +70,6 @@ def buy_ticket(request, id):
         'user_id': user.id,
         'amount': float(event.price),
     }
-    request.session.modified = True
-    request.session.save()
-    
     context = {
         'event': event,
         'transaction_uuid': transaction_uuid,
@@ -125,7 +120,7 @@ def payment_success(request):
         
         transaction_uuid = payment_data.get('transaction_uuid')
         total_amount = float(payment_data.get('total_amount'))
-        
+        #This will Prevent Duplicate tickets
         if PurchaseTicket.objects.filter(ticket_id=transaction_uuid).exists():
             ticket = PurchaseTicket.objects.get(ticket_id=transaction_uuid)
             return render(request, "pages/event/ticket.html", {
@@ -145,7 +140,7 @@ def payment_success(request):
         
         event = get_object_or_404(Event, id=payment_info['event_id'])
         
-        if total_amount < float(event.price):
+        if total_amount != float(event.price):
             return render(request, 'pages/event/payment_error.html', {
                 'error_title': 'Amount Mismatch',
                 'error_message': "Payment amount doesn't match ticket price. Please contact support.",
@@ -179,7 +174,4 @@ def payment_success(request):
 
 
 def payment_failure(request):
-    """
-    Handle payment failure callback from eSewa
-    """
     return render(request, "pages/event/payment_failure.html")
