@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from agro.models import Crop
-from agro.models import UserCropAdd
-
+from collections import defaultdict
+from datetime import datetime
+from agro.models import CropExpense, UserCropAdd, Crop, ShareKnowledge
 
 # Create your views here.
 
@@ -52,14 +52,6 @@ def deleteUserCrop(request):
     messages.success(request, f"{crop_name} Deleted Successfully", extra_tags="cropDeletedSuccessfully")
   
   return redirect("crop")
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from collections import defaultdict
-from datetime import datetime
-from agro.models import CropExpense, UserCropAdd
-
-
 
 def cropExpense(request):
     if request.method == 'POST': 
@@ -275,3 +267,33 @@ def deleteCropSales(request):
             messages.error(request, f'Error deleting sales: {str(e)}')
     
     return redirect('cropSales')
+
+#--------------------------------------------------------------------------------
+
+def userShareKnowledge(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        user_share_content = request.POST.get('user_share_content')
+        image = request.FILES.get('image', None)
+
+        try:
+            share = ShareKnowledge.objects.create(
+                title=title,
+                description=description,
+                user_share_content=user_share_content,
+                author=request.user,
+                image=image
+            )
+            messages.success(request, f'Knowledge Share "{title}" created successfully!')
+            return redirect('userShareKnowledge')
+        except Exception as e:
+            messages.error(request, f'Error creating Knowledge Share: {str(e)}')
+            return redirect('userShareKnowledge')
+    
+    shares = ShareKnowledge.objects.filter(author=request.user).order_by('-create_date')
+    
+    context = {
+        'shares': shares,
+    }
+    return render(request, "userDashboard/Dashboard/knowledge_share.html", context)

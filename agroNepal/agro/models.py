@@ -165,7 +165,7 @@ class ShareKnowledge(models.Model):
   author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
   create_date = models.DateField(auto_now_add=True)
   updated_date = models.DateTimeField(auto_now=True)
-  blog_content = models.TextField()
+  user_share_content = models.TextField()
 
   def __str__(self):
     return self.title
@@ -175,7 +175,7 @@ class ShareKnowledge(models.Model):
       self.slug = self.generate_unique_slug()
     super().save(*args, **kwargs)
   
-  def generate_unique_slug(self): #generate the unique slug for every blog
+  def generate_unique_slug(self):
     base_slug = slugify(self.title)
     slug = base_slug
     num = 1
@@ -183,3 +183,13 @@ class ShareKnowledge(models.Model):
       slug = f"{base_slug}-{num}"
       num+=1
     return slug
+
+class ShareKnowledgeComment(models.Model):
+  share_knowledge = models.ForeignKey(ShareKnowledge, on_delete=models.CASCADE, related_name='comments')
+  user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='share_comments')
+  text = models.TextField()
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+  def __str__(self):
+    return f"{self.user.username} comment on {self.share_knowledge}"

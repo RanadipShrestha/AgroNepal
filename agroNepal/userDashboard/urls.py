@@ -15,4 +15,7 @@ urlpatterns = [
     path('edit-sale/', editSale, name='editSale'),
     path('delete-sale/', deleteSale, name='deleteSale'),
     path('delete-crop-sales/', deleteCropSales, name='deleteCropSales'),
+
+    # Knowledge Share URLs
+    path('share-knowledge/', userShareKnowledge, name='userShareKnowledge'),
 ]

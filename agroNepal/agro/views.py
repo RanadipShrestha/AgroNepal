@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Blog, Comment, Contact, Event
+from .models import Blog, Comment, Contact, Event, ShareKnowledge
 from django.db.models import Q
 from django.contrib import messages
 # Create your views here.
@@ -103,8 +103,6 @@ def event(request):
   }
   return render(request, "pages/event/event.html", context)
 
-
-from django.shortcuts import render
 
 def custom_404_view(request, exception):
     return render(request, "404.html", status=404)
