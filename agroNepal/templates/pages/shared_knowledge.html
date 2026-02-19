@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="search-container">
+{% comment %} <div class="search-container">
   <div class="search-box">
     <form method="GET">
       <input type="text" name="search" placeholder="Search community stories..." value="{{ search_data }}">
@@ -10,5 +10,31 @@
       </button>
     </form>
   </div>
-</div>
+</div> {% endcomment %}
+
+<div class="blog-container">
+  <div class="blogs">
+    {% if shares %}
+      {% for share in shares %}
+        <div class="blog-card">
+          {% if share.image %}
+            <img src="{{ share.image.url }}" alt="{{ share.title }}">
+          {% else %}
+            <div style="height: 200px; background: #e8f5e9; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-users" style="font-size: 60px; color: #4CAF50; opacity: 0.3;"></i>
+            </div>
+          {% endif %}
+          <div class="blog-content">
+            <p class="author"> By : {{share.author.username}}
+            <h3>{{share.title}}</h3>
+            <p class="blog-description">{{share.description|truncatewords:30}}</p>
+            <a href='{% url "shared_knowledge_detail" slug=share.slug %}' class="read-more">Read More</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+         <p>No community stories found{% if search_data %} for "{{ search_data }}"{% endif %}.</p>
+    {% endif %}
+  </div>
+
 {% endblock content %}

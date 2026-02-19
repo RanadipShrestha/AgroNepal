@@ -104,7 +104,21 @@ def event(request):
   return render(request, "pages/event/event.html", context)
 
 def shared_knowledge(request):
-   return render(request, "pages/shared_knowledge.html")
+    search_data = request.GET.get('search', '')
+
+    if search_data:
+      shares = ShareKnowledge.objects.filter(
+         Q(title__icontains = search_data) |
+         Q(description__icontains = search_data) |
+         Q(user_share_content__icontains = search_data) 
+      )
+    else:
+      shares = ShareKnowledge.objects.all().order_by("-create_date")
+
+    context = {
+       'shares':shares
+    }
+    return render(request, "pages/shared_knowledge.html", context)
 
 def custom_404_view(request, exception):
     return render(request, "404.html", status=404)

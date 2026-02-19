@@ -297,3 +297,26 @@ def userShareKnowledge(request):
         'shares': shares,
     }
     return render(request, "userDashboard/Dashboard/knowledge_share.html", context)
+
+def editShareKnowledge(request):
+    if request.mehtod == 'POST':
+        share_id = request.POST.get('share_id')
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        user_share_content = request.POST.get('user_share_content')
+        image = request.FILES.get('image', None)
+    
+        try:
+            share = get_object_or_404(ShareKnowledge, id=share_id, author=request.user)
+            share.title = title
+            share.description = description
+            share.user_share_content = user_share_content
+            if image:
+                share.image = image
+            share.save()
+            
+            messages.success(request, f'Knowledge Share "{title}" updated successfully!')
+        except Exception as e:
+            messages.error(request, f'Error updating Knowledge Share: {str(e)}')
+    
+    return redirect('userShareKnowledge')

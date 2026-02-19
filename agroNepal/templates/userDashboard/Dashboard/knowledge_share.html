@@ -198,7 +198,7 @@
       <h2><i class="fas fa-edit"></i> Edit Your Insight</h2>
       <button type="button" class="shareKnowledge-close-btn" id="closeEditShareModalBtn">&times;</button>
     </div>
-    {% comment %} <div class="shareKnowledge-modal-body">
+     <div class="shareKnowledge-modal-body">
       <form id="editShareForm" method="POST" action="{% url 'editShareKnowledge' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" id="editShareId" name="share_id" />
@@ -253,12 +253,12 @@
             </button>
         </div>
       </form>
-    </div> {% endcomment %}
+    </div> 
   </div>
 </div>
-{% comment %} 
+
 <!-- Delete Knowledge Modal -->
-<div id="deleteShareModal" class="shareKnowledge-modal">
+{% comment %} <div id="deleteShareModal" class="shareKnowledge-modal">
   <form id="deleteShareForm" method="POST" action="{% url 'deleteShareKnowledge' %}">
     {% csrf_token %}
     <input type="hidden" name="share_id" id="deleteShareId" />
@@ -290,7 +290,7 @@
       </div>
     </div>
   </form>
-</div> {% endcomment %}
+</div>  {% endcomment %}
 
 <!-- Confirm Publish Knowledge Modal -->
 <div id="confirmShareModal" class="shareKnowledge-modal">
