@@ -285,10 +285,10 @@ def userShareKnowledge(request):
                 author=request.user,
                 image=image
             )
-            messages.success(request, f'Knowledge Share "{title}" created successfully!')
+            messages.success(request, f'Knowledge Share "{title}" created successfully!', extra_tags="shareKnowledgeSuccess")
             return redirect('userShareKnowledge')
-        except Exception as e:
-            messages.error(request, f'Error creating Knowledge Share: {str(e)}')
+        except:
+            messages.error(request, f'Error creating Knowledge Share', extra_tags="shareKnowledgeError")
             return redirect('userShareKnowledge')
     
     shares = ShareKnowledge.objects.filter(author=request.user).order_by('-create_date')
@@ -299,7 +299,7 @@ def userShareKnowledge(request):
     return render(request, "userDashboard/Dashboard/knowledge_share.html", context)
 
 def editShareKnowledge(request):
-    if request.mehtod == 'POST':
+    if request.method == 'POST':
         share_id = request.POST.get('share_id')
         title = request.POST.get('title')
         description = request.POST.get('description')
@@ -315,8 +315,23 @@ def editShareKnowledge(request):
                 share.image = image
             share.save()
             
-            messages.success(request, f'Knowledge Share "{title}" updated successfully!')
-        except Exception as e:
-            messages.error(request, f'Error updating Knowledge Share: {str(e)}')
+            messages.success(request, f'Knowledge Share "{title}" updated successfully!', extra_tags="shareKnowledgeEditSuccess")
+        except:
+            messages.error(request, f'Error updating Knowledge Share', extra_tags="shareKnowledgeEditError")
+    
+    return redirect('userShareKnowledge')
+
+def deleteShareKnowledge(request):
+    if request.method == 'POST':
+        share_id = request.POST.get('share_id')
+        
+        try:
+            share = get_object_or_404(ShareKnowledge, id=share_id, author=request.user)
+            share_title = share.title
+            share.delete()
+            
+            messages.success(request, f'Knowledge Share "{share_title}" deleted successfully!', extra_tags="shareKnowledgeDeleteSuccess")
+        except:
+            messages.error(request, f'Error deleting Knowledge Share', extra_tags="shareKnowledgeDeleteError")
     
     return redirect('userShareKnowledge')

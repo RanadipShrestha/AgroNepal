@@ -1,18 +1,22 @@
 {% extends "userDashboard.html" %} {% load static %} {% block content %}
 
 <div class="shareKnowledge-container">
-  <!-- Messages Display Section -->
-  {% if messages %}
-  <div class="shareKnowledge-messages-container">
-    {% for message in messages %}
-    <div
-      class="shareKnowledge-alert shareKnowledge-alert-{{ message.tags }} {% if 'success' in message.tags %}shareKnowledge-success{% else %}shareKnowledge-danger{% endif %}"
-    >
+ <!-- Messages Display Section -->
+{% if messages %}
+<div class="shareKnowledge-messages-container">
+  {% for message in messages %}
+    {% if 'shareKnowledgeSuccess' in message.tags or 'shareKnowledgeEditSuccess' in message.tags or 'shareKnowledgeDeleteSuccess' in message.tags %}
+    <div class="shareKnowledge-alert shareKnowledge-success">
       <span class="shareKnowledge-alert-message">{{ message }}</span>
     </div>
-    {% endfor %}
-  </div>
-  {% endif %}
+    {% elif 'shareKnowledgeError' in message.tags or 'shareKnowledgeEditError' in message.tags or 'shareKnowledgeDeleteError' in message.tags %}
+    <div class="shareKnowledge-alert shareKnowledge-danger">
+      <span class="shareKnowledge-alert-message">{{ message }}</span>
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
 
   <div class="shareKnowledge-header">
     <div class="shareKnowledge-header-info">
@@ -127,9 +131,9 @@
 <div id="addShareModal" class="shareKnowledge-modal">
   <div class="shareKnowledge-modal-content">
     <div class="shareKnowledge-modal-header">
-      <h2><i class="fas fa-plus-circle"></i> Create Knowledge Entry</h2>
-      <button type="button" class="shareKnowledge-close-btn" id="closeShareModalBtn">&times;</button>
-    </div>
+  <h2>Create Knowledge Entry</h2>   
+  <button type="button" class="shareKnowledge-close-btn" id="closeShareModalBtn">&times;</button>
+</div>
     <div class="shareKnowledge-modal-body">
       <form id="addShareForm" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -195,9 +199,9 @@
 <div id="editShareModal" class="shareKnowledge-modal">
   <div class="shareKnowledge-modal-content">
     <div class="shareKnowledge-modal-header">
-      <h2><i class="fas fa-edit"></i> Edit Your Insight</h2>
-      <button type="button" class="shareKnowledge-close-btn" id="closeEditShareModalBtn">&times;</button>
-    </div>
+  <h2>Edit Your Insight</h2>        
+  <button type="button" class="shareKnowledge-close-btn" id="closeEditShareModalBtn">&times;</button>
+</div>
      <div class="shareKnowledge-modal-body">
       <form id="editShareForm" method="POST" action="{% url 'editShareKnowledge' %}" enctype="multipart/form-data">
         {% csrf_token %}
@@ -258,7 +262,7 @@
 </div>
 
 <!-- Delete Knowledge Modal -->
-{% comment %} <div id="deleteShareModal" class="shareKnowledge-modal">
+ <div id="deleteShareModal" class="shareKnowledge-modal">
   <form id="deleteShareForm" method="POST" action="{% url 'deleteShareKnowledge' %}">
     {% csrf_token %}
     <input type="hidden" name="share_id" id="deleteShareId" />
@@ -290,7 +294,7 @@
       </div>
     </div>
   </form>
-</div>  {% endcomment %}
+</div> 
 
 <!-- Confirm Publish Knowledge Modal -->
 <div id="confirmShareModal" class="shareKnowledge-modal">

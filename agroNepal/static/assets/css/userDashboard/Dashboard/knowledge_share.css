@@ -278,7 +278,7 @@
 
 .shareKnowledge-modal-header {
   background: #fff;
-  padding: 24px 30px;
+  padding: 24px 30px;        
   border-bottom: 1px solid #f3f4f6;
   display: flex;
   justify-content: space-between;
@@ -291,9 +291,17 @@
   color: var(--sk-text-main);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  font-family: inherit;    
+  letter-spacing: -0.01em;
 }
-
+.shareKnowledge-modal-header h2 i {
+  font-size: 18px;
+  color: var(--sk-primary);
+  background: #f0fdf4;
+  padding: 6px;
+  border-radius: 8px;
+}
 .shareKnowledge-close-btn {
   background: #f3f4f6;
   color: var(--sk-text-muted);
