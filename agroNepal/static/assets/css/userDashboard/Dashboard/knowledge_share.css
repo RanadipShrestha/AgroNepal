@@ -16,9 +16,9 @@
 }
 
 .shareKnowledge-container {
-  padding: 24px;
-  background-color: var(--sk-bg);
-  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
 /* Header Styles */
@@ -502,12 +502,6 @@
   margin: 40px auto;
 }
 
-.shareKnowledge-empty-icon {
-  font-size: 64px;
-  color: var(--sk-accent);
-  margin-bottom: 24px;
-  animation: glow 2s infinite alternate;
-}
 
 .shareKnowledge-empty-state h3 {
   font-size: 24px;
