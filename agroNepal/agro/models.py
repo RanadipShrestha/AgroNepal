@@ -157,7 +157,7 @@ class CropSale(models.Model):
     def __str__(self):
         return f"Sale ₹{self.amount} for {self.user_crop.crop.name} ({self.user_crop.planted_date})"
 
-class ShareKnowledge(models.Model):
+class CommunityPost(models.Model):
   image = models.ImageField(upload_to="img/UserPost", null=True, blank=True)
   title = models.CharField(max_length=255)
   slug = models.SlugField(unique=True, blank=True)
@@ -184,8 +184,8 @@ class ShareKnowledge(models.Model):
       num+=1
     return slug
 
-class ShareKnowledgeComment(models.Model):
-  share_knowledge = models.ForeignKey(ShareKnowledge, on_delete=models.CASCADE, related_name='comments')
+class CommunityPostComment(models.Model):
+  share_knowledge = models.ForeignKey(CommunityPost, on_delete=models.CASCADE, related_name='comments')
   user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='share_comments')
   text = models.TextField()
   created_at = models.DateTimeField(auto_now_add=True)

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Blog, Comment, Contact, Event, ShareKnowledge
+from .models import Blog, Comment, Contact, Event, CommunityPost
 from django.db.models import Q
 from django.contrib import messages
 # Create your views here.
@@ -107,13 +107,13 @@ def shared_knowledge(request):
     search_data = request.GET.get('search', '')
 
     if search_data:
-      shares = ShareKnowledge.objects.filter(
+      shares = CommunityPost.objects.filter(
          Q(title__icontains = search_data) |
          Q(description__icontains = search_data) |
          Q(user_share_content__icontains = search_data) 
       )
     else:
-      shares = ShareKnowledge.objects.all().order_by("-create_date")
+      shares = CommunityPost.objects.all().order_by("-create_date")
 
     context = {
        'shares':shares

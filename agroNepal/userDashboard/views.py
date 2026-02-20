@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from collections import defaultdict
 from datetime import datetime
-from agro.models import CropExpense, UserCropAdd, Crop, ShareKnowledge
+from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost
 
 # Create your views here.
 
@@ -278,7 +278,7 @@ def userShareKnowledge(request):
         image = request.FILES.get('image', None)
 
         try:
-            share = ShareKnowledge.objects.create(
+            share = CommunityPost.objects.create(
                 title=title,
                 description=description,
                 user_share_content=user_share_content,
@@ -291,7 +291,7 @@ def userShareKnowledge(request):
             messages.error(request, f'Error creating Knowledge Share', extra_tags="shareKnowledgeError")
             return redirect('userShareKnowledge')
     
-    shares = ShareKnowledge.objects.filter(author=request.user).order_by('-create_date')
+    shares = CommunityPost.objects.filter(author=request.user).order_by('-create_date')
     
     context = {
         'shares': shares,
@@ -307,7 +307,7 @@ def editShareKnowledge(request):
         image = request.FILES.get('image', None)
     
         try:
-            share = get_object_or_404(ShareKnowledge, id=share_id, author=request.user)
+            share = get_object_or_404(CommunityPost, id=share_id, author=request.user)
             share.title = title
             share.description = description
             share.user_share_content = user_share_content
@@ -326,7 +326,7 @@ def deleteShareKnowledge(request):
         share_id = request.POST.get('share_id')
         
         try:
-            share = get_object_or_404(ShareKnowledge, id=share_id, author=request.user)
+            share = get_object_or_404(CommunityPost, id=share_id, author=request.user)
             share_title = share.title
             share.delete()
             
