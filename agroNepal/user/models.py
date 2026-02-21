@@ -27,7 +27,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    phone_number = models.CharField(max_length=20, blank=True)
+    phone_number = models.CharField(max_length=10)
     address = models.CharField(max_length=255, blank=True, null=True)
     land_address = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=True)

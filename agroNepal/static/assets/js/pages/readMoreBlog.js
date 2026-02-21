@@ -7,7 +7,7 @@ setTimeout(function () {
     messages.style.transform = "translateX(100%)";
     setTimeout(() => messages.remove(), 500);
   }
-}, 3000);
+}, 5000);
 
 
 document.querySelectorAll(".delete-btn-trigger").forEach((button) => {

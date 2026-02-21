@@ -296,7 +296,7 @@ def userShareKnowledge(request):
     context = {
         'shares': shares,
     }
-    return render(request, "userDashboard/Dashboard/knowledge_share.html", context)
+    return render(request, "userDashboard/Dashboard/community_post.html", context)
 
 def editShareKnowledge(request):
     if request.method == 'POST':

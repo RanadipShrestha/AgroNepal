@@ -185,8 +185,6 @@
   background: #f8f9fa;
   padding: 20px;
   border-radius: 10px;
-  border-left: 5px solid #a3e776;
-  border-right: 5px solid #a3e776;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;

@@ -20,7 +20,7 @@
 
   <div class="shareKnowledge-header">
     <div class="shareKnowledge-header-info">
-      <h1 class="shareKnowledge-page-title">Knowledge Hub</h1>
+      <h1 class="shareKnowledge-page-title">Community</h1>
       <p class="shareKnowledge-page-description">
         Share your agricultural expertise, innovations, and success stories with the AgroNepal community.
       </p>
@@ -56,9 +56,6 @@
           {% if share.image %}
           <div class="shareKnowledge-image-wrapper">
             <img src="{{ share.image.url }}" alt="{{ share.title }}" class="shareKnowledge-thumbnail" />
-            <div class="shareKnowledge-date-badge">
-              <span>{{ share.create_date|date:"d M" }}</span>
-            </div>
           </div>
           {% else %}
            <div class="shareKnowledge-image-wrapper shareKnowledge-no-image">
@@ -132,7 +129,7 @@
   <div class="shareKnowledge-modal-content">
     <div class="shareKnowledge-modal-header">
   <h2>Create Knowledge Entry</h2>   
-  <button type="button" class="shareKnowledge-close-btn" id="closeShareModalBtn">&times;</button>
+  <button type="button" class="shareKnowledge-close-btn" id="closeShareModalBtn">X</button>
 </div>
     <div class="shareKnowledge-modal-body">
       <form id="addShareForm" method="POST" enctype="multipart/form-data">
@@ -200,7 +197,7 @@
   <div class="shareKnowledge-modal-content">
     <div class="shareKnowledge-modal-header">
   <h2>Edit Your Insight</h2>        
-  <button type="button" class="shareKnowledge-close-btn" id="closeEditShareModalBtn">&times;</button>
+  <button type="button" class="shareKnowledge-close-btn" id="closeEditShareModalBtn">X</button>
 </div>
      <div class="shareKnowledge-modal-body">
       <form id="editShareForm" method="POST" action="{% url 'editShareKnowledge' %}" enctype="multipart/form-data">
@@ -260,9 +257,8 @@
     </div> 
   </div>
 </div>
-
 <!-- Delete Knowledge Modal -->
- <div id="deleteShareModal" class="shareKnowledge-modal">
+<div id="deleteShareModal" class="shareKnowledge-modal">
   <form id="deleteShareForm" method="POST" action="{% url 'deleteShareKnowledge' %}">
     {% csrf_token %}
     <input type="hidden" name="share_id" id="deleteShareId" />
@@ -272,12 +268,11 @@
       </div>
       <div class="shareKnowledge-modal-body">
         <div class="shareKnowledge-warning-ui">
-            <i class="fas fa-exclamation-triangle"></i>
-            <p>
-              Are you sure you want to remove <br>
-              <strong id="deleteShareTitle"></strong>? <br>
-              <span class="shareKnowledge-delete-warning">This action cannot be undone.</span>
-            </p>
+          <p>
+            Are you sure you want to remove <br>
+            <strong id="deleteShareTitle"></strong>?
+            <span class="shareKnowledge-delete-warning">This action cannot be undone.</span>
+          </p>
         </div>
       </div>
       <div class="shareKnowledge-modal-footer">
@@ -286,15 +281,15 @@
           class="shareKnowledge-btn-cancel"
           id="cancelDeleteShareBtn"
         >
-          Keep it
+          Cancel
         </button>
         <button type="submit" class="shareKnowledge-btn-confirm-delete">
-          Delete Insight
+          Delete
         </button>
       </div>
     </div>
   </form>
-</div> 
+</div>
 
 <!-- Confirm Publish Knowledge Modal -->
 <div id="confirmShareModal" class="shareKnowledge-modal">
@@ -320,6 +315,34 @@
       </button>
       <button type="button" id="confirmPublishShareBtn" class="shareKnowledge-submit-btn" style="flex: 1;">
         Yes, Publish
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Edit Knowledge Modal -->
+<div id="confirmEditShareModal" class="shareKnowledge-modal">
+  <div class="shareKnowledge-modal-content shareKnowledge-delete-modal">
+    <div class="shareKnowledge-modal-header">
+      <h2>Confirm Changes</h2>
+    </div>
+    <div class="shareKnowledge-modal-body">
+      <div class="shareKnowledge-warning-ui">
+          <p>
+            Are you sure you want to apply these changes to your knowledge share?
+          </p>
+      </div>
+    </div>
+    <div class="shareKnowledge-modal-footer">
+      <button
+        type="button"
+        class="shareKnowledge-btn-cancel"
+        id="cancelEditShareUpdateBtn"
+      >
+        Cancel
+      </button>
+      <button type="button" id="confirmEditShareUpdateBtn" class="shareKnowledge-submit-btn" style="flex: 1;">
+        Update
       </button>
     </div>
   </div>

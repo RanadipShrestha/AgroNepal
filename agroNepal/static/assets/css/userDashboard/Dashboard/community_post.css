@@ -15,13 +15,14 @@
   --sk-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ─── Page Container ──────────────────────────────────────── */
 .shareKnowledge-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
 }
 
-/* Header Styles */
+/* ─── Page Header ─────────────────────────────────────────── */
 .shareKnowledge-header {
   display: flex;
   justify-content: space-between;
@@ -73,7 +74,7 @@
   box-shadow: none;
 }
 
-/* Search Styles */
+/* ─── Search ──────────────────────────────────────────────── */
 .shareKnowledge-search-container {
   margin-bottom: 40px;
 }
@@ -93,6 +94,7 @@
   font-size: 15px;
   transition: var(--sk-transition);
   box-shadow: var(--sk-shadow);
+  box-sizing: border-box;
 }
 
 .shareKnowledge-search-bar:focus {
@@ -109,7 +111,7 @@
   color: var(--sk-text-muted);
 }
 
-/* Grid & Cards */
+/* ─── Grid & Cards ────────────────────────────────────────── */
 .shareKnowledge-card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -158,20 +160,6 @@
   font-size: 48px;
   color: var(--sk-primary);
   opacity: 0.5;
-}
-
-.shareKnowledge-date-badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(4px);
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--sk-primary-dark);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .shareKnowledge-content {
@@ -249,7 +237,7 @@
   color: white;
 }
 
-/* Modals */
+/* ─── Modal Shell ─────────────────────────────────────────── */
 .shareKnowledge-modal {
   display: none;
   position: fixed;
@@ -258,43 +246,45 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(17, 24, 39, 0.7);
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s ease;
-  overflow-y: auto; /* Allow scrolling for long content */
+  background-color: rgba(17, 24, 39, 0.55);
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.25s ease;
+  overflow-y: auto;
 }
 
+/* ─── Modal Card ──────────────────────────────────────────── */
 .shareKnowledge-modal-content {
-  background-color: #fff;
-  margin: 40px auto; /* Consistent margin for better scrolling */
-  width: 90%;
-  max-width: 650px;
+  background: #ffffff;
+  margin: 48px auto;
+  width: 92%;
+  max-width: 660px;
   border-radius: 20px;
   overflow: hidden;
-  position: relative;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow:
+    0 20px 60px -10px rgba(0, 0, 0, 0.18),
+    0 4px 16px -4px rgba(0, 0, 0, 0.08);
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ─── Modal Header ────────────────────────────────────────── */
 .shareKnowledge-modal-header {
-  background: #fff;
-  padding: 24px 30px;        
-  border-bottom: 1px solid #f3f4f6;
+  background: #ffffff;
+  padding: 28px 32px 0 32px;
+  border-bottom: none;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .shareKnowledge-modal-header h2 {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--sk-text-main);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: inherit;    
-  letter-spacing: -0.01em;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  font-family: inherit;
 }
+
 .shareKnowledge-modal-header h2 i {
   font-size: 18px;
   color: var(--sk-primary);
@@ -302,73 +292,120 @@
   padding: 6px;
   border-radius: 8px;
 }
+
+/* ─── Modal Subtitle ──────────────────────────────────────── */
+.shareKnowledge-modal-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.55;
+  padding: 10px 32px 0 32px;
+  margin: 0;
+}
+
+/* ─── Close Button ────────────────────────────────────────── */
 .shareKnowledge-close-btn {
-  background: #f3f4f6;
-  color: var(--sk-text-muted);
+  background: transparent;
+  color: #9ca3af;
   border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-size: 20px;
+  font-size: 22px;
+  line-height: 1;
   cursor: pointer;
-  transition: var(--sk-transition);
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+  margin-top: 2px;
 }
 
 .shareKnowledge-close-btn:hover {
-  background: #e5e7eb;
-  color: var(--sk-text-main);
+  background: #f3f4f6;
+  color: #374151;
 }
 
+/* ─── Modal Body ──────────────────────────────────────────── */
 .shareKnowledge-modal-body {
-  padding: 30px;
+  padding: 24px 32px 8px 32px;
 }
 
+/* ─── Form Groups ─────────────────────────────────────────── */
 .shareKnowledge-form-group {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .shareKnowledge-form-label {
   display: block;
   font-size: 14px;
-  font-weight: 600;
-  color: var(--sk-text-main);
+  font-weight: 700;
+  color: #111827;
   margin-bottom: 8px;
+  letter-spacing: -0.01em;
 }
 
+/* ─── Inputs, Textareas & Selects ─────────────────────────── */
 .shareKnowledge-form-input,
-.shareKnowledge-form-textarea {
+.shareKnowledge-form-textarea,
+.shareKnowledge-form-select {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  padding: 14px 18px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
   font-size: 15px;
-  transition: var(--sk-transition);
+  color: #1f2937;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.shareKnowledge-form-input::placeholder,
+.shareKnowledge-form-textarea::placeholder {
+  color: #c4c9d4;
+  font-weight: 400;
 }
 
 .shareKnowledge-form-input:focus,
-.shareKnowledge-form-textarea:focus {
+.shareKnowledge-form-textarea:focus,
+.shareKnowledge-form-select:focus {
   outline: none;
   border-color: var(--sk-primary);
   box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
 }
 
+/* Select dropdown custom arrow */
+.shareKnowledge-form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+  cursor: pointer;
+}
+
+.shareKnowledge-form-select option {
+  color: #1f2937;
+}
+
+/* ─── Textarea Heights ────────────────────────────────────── */
 .shareKnowledge-summary-height {
-  min-height: 80px;
+  min-height: 90px;
   resize: vertical;
 }
 
 .shareKnowledge-content-height {
-  min-height: 180px;
+  min-height: 160px;
   resize: vertical;
 }
 
+/* ─── File Upload ─────────────────────────────────────────── */
 .shareKnowledge-file-input-wrapper {
   position: relative;
   width: 100%;
-  height: 60px;
-  border: 2px dashed #e5e7eb;
-  border-radius: 10px;
-  transition: var(--sk-transition);
+  height: 64px;
+  border: 2px dashed #d1d5db;
+  border-radius: 14px;
+  background: #fafafa;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  box-sizing: border-box;
 }
 
 .shareKnowledge-file-input-wrapper:hover {
@@ -387,31 +424,44 @@
 
 .shareKnowledge-file-dummy {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  color: var(--sk-text-muted);
+  gap: 10px;
+  color: #9ca3af;
+  font-size: 14px;
   font-weight: 500;
+  pointer-events: none;
 }
 
+.shareKnowledge-file-dummy i {
+  font-size: 16px;
+  color: #d1d5db;
+}
+
+/* ─── Modal Footer ────────────────────────────────────────── */
 .shareKnowledge-modal-footer {
-  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 32px 28px 32px;
 }
 
+/* ─── Submit Button ───────────────────────────────────────── */
 .shareKnowledge-submit-btn {
   width: 100%;
   background: var(--sk-primary);
   color: white;
   border: none;
-  padding: 14px;
-  border-radius: 10px;
+  padding: 15px;
+  border-radius: 14px;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
-  transition: var(--sk-transition);
+  transition: background 0.2s ease, transform 0.15s ease;
+  font-family: inherit;
+  letter-spacing: -0.01em;
 }
 
 .shareKnowledge-submit-btn:hover {
@@ -419,25 +469,22 @@
   transform: translateY(-1px);
 }
 
-/* Delete Modal Specific UI */
+.shareKnowledge-submit-btn:active {
+  transform: translateY(0);
+}
+
 .shareKnowledge-delete-modal {
-  max-width: 450px;
+  max-width: 420px;
 }
 
 .shareKnowledge-warning-ui {
   text-align: center;
-  padding: 20px 0;
-}
-
-.shareKnowledge-warning-ui i {
-  font-size: 50px;
-  color: var(--sk-error);
-  margin-bottom: 20px;
+  padding: 20px 16px 8px;
 }
 
 .shareKnowledge-warning-ui p {
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.7;
   color: var(--sk-text-main);
 }
 
@@ -445,45 +492,57 @@
   display: block;
   font-size: 13px;
   color: #991b1b;
-  background: #fee2e2;
-  padding: 4px;
-  border-radius: 4px;
   margin-top: 10px;
   font-weight: 500;
 }
 
 .shareKnowledge-btn-cancel {
-  padding: 12px 24px;
+  padding: 12px 28px;
   background: #f3f4f6;
-  border: none;
-  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
   font-weight: 600;
+  font-size: 14px;
+  color: #374151;
   cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: inherit;
+}
+
+.shareKnowledge-btn-cancel:hover {
+  background: #e5e7eb;
 }
 
 .shareKnowledge-btn-confirm-delete {
-  padding: 12px 24px;
+  padding: 12px 28px;
   background: var(--sk-error);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
-  flex: 1;
+  transition: opacity 0.2s ease;
+  font-family: inherit;
 }
 
-/* Alert Styles */
+.shareKnowledge-btn-confirm-delete:hover {
+  opacity: 0.88;
+}
+
 .shareKnowledge-messages-container {
   margin-bottom: 24px;
 }
 
 .shareKnowledge-alert {
-  padding: 16px 20px;
+  padding: 14px 20px;
   border-radius: 12px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   font-weight: 500;
+  font-size: 14px;
   display: flex;
   align-items: center;
+  gap: 10px;
   animation: slideIn 0.3s ease;
 }
 
@@ -499,7 +558,14 @@
   border-left: 5px solid #ef4444;
 }
 
-/* Empty State */
+.shareKnowledge-section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--sk-text-main);
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
 .shareKnowledge-empty-state {
   text-align: center;
   padding: 80px 40px;
@@ -510,11 +576,17 @@
   margin: 40px auto;
 }
 
-
 .shareKnowledge-empty-state h3 {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 12px;
+  color: var(--sk-text-main);
+}
+
+.shareKnowledge-empty-state p {
+  color: var(--sk-text-muted);
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .shareKnowledge-empty-btn {
@@ -527,47 +599,25 @@
   font-weight: 700;
   cursor: pointer;
   transition: var(--sk-transition);
+  font-size: 15px;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.shareKnowledge-empty-btn:hover {
+  background: var(--sk-primary-dark);
+  transform: translateY(-1px);
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes glow {
-  from {
-    filter: drop-shadow(0 0 5px rgba(255, 193, 7, 0.3));
-  }
-  to {
-    filter: drop-shadow(0 0 15px rgba(255, 193, 7, 0.6));
-  }
+.shareKnowledge-date-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sk-text-main);
+  backdrop-filter: blur(4px);
 }
 
 @media (max-width: 768px) {
@@ -575,8 +625,30 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
   .shareKnowledge-add-btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .shareKnowledge-modal-content {
+    margin: 24px auto;
+    width: 95%;
+  }
+
+  .shareKnowledge-modal-header {
+    padding: 22px 20px 0 20px;
+  }
+
+  .shareKnowledge-modal-subtitle {
+    padding: 8px 20px 0 20px;
+  }
+
+  .shareKnowledge-modal-body {
+    padding: 20px 20px 8px 20px;
+  }
+
+  .shareKnowledge-modal-footer {
+    padding: 12px 20px 22px 20px;
   }
 }

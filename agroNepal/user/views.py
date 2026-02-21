@@ -29,7 +29,9 @@ def register(request):
             elif form.errors.get('email'):
                 messages.error(request, "This email is already registered.")
             elif form.errors.get('password1'):
-                messages.error(request, "Your password is too weak. Please use at least 8 characters with letters and numbers.")
+                messages.error(request, "Your password is too weak. ")
+            elif form.errors.get('phone_number'):
+                messages.error(request, "Phone number must contain only digits.")
             else:
                 messages.error(request, "Please fill in all required fields.")
     else:

@@ -77,6 +77,40 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Confirm Edit Share Logic
+  const confirmEditShareModal = document.getElementById(
+    "confirmEditShareModal",
+  );
+  const confirmEditShareUpdateBtn = document.getElementById(
+    "confirmEditShareUpdateBtn",
+  );
+  const cancelEditShareUpdateBtn = document.getElementById(
+    "cancelEditShareUpdateBtn",
+  );
+  const editShareForm = document.getElementById("editShareForm");
+
+  if (editShareForm) {
+    editShareForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      editShareModal.style.display = "none";
+      confirmEditShareModal.style.display = "block";
+    });
+  }
+
+  if (confirmEditShareUpdateBtn) {
+    confirmEditShareUpdateBtn.addEventListener("click", function () {
+      confirmEditShareModal.style.display = "none";
+      editShareForm.submit();
+    });
+  }
+
+  if (cancelEditShareUpdateBtn) {
+    cancelEditShareUpdateBtn.addEventListener("click", function () {
+      confirmEditShareModal.style.display = "none";
+      editShareModal.style.display = "block";
+    });
+  }
+
   // Delete Share Modal
   const deleteShareModal = document.getElementById("deleteShareModal");
   const cancelDeleteShareBtn = document.getElementById("cancelDeleteShareBtn");
@@ -114,6 +148,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.target === confirmShareModal) {
       confirmShareModal.style.display = "none";
       addShareModal.style.display = "block";
+    }
+    if (event.target === confirmEditShareModal) {
+      confirmEditShareModal.style.display = "none";
+      editShareModal.style.display = "block";
     }
   });
 
