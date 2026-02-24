@@ -103,7 +103,7 @@ def event(request):
   }
   return render(request, "pages/event/event.html", context)
 
-def shared_knowledge(request):
+def community_public_post(request):
     search_data = request.GET.get('search', '')
 
     if search_data:
@@ -118,7 +118,7 @@ def shared_knowledge(request):
     context = {
        'shares':shares
     }
-    return render(request, "pages/shared_knowledge.html", context)
+    return render(request, "pages/communityPublicPost.html", context)
 
 def custom_404_view(request, exception):
     return render(request, "404.html", status=404)
