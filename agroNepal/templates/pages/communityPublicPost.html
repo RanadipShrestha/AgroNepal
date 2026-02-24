@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-{% comment %} <div class="search-container">
+
+<div class="search-container">
   <div class="search-box">
     <form method="GET">
       <input type="text" name="search" placeholder="Search community stories..." value="{{ search_data }}">
@@ -10,7 +11,7 @@
       </button>
     </form>
   </div>
-</div> {% endcomment %}
+</div>
 
 <div class="blog-container">
   <div class="blogs">
@@ -28,7 +29,7 @@
             <p class="author"> By : {{share.author.username}}
             <h3>{{share.title}}</h3>
             <p class="blog-description">{{share.description|truncatewords:30}}</p>
-            <a href='{% url "shared_knowledge_detail" slug=share.slug %}' class="read-more">Read More</a>
+            {% comment %} <a href='{% url "shared_knowledge_detail" slug=share.slug %}' class="read-more">Read More</a> {% endcomment %}
           </div>
         </div>
       {% endfor %}
@@ -37,4 +38,27 @@
     {% endif %}
   </div>
 
+
+  <!--sidebar-->
+  <div class="sidebar">
+    <h2>Recent Stories</h2>
+    {% for recent_share in recent_shares %}
+      <div class="recent-item">
+       {% if recent_share.image %}
+         <img src="{{ recent_share.image.url }}" alt="{{ recent_share.title }}">
+       {% else %}
+         <div style="width: 60px; height: 60px; background: #e8f5e9; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
+            <i class="fas fa-user" style="color: #4CAF50; opacity: 0.5;"></i>
+         </div>
+       {% endif %}
+       <div>
+        <a href='{% url "shared_knowledge_detail" slug=recent_share.slug %}'>
+          <p class="date">{{recent_share.title|truncatewords:5}}</p>
+        </a>
+        <p>{{ recent_share.create_date}}</p>
+      </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock content %}

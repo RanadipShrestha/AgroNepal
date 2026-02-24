@@ -1,5 +1,23 @@
 {% load static %}
+<style>
+  .heroBtn,
+.heroBtn:visited,
+.heroBtn:hover,
+.heroBtn:active {
+  text-decoration: none;
+}
+</style>
 <div class="heroSection">
   <div class="heroText">Welcome to AgroNepal</div>
-  <button class="heroBtn">Get Started</button>
+  {% if user.is_authenticated %}
+  <a href="{% url 'userdashboard' %}" class="heroBtn">
+    Go to Dashboard
+  </a>
+{% else %}
+  <a href="{% url 'login' %}" class="heroBtn">
+    Get Start
+  </a>
+{% endif %}
 </div>
+
+  
