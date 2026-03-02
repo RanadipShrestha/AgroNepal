@@ -25,7 +25,7 @@
             <p class="author"> By : {{share.author.username}}
             <h3>{{share.title}}</h3>
             <p class="blog-description">{{share.description|truncatewords:30}}</p>
-            {% comment %} <a href='{% url "shared_knowledge_detail" slug=share.slug %}' class="read-more">Read More</a> {% endcomment %}
+             <a href='{% url "community_public_post_detail" slug=share.slug %}' class="read-more">Read More</a>
           </div>
         </div>
       {% endfor %}

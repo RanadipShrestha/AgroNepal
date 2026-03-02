@@ -118,7 +118,22 @@ def community_public_post(request):
     context = {
        'shares':shares
     }
-    return render(request, "pages/communityPublicPost.html", context)
+    return render(request, "pages/communityPost/communityPublicPost.html", context)
+
+
+def community_public_post_detail(request, slug):
+  share = get_object_or_404(CommunityPost, slug=slug)
+  comments = share.comments.all()
+  context = {
+    'share': share,
+    'comments': comments,
+  }
+  return render(request, 'pages/communityPost/readmoreSharedKnowledge.html', context)
+
+
+
+
+
 
 def custom_404_view(request, exception):
     return render(request, "404.html", status=404)

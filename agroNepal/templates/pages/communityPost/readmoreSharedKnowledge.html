@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="post-container">
+  <h2 class="post-title">{{share.title}}</h2>
+
+  <!--Image-->
+  <div class="post-image">
+    {% if share.image %}
+      <img src="{{ share.image.url }}" alt="{{ share.title }}">
+    {% endif %}
+  </div>
+
+  <!--author ra create date-->
+  <div class="post-info">
+    <h3 class="author">{{ share.author.get_full_name|default:share.author.username }}</h3>
+    <h3 class="date">{{ share.create_date }}</h3>
+  </div>
+
+  <!--content-->
+  <div class="post-content">
+    {{ share.user_share_content }}
+  </div>
+
+  <!--Comment Section-->
+  <div class="comment-section">
+    <h4 style="color: #1a4d1a; margin-bottom: 15px;">Leave a Comment</h4>
+
+    {% if user.is_authenticated %}
+      <form method="post" >
+        {% comment %} action="{% url 'add_share_comment' share.slug %}" {% endcomment %}
+        {% csrf_token %}
+        <textarea name="comment_text" id="commentInput" placeholder="Write a Comment..." required></textarea>
+        <button type="submit" id="submitComment" class="postComment">Post Comment</button>
+      </form>
+    {% else %}
+      <div class="withoutLoginUser">
+        <p style="margin: 0;">Please <a href="{% url 'login' %}" class="redirectToLogin">login</a> to leave a comment.</p>
+      </div>
+    {% endif %}
+
+    <!--Sab comment herena-->
+    <div class="comments">
+      <h4 style="color: #1a4d1a; margin-bottom: 15px;">Comments ({{ comments.count }})</h4>
+
+      {% if comments %}
+        {% for comment in comments %}
+          <div class="comment" id="comment-{{ comment.id }}">
+            <p style="font-weight: 600; color: #1a4d1a;">
+              {{ comment.user.get_full_name|default:comment.user.username }}
+              <span style="font-weight: 400; color: #666; font-size: 0.9em;">• {{ comment.created_at|timesince }} ago</span>
+            </p>
+            <p class="comment-text" style="color: #444; margin-top: 8px;">{{ comment.text }}</p>
+            
+            {% if user == comment.user or user.is_staff %}
+              <div class="comment-actions" style="margin-top: 10px; display: flex; gap: 15px;">
+                <button type="button" class="btn-edit-comment" style="background: none; border: none; color: #4CAF50; cursor: pointer; padding: 0; font-size: 0.9em; font-weight: 500;">Edit Comment</button>
+                <form method="post" action="{% url 'delete_share_comment' comment.id %}" class="delete-comment-form" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="button" class="delete-btn-trigger">Delete</button>
+                </form>
+              </div>
+
+              <!-- Edit Form (Hidden by default) -->
+              <form method="post" action="{% url 'edit_share_comment' comment.id %}" class="edit-comment-form" style="display:none; margin-top: 10px;">
+                {% csrf_token %}
+                <textarea name="comment_text" style="width: 100%; min-height: 80px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-family: inherit;">{{ comment.text }}</textarea>
+                <div style="display: flex; gap: 10px;">
+                  <button type="button" class="btn-save-comment-trigger" style="background: #1a4d1a; color: white; border: none; padding: 6px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">Save Changes</button>
+                  <button type="button" class="btn-cancel-edit" style="background: #f0f0f0; color: #444; border: 1px solid #ddd; padding: 6px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">Cancel</button>
+                </div>
+              </form>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <p style="text-align: center; color: #999; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+          No comments yet. Be the first to comment!
+        </p>
+      {% endif %}
+    </div>
+  </div>
+  
+  <!-- Display Messages (for success/error notifications) -->
+  {% if messages %}
+    <div class="messages" style="position: fixed; top: 80px; right: 20px; z-index: 1000; max-width: 350px;">
+      {% for message in messages %}
+        <div class="alert" 
+             style="padding: 15px 20px; margin-bottom: 10px; border-radius: 8px; 
+                    background-color: {% if message.tags == 'success' %}#1a4d1a{% elif message.tags == 'error' %}#dc3545{% else %}#0066cc{% endif %}; 
+                    color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-size: 14px; animation: slideIn 0.3s ease-out;">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+      <a href="{% url 'community_public_post' %}" class="btn" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Back to Community Stories</a>
+  </div>
+</div>
+
+<!-- Custom Confirmation Modal -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Confirm Delete</h3>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this comment?</p>
+      <p style="font-size: 0.9em; color: #666;">This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-confirm" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Edit Confirmation Modal -->
+<div id="editConfirmModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Confirm Save</h3>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to save the changes to this comment?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+      <button class="btn-confirm" onclick="confirmEditSave()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Toggle Comment Edit Form
+    document.querySelectorAll('.btn-edit-comment').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const commentDiv = this.closest('.comment');
+        commentDiv.querySelector('.comment-text').style.display = 'none';
+        commentDiv.querySelector('.comment-actions').style.display = 'none';
+        commentDiv.querySelector('.edit-comment-form').style.display = 'block';
+      });
+    });
+
+    document.querySelectorAll('.btn-cancel-edit').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const commentDiv = this.closest('.comment');
+        commentDiv.querySelector('.comment-text').style.display = 'block';
+        commentDiv.querySelector('.comment-actions').style.display = 'flex';
+        commentDiv.querySelector('.edit-comment-form').style.display = 'none';
+      });
+    });
+  });
+
+  // Modals logic
+  let formToSubmit = null;
+  let editFormToSubmit = null;
+
+  document.querySelectorAll('.delete-btn-trigger').forEach(button => {
+    button.addEventListener('click', function() {
+      formToSubmit = this.closest('form');
+      document.getElementById('deleteModal').style.display = 'block';
+    });
+  });
+
+  document.querySelectorAll('.btn-save-comment-trigger').forEach(button => {
+    button.addEventListener('click', function() {
+      editFormToSubmit = this.closest('form');
+      document.getElementById('editConfirmModal').style.display = 'block';
+    });
+  });
+
+  function closeModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+    formToSubmit = null;
+  }
+
+  function closeEditModal() {
+    document.getElementById('editConfirmModal').style.display = 'none';
+    editFormToSubmit = null;
+  }
+
+  function confirmDelete() {
+    if (formToSubmit) {
+      formToSubmit.submit();
+    }
+  }
+
+  function confirmEditSave() {
+    if (editFormToSubmit) {
+      editFormToSubmit.submit();
+    }
+  }
+
+  // Close modal when clicking outside
+  window.onclick = function(event) {
+    const deleteModal = document.getElementById('deleteModal');
+    const editModal = document.getElementById('editConfirmModal');
+    if (event.target == deleteModal) {
+      closeModal();
+    } else if (event.target == editModal) {
+      closeEditModal();
+    }
+  }
+</script>
+{% endblock content %}

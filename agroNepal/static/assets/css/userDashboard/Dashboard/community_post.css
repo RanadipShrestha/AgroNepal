@@ -1,20 +1,3 @@
-:root {
-  --sk-primary: #4caf50;
-  --sk-primary-dark: #388e3c;
-  --sk-accent: #ffc107;
-  --sk-bg: #f9fafb;
-  --sk-card-bg: #ffffff;
-  --sk-text-main: #1f2937;
-  --sk-text-muted: #6b7280;
-  --sk-error: #ef4444;
-  --sk-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --sk-shadow-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --sk-radius: 12px;
-  --sk-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 /* ─── Page Container ──────────────────────────────────────── */
 .shareKnowledge-container {
   max-width: 1200px;
@@ -35,36 +18,34 @@
 .shareKnowledge-page-title {
   font-size: 32px;
   font-weight: 800;
-  color: var(--sk-text-main);
+  color: #1f2937;
   margin: 0 0 8px 0;
   letter-spacing: -0.025em;
 }
 
 .shareKnowledge-page-description {
-  color: var(--sk-text-muted);
+  color: #6b7280;
   font-size: 16px;
   max-width: 600px;
   line-height: 1.5;
 }
 
 .shareKnowledge-add-btn {
-  background: var(--sk-primary);
+  background: #4caf50;
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: var(--sk-radius);
+  border-radius: 12px;
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  transition: var(--sk-transition);
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 4px 0 var(--sk-primary-dark);
 }
 
 .shareKnowledge-add-btn:hover {
-  background: var(--sk-primary-dark);
+  background: #388e3c;
   transform: translateY(-2px);
   box-shadow: 0 6px 0 #2e7d32;
 }
@@ -92,14 +73,14 @@
   border-radius: 50px;
   background: #fff;
   font-size: 15px;
-  transition: var(--sk-transition);
-  box-shadow: var(--sk-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
 }
 
 .shareKnowledge-search-bar:focus {
   outline: none;
-  border-color: var(--sk-primary);
+  border-color: #4caf50;
   box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
 }
 
@@ -108,7 +89,7 @@
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--sk-text-muted);
+  color: #6b7280;
 }
 
 /* ─── Grid & Cards ────────────────────────────────────────── */
@@ -119,17 +100,17 @@
 }
 
 .shareKnowledge-card {
-  background: var(--sk-card-bg);
-  border-radius: var(--sk-radius);
+  background: #ffffff;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: var(--sk-shadow);
-  transition: var(--sk-transition);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid #f3f4f6;
 }
 
 .shareKnowledge-card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--sk-shadow-lg);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .shareKnowledge-image-wrapper {
@@ -158,7 +139,7 @@
 
 .shareKnowledge-placeholder-icon {
   font-size: 48px;
-  color: var(--sk-primary);
+  color: #4caf50;
   opacity: 0.5;
 }
 
@@ -169,13 +150,13 @@
 .shareKnowledge-title {
   font-size: 19px;
   font-weight: 700;
-  color: var(--sk-text-main);
+  color: #1f2937;
   margin: 0 0 10px 0;
   line-height: 1.4;
 }
 
 .shareKnowledge-description {
-  color: var(--sk-text-muted);
+  color: #6b7280;
   font-size: 14px;
   line-height: 1.6;
   margin-bottom: 20px;
@@ -194,7 +175,7 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: var(--sk-text-muted);
+  color: #6b7280;
 }
 
 .shareKnowledge-actions {
@@ -210,7 +191,7 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: var(--sk-transition);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -219,11 +200,11 @@
 
 .shareKnowledge-btn-edit {
   background: #f0fdf4;
-  color: var(--sk-primary-dark);
+  color: #388e3c;
 }
 
 .shareKnowledge-btn-edit:hover {
-  background: var(--sk-primary);
+  background: #4caf50;
   color: white;
 }
 
@@ -260,9 +241,7 @@
   max-width: 660px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow:
-    0 20px 60px -10px rgba(0, 0, 0, 0.18),
-    0 4px 16px -4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.18), 0 4px 16px -4px rgba(0, 0, 0, 0.08);
   animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -287,7 +266,7 @@
 
 .shareKnowledge-modal-header h2 i {
   font-size: 18px;
-  color: var(--sk-primary);
+  color: #4caf50;
   background: #f0fdf4;
   padding: 6px;
   border-radius: 8px;
@@ -368,7 +347,7 @@
 .shareKnowledge-form-textarea:focus,
 .shareKnowledge-form-select:focus {
   outline: none;
-  border-color: var(--sk-primary);
+  border-color: #4caf50;
   box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
 }
 
@@ -409,7 +388,7 @@
 }
 
 .shareKnowledge-file-input-wrapper:hover {
-  border-color: var(--sk-primary);
+  border-color: #4caf50;
   background: #f0fdf4;
 }
 
@@ -451,7 +430,7 @@
 /* ─── Submit Button ───────────────────────────────────────── */
 .shareKnowledge-submit-btn {
   width: 100%;
-  background: var(--sk-primary);
+  background: #4caf50;
   color: white;
   border: none;
   padding: 15px;
@@ -465,7 +444,7 @@
 }
 
 .shareKnowledge-submit-btn:hover {
-  background: var(--sk-primary-dark);
+  background: #388e3c;
   transform: translateY(-1px);
 }
 
@@ -485,7 +464,7 @@
 .shareKnowledge-warning-ui p {
   font-size: 16px;
   line-height: 1.7;
-  color: var(--sk-text-main);
+  color: #1f2937;
 }
 
 .shareKnowledge-delete-warning {
@@ -515,7 +494,7 @@
 
 .shareKnowledge-btn-confirm-delete {
   padding: 12px 28px;
-  background: var(--sk-error);
+  background: #ef4444;
   color: white;
   border: none;
   border-radius: 12px;
@@ -561,7 +540,7 @@
 .shareKnowledge-section-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--sk-text-main);
+  color: #1f2937;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
@@ -571,7 +550,7 @@
   padding: 80px 40px;
   background: white;
   border-radius: 24px;
-  box-shadow: var(--sk-shadow);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   max-width: 600px;
   margin: 40px auto;
 }
@@ -580,30 +559,30 @@
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 12px;
-  color: var(--sk-text-main);
+  color: #1f2937;
 }
 
 .shareKnowledge-empty-state p {
-  color: var(--sk-text-muted);
+  color: #6b7280;
   font-size: 15px;
   line-height: 1.6;
 }
 
 .shareKnowledge-empty-btn {
   margin-top: 24px;
-  background: var(--sk-primary);
+  background: #4caf50;
   color: white;
   border: none;
   padding: 14px 28px;
   border-radius: 12px;
   font-weight: 700;
   cursor: pointer;
-  transition: var(--sk-transition);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 15px;
 }
 
 .shareKnowledge-empty-btn:hover {
-  background: var(--sk-primary-dark);
+  background: #388e3c;
   transform: translateY(-1px);
 }
 
@@ -616,7 +595,7 @@
   padding: 4px 10px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--sk-text-main);
+  color: #1f2937;
   backdrop-filter: blur(4px);
 }
 

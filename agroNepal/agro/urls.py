@@ -10,4 +10,5 @@ urlpatterns = [
   path('comment/<int:comment_id>/delete/', delete_comment, name='delete_comment'),
   path("event/", event, name="event"),
   path("community_public_post/", community_public_post, name="community_public_post"),
+  path("community_public_post_detail/<slug:slug>/", community_public_post_detail, name="community_public_post_detail"),
 ]
