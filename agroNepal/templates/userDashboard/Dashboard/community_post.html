@@ -57,14 +57,6 @@
           <div class="shareKnowledge-image-wrapper">
             <img src="{{ share.image.url }}" alt="{{ share.title }}" class="shareKnowledge-thumbnail" />
           </div>
-          {% else %}
-           <div class="shareKnowledge-image-wrapper shareKnowledge-no-image">
-            <div class="shareKnowledge-placeholder-icon">
-                <i class="fas fa-seedling"></i>
-            </div>
-            <div class="shareKnowledge-date-badge">
-              <span>{{ share.create_date|date:"d M" }}</span>
-            </div>
           </div>
           {% endif %}
           <div class="shareKnowledge-content">

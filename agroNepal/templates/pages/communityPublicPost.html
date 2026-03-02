@@ -20,10 +20,6 @@
         <div class="blog-card">
           {% if share.image %}
             <img src="{{ share.image.url }}" alt="{{ share.title }}">
-          {% else %}
-            <div style="height: 200px; background: #e8f5e9; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-users" style="font-size: 60px; color: #4CAF50; opacity: 0.3;"></i>
-            </div>
           {% endif %}
           <div class="blog-content">
             <p class="author"> By : {{share.author.username}}
