@@ -147,6 +147,20 @@ def community_public_post_comment(request, slug):
          messages.error(request, "The comment field is empty", extra_tags="emptyComment")
   return redirect('community_public_post_detail', slug=slug)
 
+def delete_commmunity_post_comment(request, comment_id):
+    if request.method == "POST":
+      comment = get_object_or_404(CommunityPostComment, id=comment_id)
+
+      if request.user == comment.user or request.user.is_staff:
+        share_slug = comment.share_knowledge.slug
+        comment.delete()
+        messages.success(request, 'Comment deleted successfully!', extra_tags="commentDeleteSuccess")
+        return redirect("community_public_post_detail", slug=share_slug)
+      else: 
+         messages.error(request, "You do not have permission to delete this comment", extra_tags="commentDeleteError")
+         return redirect('community_public_post_detail', slug=comment.share_knowledge.slug)
+    return redirect('community_public_post_detail')
+         
 
 def custom_404_view(request, exception):
     return render(request, "404.html", status=404)

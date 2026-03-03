@@ -55,15 +55,14 @@
             {% if user == comment.user or user.is_staff %}
               <div class="comment-actions" style="margin-top: 10px; display: flex; gap: 15px;">
                 <button type="button" class="btn-edit-comment" style="background: none; border: none; color: #4CAF50; cursor: pointer; padding: 0; font-size: 0.9em; font-weight: 500;">Edit Comment</button>
-                <form method="post"  class="delete-comment-form" style="display:inline;">
-                  {% comment %} action="{% url 'delete_share_comment' comment.id %}" {% endcomment %}
+                <form method="post" action="{% url 'delete_commmunity_post_comment' comment.id %}" class="delete-comment-form" style="display:inline;">
                   {% csrf_token %}
                   <button type="button" class="delete-btn-trigger">Delete</button>
                 </form>
               </div>
 
               <!-- Edit Form (Hidden by default) -->
-              <form method="post"  class="edit-comment-form" style="display:none; margin-top: 10px;">
+              <form method="post" class="edit-comment-form" style="display:none; margin-top: 10px;">
                 {% comment %} action="{% url 'edit_share_comment' comment.id %}" {% endcomment %}
                 {% csrf_token %}
                 <textarea name="comment_text" style="width: 100%; min-height: 80px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-family: inherit;">{{ comment.text }}</textarea>
