@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Blog, Comment, Contact, Event, CommunityPost
+from .models import Blog, Comment, Contact, Event, CommunityPost, CommunityPostComment
 from django.db.models import Q
 from django.contrib import messages
 # Create your views here.
@@ -131,8 +131,21 @@ def community_public_post_detail(request, slug):
   return render(request, 'pages/communityPost/readmoreSharedKnowledge.html', context)
 
 
+def community_public_post_comment(request, slug):
+  if request.method == "POST":
+      share = get_object_or_404(CommunityPost, slug=slug)
+      comment_text = request.POST.get('comment_text')
 
-
+      if comment_text:
+         CommunityPostComment.objects.create(
+            share_knowledge=share,
+            user=request.user,
+            text=comment_text
+         )
+         messages.success(request, "Comment done successfully", extra_tags="commentSuccess")
+      else:
+         messages.error(request, "The comment field is empty", extra_tags="emptyComment")
+  return redirect('community_public_post_detail', slug=slug)
 
 
 def custom_404_view(request, exception):
