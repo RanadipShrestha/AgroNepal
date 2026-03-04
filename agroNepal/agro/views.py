@@ -114,9 +114,12 @@ def community_public_post(request):
       )
     else:
       shares = CommunityPost.objects.all().order_by("-create_date")
+    
+    recent_shares = CommunityPost.objects.all().order_by('-create_date')[:5]
 
     context = {
-       'shares':shares
+       'shares':shares,
+       'recent_shares':recent_shares
     }
     return render(request, "pages/communityPost/communityPublicPost.html", context)
 
@@ -161,6 +164,24 @@ def delete_commmunity_post_comment(request, comment_id):
          return redirect('community_public_post_detail', slug=comment.share_knowledge.slug)
     return redirect('community_public_post_detail')
          
+def edit_community_post_comment(request, comment_id):
+   if request.method == "POST":
+      comment = get_object_or_404(CommunityPostComment, id=comment_id)
+
+      if request.user == comment.user or request.user.is_staff:
+          new_comment = request.POST.get("comment_text")
+          if new_comment:
+            comment.text = new_comment
+            comment.save()
+            messages.success(request, "Comment Updated Successfully!", extra_tags="commentUpdateSuccess")
+          else:
+             messages.error(request, "Comment cannot be empty", extra_tags="commentUpatedError")
+          return redirect('community_public_post_detail', slug=comment.share_knowledge.slug)
+      return redirect('community_public_post_detail')
+
+
+
+
 
 def custom_404_view(request, exception):
     return render(request, "404.html", status=404)

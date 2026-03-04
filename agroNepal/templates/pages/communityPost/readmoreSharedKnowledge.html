@@ -62,8 +62,7 @@
               </div>
 
               <!-- Edit Form (Hidden by default) -->
-              <form method="post" class="edit-comment-form" style="display:none; margin-top: 10px;">
-                {% comment %} action="{% url 'edit_share_comment' comment.id %}" {% endcomment %}
+              <form method="post" action="{% url 'edit_community_post_comment' comment.id %}" class="edit-comment-form" style="display:none; margin-top: 10px;">
                 {% csrf_token %}
                 <textarea name="comment_text" style="width: 100%; min-height: 80px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-family: inherit;">{{ comment.text }}</textarea>
                 <div style="display: flex; gap: 10px;">
@@ -88,7 +87,7 @@
       {% for message in messages %}
         <div class="alert" 
              style="padding: 15px 20px; margin-bottom: 10px; border-radius: 8px; 
-                    background-color: {% if message.tags == 'success' %}#1a4d1a{% elif message.tags == 'error' %}#dc3545{% else %}#0066cc{% endif %}; 
+                    background-color: {% if message.tags == 'success' %}#41bf24{% elif message.tags == 'error' %}#bf2424{% else %}#47bf24{% endif %}; 
                     color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-size: 14px; animation: slideIn 0.3s ease-out;">
           {{ message }}
         </div>

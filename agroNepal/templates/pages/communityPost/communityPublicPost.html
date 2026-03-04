@@ -37,7 +37,7 @@
 
   <!--sidebar-->
   <div class="sidebar">
-    <h2>Recent Stories</h2>
+    <h2>Recent Post</h2>
     {% for recent_share in recent_shares %}
       <div class="recent-item">
        {% if recent_share.image %}
@@ -48,7 +48,7 @@
          </div>
        {% endif %}
        <div>
-        <a href='{% url "shared_knowledge_detail" slug=recent_share.slug %}'>
+        <a href='{% url "community_public_post_detail" slug=recent_share.slug %}'>
           <p class="date">{{recent_share.title|truncatewords:5}}</p>
         </a>
         <p>{{ recent_share.create_date}}</p>
