@@ -47,12 +47,25 @@
               {{ comment.user.get_full_name|default:comment.user.username }}
               <span style="font-weight: 400; color: #666; font-size: 0.9em;">• {{ comment.created_at|timesince }} ago</span>
             </p>
-            <p style="color: #444; margin-top: 8px;">{{ comment.text }}</p>
+            <p class="comment-text" style="color: #444; margin-top: 8px;">{{ comment.text }}</p>
             
             {% if user == comment.user or user.is_staff %}
-              <form method="post" action="{% url 'delete_comment' comment.id %}" class="delete-comment-form" style="display:inline; margin-top: 10px;">
+              <div class="comment-actions" style="margin-top: 10px; display: flex; gap: 15px;">
+                <button type="button" class="btn-edit-comment" style="background: none; border: none; color: #4CAF50; cursor: pointer; padding: 0; font-size: 0.9em; font-weight: 500;">Edit Comment</button>
+                <form method="post" action="{% url 'delete_comment' comment.id %}" class="delete-comment-form" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="button" class="delete-btn-trigger">Delete</button>
+                </form>
+              </div>
+
+              <!-- Edit Form (Hidden by default) -->
+              <form method="post" action="{% url 'edit_blog_comment' comment.id %}" class="edit-comment-form" style="display:none; margin-top: 10px;">
                 {% csrf_token %}
-                <button type="button" class="delete-btn-trigger">Delete</button>
+                <textarea name="comment_text" style="width: 100%; min-height: 80px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px; font-family: inherit;">{{ comment.text }}</textarea>
+                <div style="display: flex; gap: 10px;">
+                  <button type="button" class="btn-save-comment-trigger" style="background: #1a4d1a; color: white; border: none; padding: 6px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">Save Changes</button>
+                  <button type="button" class="btn-cancel-edit" style="background: #f0f0f0; color: #444; border: 1px solid #ddd; padding: 6px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">Cancel</button>
+                </div>
               </form>
             {% endif %}
           </div>
@@ -96,4 +109,77 @@
     </div>
   </div>
 </div>
+
+
+<!-- ================= SCRIPT ================= -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  /* ===== EDIT TOGGLE ===== */
+  document.querySelectorAll('.btn-edit-comment').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const commentDiv = this.closest('.comment');
+      commentDiv.querySelector('.comment-text').style.display = 'none';
+      commentDiv.querySelector('.comment-actions').style.display = 'none';
+      commentDiv.querySelector('.edit-comment-form').style.display = 'block';
+    });
+  });
+
+  document.querySelectorAll('.btn-cancel-edit').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const commentDiv = this.closest('.comment');
+      commentDiv.querySelector('.comment-text').style.display = 'block';
+      commentDiv.querySelector('.comment-actions').style.display = 'flex';
+      commentDiv.querySelector('.edit-comment-form').style.display = 'none';
+    });
+  });
+
+  /* ===== SAVE EDIT ===== */
+  document.querySelectorAll('.btn-save-comment-trigger').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const form = this.closest('form');
+      form.submit();
+    });
+  });
+
+  /* ===== DELETE MODAL ===== */
+  let formToSubmit = null;
+
+  document.querySelectorAll('.delete-btn-trigger').forEach(btn => {
+    btn.addEventListener('click', function() {
+      formToSubmit = this.closest('form');
+      document.getElementById('deleteModal').style.display = 'block';
+    });
+  });
+
+  window.confirmDelete = function() {
+    if (formToSubmit) {
+      formToSubmit.submit();
+    }
+  }
+
+  window.closeModal = function() {
+    document.getElementById('deleteModal').style.display = 'none';
+    formToSubmit = null;
+  }
+
+  window.onclick = function(event) {
+    const modal = document.getElementById('deleteModal');
+    if (event.target === modal) {
+      closeModal();
+    }
+  }
+
+  /* ===== AUTO HIDE MESSAGE ===== */
+  setTimeout(function () {
+    const messages = document.querySelector(".messages");
+    if (messages) {
+      messages.style.transition = "opacity 0.5s";
+      messages.style.opacity = "0";
+      setTimeout(() => messages.remove(), 500);
+    }
+  }, 5000);
+
+});
+</script>
 {% endblock content %}

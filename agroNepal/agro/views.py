@@ -95,6 +95,20 @@ def delete_comment(request, comment_id):
     
     return redirect('blog')
 
+def edit_blog_comment(request, comment_id):
+  if request.method == 'POST':
+    comment = get_object_or_404(Comment, id=comment_id)
+    if request.user == comment.user or request.user.is_staff:
+      new_comment = request.POST.get('comment_text')
+      if new_comment:
+        comment.text = new_comment
+        comment.save()
+        messages.success(request, 'Comment updated successfully!', extra_tags="blogCommentEditSuccess")
+      else:
+        messages.error(request, 'Comment cannot be empty.',extra_tags="blogCommentEditError")
+      return redirect('readMoreBlog', slug=comment.blog.slug)
+  return redirect('blog')
+         
 
 def event(request):
   events = Event.objects.all()
