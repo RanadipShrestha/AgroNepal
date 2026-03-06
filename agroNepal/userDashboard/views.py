@@ -335,3 +335,7 @@ def deleteShareKnowledge(request):
             messages.error(request, f'Error deleting Knowledge Share', extra_tags="shareKnowledgeDeleteError")
     
     return redirect('userShareKnowledge')
+
+
+def profile(request):
+    return render(request, "userDashboard/userProfile/profile.html")

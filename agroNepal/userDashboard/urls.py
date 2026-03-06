@@ -20,4 +20,7 @@ urlpatterns = [
     path('share-knowledge/', userShareKnowledge, name='userShareKnowledge'),
     path('edit-share-knowledge/', editShareKnowledge, name='editShareKnowledge'),
     path('delete-share-knowledge/', deleteShareKnowledge, name='deleteShareKnowledge'),
+
+    # Profile Section
+    path('profile/', profile, name="profile"),
 ]
