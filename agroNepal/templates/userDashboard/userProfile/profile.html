@@ -1,1 +1,41 @@
-profile page
+{% extends "userdashboard.html" %}
+{% load static %}
+{% block content %}
+<!-- Messages Display Section -->
+{% if messages %}
+<div class="userProfile-messages-container">
+  {% for message in messages %}
+    {% if 'userProfileUpdate' in message.tags %}
+    <div class="userUpdatd-success">
+      <span class="userUpdatd-alert-message">{{ message }}</span>
+    </div>
+    {% elif 'usernameExistsError' in message.tags or 'EmailExistsError' in message.tags %}
+    <div class="UserProfile-error">
+      <span class="usernameExistsError-alert-message">{{ message }}</span>
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class = "profile-avatar">
+        {% if user.first_name and user.last_name %}
+          {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+        {% elif user.first_name %}
+          {{ user.first_name|slice:":2"|upper }}
+        {% else %}
+          {{user.username|slice:":2"|upper}}
+        {% endif %}
+      </div>
+      <h1>Your Profile</h1>
+    </div>
+
+    <div class="profile-info">
+      
+    </div>
+  </div>
+</div>
+{% endblock content %}

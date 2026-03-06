@@ -285,7 +285,7 @@ def userShareKnowledge(request):
                 author=request.user,
                 image=image
             )
-            messages.success(request, f'Knowledge Share "{title}" created successfully!', extra_tags="shareKnowledgeSuccess")
+            messages.success(request, f'Knowledge Share created successfully!', extra_tags="shareKnowledgeSuccess")
             return redirect('userShareKnowledge')
         except:
             messages.error(request, f'Error creating Knowledge Share', extra_tags="shareKnowledgeError")
