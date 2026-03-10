@@ -1,41 +1,78 @@
-{% extends "userdashboard.html" %}
-{% load static %}
-{% block content %}
+{% extends "userdashboard.html" %} {% load static %} {% block content %}
 <!-- Messages Display Section -->
 {% if messages %}
 <div class="userProfile-messages-container">
-  {% for message in messages %}
-    {% if 'userProfileUpdate' in message.tags %}
-    <div class="userUpdatd-success">
-      <span class="userUpdatd-alert-message">{{ message }}</span>
-    </div>
-    {% elif 'usernameExistsError' in message.tags or 'EmailExistsError' in message.tags %}
-    <div class="UserProfile-error">
-      <span class="usernameExistsError-alert-message">{{ message }}</span>
-    </div>
-    {% endif %}
-  {% endfor %}
+  {% for message in messages %} {% if 'userProfileUpdate' in message.tags %}
+  <div class="userUpdatd-success">
+    <span class="userUpdatd-alert-message">{{ message }}</span>
+  </div>
+  {% elif 'usernameExistsError' in message.tags or 'EmailExistsError' in
+  message.tags %}
+  <div class="UserProfile-error">
+    <span class="usernameExistsError-alert-message">{{ message }}</span>
+  </div>
+  {% endif %} {% endfor %}
 </div>
 {% endif %}
 
 <div class="profile-container">
   <div class="profile-card">
-    <div class="profile-header">
-      <div class = "profile-avatar">
-        {% if user.first_name and user.last_name %}
-          {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
-        {% elif user.first_name %}
-          {{ user.first_name|slice:":2"|upper }}
-        {% else %}
-          {{user.username|slice:":2"|upper}}
-        {% endif %}
-      </div>
-      <h1>Your Profile</h1>
-    </div>
+     <div class="profile-header">
+            <div class="profile-avatar">
+                {% if user.first_name and user.last_name %}
+                    {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                {% elif user.first_name %}
+                    {{ user.first_name|slice:":2"|upper }}
+                {% else %}
+                    {{ user.username|slice:":2"|upper }}
+                {% endif %}
+            </div>
+            <h1>Your Profile</h1>
+        </div>
 
     <div class="profile-info">
-      
-    </div>
+            <div class="info-row">
+                <div class="info-label">Name :</div>
+                <div class="info-value">
+                    {% if user.first_name or user.last_name %}
+                        {{ user.first_name }} {{ user.last_name }}
+                    {% else %}
+                        Not provided
+                    {% endif %}
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Username :</div>
+                <div class="info-value">{{ user.username }}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Email :</div>
+                <div class="info-value">{{ user.email|default:"Not provided" }}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Phone Number :</div>
+                <div class="info-value">{{ user.phone_number|default:"Not provided" }}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Address :</div>
+                <div class="info-value">{{ user.address|default:"Not provided" }}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Land Location :</div>
+                <div class="info-value">{{ user.land_address|default:"Not provided" }}</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Last Updated :</div>
+                <div class="info-value">
+                    {% if user.last_updated %}
+                        {{ user.last_updated|date:"F d, Y - g:i A" }}
+                    {% else %}
+                        Not available
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    <a class="btn-edit">Edit Profile</a>
   </div>
 </div>
 {% endblock content %}
