@@ -356,18 +356,18 @@ def userUpdatedProfile(request):
         address = request.POST.get('address')
         land_address = request.POST.get('land_address')
 
-        #Checking username or email already exists or not
+        # Checking username or email already exists or not
         CustomUser = get_user_model()
-        
-        if CustomUser.objects.filter(pk=user.pk).filter(username=username).exists():
+
+        if CustomUser.objects.filter(username=username).exclude(pk=user.pk).exists():
             messages.error(request, "Username already exists.", extra_tags="error")
             return redirect('edit-profile')
-        
-        if CustomUser.objects.filter(pk=user.pk).filter(email=email).exists():
+
+        if CustomUser.objects.filter(email=email).exclude(pk=user.pk).exists():
             messages.error(request, "Email already exists.", extra_tags="error")
             return redirect('edit-profile')
-        
-        #user infroamtion update 
+
+        # User information update
         user.first_name = first_name
         user.last_name = last_name
         user.username = username
@@ -375,9 +375,10 @@ def userUpdatedProfile(request):
         user.phone_number = phone_number
         user.address = address
         user.land_address = land_address
-        
+
         user.save()
 
         messages.success(request, "Your Profile Updated Successfully", extra_tags="success")
         return redirect('profile')
+
     return redirect('profile')
