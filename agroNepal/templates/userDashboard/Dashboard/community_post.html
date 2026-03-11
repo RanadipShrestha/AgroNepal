@@ -81,16 +81,14 @@
                 data-share-id="{{ share.id }}"
                 data-share-title="{{ share.title }}"
                 data-share-description="{{ share.description }}"
-                data-share-content="{{ share.user_share_content }}"
-              >
+                data-share-content="{{ share.user_share_content }}">
                 <i class="fas fa-edit"></i> Edit
               </button>
               <button
                 type="button"
                 class="shareKnowledge-btn-action shareKnowledge-btn-delete delete-share-btn"
                 data-share-id="{{ share.id }}"
-                data-share-title="{{ share.title }}"
-              >
+                data-share-title="{{ share.title }}">
                 <i class="fas fa-trash-alt"></i> Delete
               </button>
             </div>
@@ -262,6 +260,7 @@
         <div class="shareKnowledge-warning-ui">
           <p>
             Are you sure you want to remove <br>
+            <strong id="deleteShareTitle"></strong><br>
             <span class="shareKnowledge-delete-warning">This action cannot be undone.</span>
           </p>
         </div>
