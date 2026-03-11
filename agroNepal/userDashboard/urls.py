@@ -23,4 +23,6 @@ urlpatterns = [
 
     # Profile Section
     path('profile/', profile, name="profile"),
+    path('edit-profile', userEditProfile, name="edit-profile"),
+    path('userUpdatedProfile', userUpdatedProfile, name="userUpdatedProfile")
 ]

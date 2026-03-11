@@ -1,0 +1,158 @@
+/* Form Row Layout */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Responsive for form rows */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+/* Confirmation Modal Styles */
+.confirmation-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1001;
+    animation: fadeIn 0.3s ease;
+}
+
+.confirmation-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.confirmation-modal {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.confirmation-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.confirmation-modal h3 {
+    color: #1f2937;
+    font-size: 24px;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+
+.confirmation-modal p {
+    color: #6b7280;
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-confirm-yes,
+.btn-confirm-no {
+    flex: 1;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-confirm-yes {
+    background: #10b981;
+    color: white;
+}
+
+.btn-confirm-yes:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-confirm-no {
+    background: #6b7280;
+    color: white;
+}
+
+.btn-confirm-no:hover {
+    background: #4b5563;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive for confirmation modal */
+@media (max-width: 768px) {
+    .confirmation-modal {
+        padding: 30px 20px;
+        margin: 15px;
+    }
+
+    .confirmation-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .confirmation-modal h3 {
+        font-size: 20px;
+    }
+
+    .confirmation-modal p {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .confirmation-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-confirm-yes,
+    .btn-confirm-no {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+}

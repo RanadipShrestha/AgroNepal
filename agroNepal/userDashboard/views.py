@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from collections import defaultdict
 from datetime import datetime
-from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost
-
+from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost, CustomUser
+from django.contrib.auth import get_user_model
 # Create your views here.
 
 def userDashboard(request):
@@ -336,6 +336,48 @@ def deleteShareKnowledge(request):
     
     return redirect('userShareKnowledge')
 
-
+#--------------------------Profile Section -----------------------------
 def profile(request):
     return render(request, "userDashboard/userProfile/profile.html")
+
+def userEditProfile(request):
+    return render(request, "userDashboard/userProfile/edit_profile.html")
+
+def userUpdatedProfile(request):
+    if request.method == "POST":
+        user = request.user
+
+        # Getting New Updated User Data
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        address = request.POST.get('address')
+        land_address = request.POST.get('land_address')
+
+        #Checking username or email already exists or not
+        CustomUser = get_user_model()
+        
+        if CustomUser.objects.filter(pk=user.pk).filter(username=username).exists():
+            messages.error(request, "Username already exists.", extra_tags="error")
+            return redirect('edit-profile')
+        
+        if CustomUser.objects.filter(pk=user.pk).filter(email=email).exists():
+            messages.error(request, "Email already exists.", extra_tags="error")
+            return redirect('edit-profile')
+        
+        #user infroamtion update 
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = username
+        user.email = email
+        user.phone_number = phone_number
+        user.address = address
+        user.land_address = land_address
+        
+        user.save()
+
+        messages.success(request, "Your Profile Updated Successfully", extra_tags="success")
+        return redirect('profile')
+    return redirect('profile')

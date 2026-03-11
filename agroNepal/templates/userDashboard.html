@@ -11,17 +11,18 @@
 
     <link rel="stylesheet" href="{% static 'assets/css/userDashboard/userDashboard.css' %}" />
 
-    <-- Includes files css -->
+    <!-- Includes files css -->
     <link rel="stylesheet" href="{% static 'assets/css/userDashboard/includes/header.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/userDashboard/includes/sidebar.css' %}" />
 
-    <----Dashboard css--------->
+    <!----Dashboard css--------->
     <link rel="stylesheet" href="{% static 'assets/css/userDashboard/Dashboard/plantedCrop.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/userDashboard/Dashboard/explenseAndSale.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/userDashboard/Dashboard/community_post.css' %}" />
 
-    <-------------Profile css------->
-    <link rel="stylesheet" href="{% static 'assets/css/userDashboard/Profile/profile.css' %}"   
+    <!-------------Profile css------->
+    <link rel="stylesheet" href="{% static 'assets/css/userDashboard/Profile/profile.css' %}">   
+    <link rel="stylesheet" href="{% static 'assets/css/userDashboard/Profile/edit_profile.css' %}"> 
   </head>
   <body>
     {% include "userDashboard/includes/header.html" %}
@@ -33,15 +34,16 @@
       </div>
     </div>
   </body>
-  <-------Includes Js part --------------->
+  <!-------Includes Js part --------------->
   <script src="{% static 'assets/js/userDashboard/includes/profileButton.js' %}"></script>
   <script src="{% static 'assets/js/userDashboard/includes/sidebar.js' %}"></script>
 
-  <---Dashboard Part JS------->
+  <!---Dashboard Part JS------->
   <script src="{% static 'assets/js/userDashboard/plantedCrop.js' %}"></script>
   <script src="{% static 'assets/js/userDashboard/expenseAndSale.js' %}"></script>
   <script src="{% static 'assets/js/userDashboard/community_post.js' %}"></script>
 
-  <--------Profile Part Js------->
-  <script src="{% static 'assets/js/Profile/profile.js' %}"></script>
+  <!--------Profile Part Js------->
+  <script src="{% static 'assets/js/userDashboard/Profile/profile.js' %}"></script>
+  <script src="{% static 'assets/js//userDashboard/Profile/edit_profile.js' %}"></script>
 </html>
