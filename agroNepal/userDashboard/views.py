@@ -3,6 +3,7 @@ from django.contrib import messages
 from collections import defaultdict
 from datetime import datetime
 from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost, CustomUser
+from payment.models import PurchaseTicket
 from django.contrib.auth import get_user_model
 # Create your views here.
 
@@ -335,6 +336,17 @@ def deleteShareKnowledge(request):
             messages.error(request, f'Error deleting Knowledge Share', extra_tags="shareKnowledgeDeleteError")
     
     return redirect('userShareKnowledge')
+
+
+#----------------Ticket---------------------------------
+def userTickets(request):
+    tickets = PurchaseTicket.objects.filter(user=request.user).select_related('event').order_by('-purchase_date')
+
+    context = {
+        'tickets':tickets
+    }
+
+    return render(request, "userDashboard/Dashboard/user_tickets.html", context)
 
 #--------------------------Profile Section -----------------------------
 def profile(request):

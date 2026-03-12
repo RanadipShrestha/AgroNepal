@@ -1,0 +1,52 @@
+{% extends "userDashboard.html" %}
+{% load static %}
+{% block content %}
+<div class="ticket-management-container">
+  <div class="ticket-management-header">
+    <div>
+      <h1 class="ticket-page-title">My Tickets</h1>
+      <p class="ticket-page-description">
+        View your all events tickets purchased through AgroNepal.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!----------Purchase Tickets List---------->
+<div class="ticket-section">
+  <h2 class="ticket-section-title">All Your Purchase Tickets</h2>
+  {% if tickets %}
+    <div class="ticket-grid">
+      {% for ticket in tickets %}
+      <div class="ticket-card">
+        <div class="ticket-card-header">
+          <h3 class="event-name"> Event: {{ ticket.event.name }}</h3>
+          <span class="event-date">{{ ticket.purchase_date|date:"M d, Y" }}</span>
+        </div>
+        <div class="event-card-body">
+            <p class="event-notes"><strong>Ticket ID:</strong> {{ ticket.ticket_id }}</p>
+            <p class="event-notes"><strong>Location:</strong> {{ ticket.event.location }}</p>
+            <p class="event-notes"><strong>Event Date:</strong> {{ ticket.event.date|date:"M d, Y" }} at {{ ticket.event.eventStartTime }}</p>
+          </div>
+          <div class="crop-card-footer">
+            <span class="days-planted">
+              Purchased {{ ticket.purchase_date|timesince }} ago
+            </span>
+            <a href="{% url 'buy_ticket' ticket.event.slug %}" class="add-crop-btn" style="text-decoration: none; font-size: 0.8rem; padding: 5px 10px;">
+              View Event
+            </a>
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="empty-ticket-state">
+        <h3>No tickets purchased yet</h3>
+        <p>You haven't bought any tickets for upcoming events or past.</p>
+        <a href="{% url 'event' %}" class="empty-add-btn" style="text-decoration: none; display: inline-block;">
+          Browse Events
+        </a>
+      </div>
+  {% endif %}
+</div>
+{% endblock content %}

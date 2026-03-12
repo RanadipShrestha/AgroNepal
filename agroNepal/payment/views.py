@@ -50,8 +50,8 @@ def verify_signature_from_esewa(payment_data):
 
 
 @login_required
-def buy_ticket(request, id):
-    event = get_object_or_404(Event, id=id)
+def buy_ticket(request, slug):
+    event = get_object_or_404(Event, slug=slug)
     user = request.user
     
     if event.available_ticket <= 0:

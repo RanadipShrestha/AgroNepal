@@ -24,5 +24,8 @@ urlpatterns = [
     # Profile Section
     path('profile/', profile, name="profile"),
     path('edit-profile', userEditProfile, name="edit-profile"),
-    path('userUpdatedProfile', userUpdatedProfile, name="userUpdatedProfile")
+    path('userUpdatedProfile', userUpdatedProfile, name="userUpdatedProfile"),
+
+    # Ticket
+    path("userTickets/", userTickets, name="userTickets")
 ]
