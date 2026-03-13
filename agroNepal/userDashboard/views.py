@@ -5,10 +5,23 @@ from datetime import datetime
 from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost, CustomUser
 from payment.models import PurchaseTicket
 from django.contrib.auth import get_user_model
+from django.db.models import Sum
 # Create your views here.
 
 def userDashboard(request):
-  return render(request, "userDashboard/Dashboard/dashboard.html")
+  total_crops = UserCropAdd.objects.filter(user=request.user).count()
+  total_expense = CropExpense.objects.filter(user_crop__user = request.user).aggregate(Sum('amount'))['amount__sum'] or 0
+  total_sales = CropSale.objects.filter(user_crop__user=request.user).aggregate(Sum('amount'))['amount__sum'] or 0
+  total_posts = CommunityPost.objects.filter(author=request.user).count()
+  total_tickets = PurchaseTicket.objects.filter(user=request.user).count()
+  context = {
+      "total_crops":total_crops,
+      'total_expense':total_expense,
+      'total_sales':total_sales,
+      'total_posts':total_posts,
+      'total_tickets':total_tickets,
+  }
+  return render(request, "userDashboard/Dashboard/dashboard.html", context)
 
 #----------------------------------Crop Page--------------
 def addCrop(request):

@@ -41,12 +41,6 @@
       <div class="userDashboard-stat-bar"></div>
     </div>
 
-    <div class="userDashboard-stat {% if net_profit >= 0 %}userDashboard-stat-green{% else %}userDashboard-stat-orange{% endif %}">
-      <div class="userDashboard-stat-num">Rs. {{ net_profit|floatformat:0 }}</div>
-      <div class="userDashboard-stat-label">Net Profit / Loss</div>
-      <div class="userDashboard-stat-bar"></div>
-    </div>
-
     <div class="userDashboard-stat userDashboard-stat-violet">
       <div class="userDashboard-stat-num counter" data-target="{{ total_posts }}">{{ total_posts }}</div>
       <div class="userDashboard-stat-label">Community Posts</div>
