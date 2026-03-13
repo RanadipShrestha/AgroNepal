@@ -14,12 +14,16 @@ def userDashboard(request):
   total_sales = CropSale.objects.filter(user_crop__user=request.user).aggregate(Sum('amount'))['amount__sum'] or 0
   total_posts = CommunityPost.objects.filter(author=request.user).count()
   total_tickets = PurchaseTicket.objects.filter(user=request.user).count()
+  recent_posts = CommunityPost.objects.filter(author=request.user).order_by('-create_date')[:3]
+  recent_crops = UserCropAdd.objects.filter(user=request.user).select_related('crop').order_by('-planted_date')[:5]
   context = {
       "total_crops":total_crops,
       'total_expense':total_expense,
       'total_sales':total_sales,
       'total_posts':total_posts,
       'total_tickets':total_tickets,
+      'recent_posts':recent_posts,
+      'recent_crops':recent_crops
   }
   return render(request, "userDashboard/Dashboard/dashboard.html", context)
 
