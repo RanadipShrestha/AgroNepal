@@ -3,10 +3,169 @@
 {% block title %}Dashboard - AgroNepal{% endblock title %}
 
 {% block content %}
-<div class="dashboard-container">
-  <div class="overlay"></div>
-  <div class="useDashboardContent">
-    <h1 class="title">AgroNepal Dashboard</h1>
+<div class="userDashboard-dash">
+
+  <!-- Welcome Section -->
+  <div class="userDashboard-welcome">
+    <h1 class="userDashboard-heading">
+      Welcome Back,
+      <span class="userDashboard-name-glow">{{ user.first_name|default:user.username }}</span>
+    </h1>
+    <p class="userDashboard-subtext">Your farming dashboard. Manage your crops, expenses, and sales.</p>
+    
+    <div class="userDashboard-status-bar">
+      <span class="userDashboard-status-item"><i class="fa-solid fa-circle-check"></i> Crops tracked</span>
+      <span class="userDashboard-status-item"><i class="fa-solid fa-circle-check"></i> Finances synced</span>
+      <span class="userDashboard-status-item"><i class="fa-solid fa-circle-check"></i> Community active</span>
+    </div>
   </div>
-</div>
+
+  <!-- Stats Grid -->
+  <div class="userDashboard-stats">
+
+    <div class="userDashboard-stat userDashboard-stat-emerald">
+      <div class="userDashboard-stat-num counter" data-target="{{ total_crops }}">{{ total_crops }}</div>
+      <div class="userDashboard-stat-label">Planted Crops</div>
+      <div class="userDashboard-stat-bar"></div>
+    </div>
+
+    <div class="userDashboard-stat userDashboard-stat-rose">
+      <div class="userDashboard-stat-num">Rs. {{ total_expense|floatformat:0 }}</div>
+      <div class="userDashboard-stat-label">Total Expenses</div>
+      <div class="userDashboard-stat-bar"></div>
+    </div>
+
+    <div class="userDashboard-stat userDashboard-stat-sky">
+      <div class="userDashboard-stat-num">Rs. {{ total_sales|floatformat:0 }}</div>
+      <div class="userDashboard-stat-label">Total Revenue</div>
+      <div class="userDashboard-stat-bar"></div>
+    </div>
+
+    <div class="userDashboard-stat {% if net_profit >= 0 %}userDashboard-stat-green{% else %}userDashboard-stat-orange{% endif %}">
+      <div class="userDashboard-stat-num">Rs. {{ net_profit|floatformat:0 }}</div>
+      <div class="userDashboard-stat-label">Net Profit / Loss</div>
+      <div class="userDashboard-stat-bar"></div>
+    </div>
+
+    <div class="userDashboard-stat userDashboard-stat-violet">
+      <div class="userDashboard-stat-num counter" data-target="{{ total_posts }}">{{ total_posts }}</div>
+      <div class="userDashboard-stat-label">Community Posts</div>
+      <div class="userDashboard-stat-bar"></div>
+    </div>
+
+    <div class="userDashboard-stat userDashboard-stat-teal">
+      <div class="userDashboard-stat-num counter" data-target="{{ total_tickets }}">{{ total_tickets }}</div>
+      <div class="userDashboard-stat-label">Event Tickets</div>
+      <div class="userDashboard-stat-bar"></div>
+    </div>
+
+  </div>
+
+  <!-- Quick Action Buttons -->
+  <div class="userDashboard-actions">
+    <a href="{% url 'crop' %}" class="userDashboard-btn userDashboard-btn-green">
+      <i class="fa-solid fa-plus"></i><span>Add Crop</span>
+    </a>
+    <a href="{% url 'cropExpense' %}" class="userDashboard-btn userDashboard-btn-rose">
+      <i class="fa-solid fa-file-invoice-dollar"></i><span>Log Expense</span>
+    </a>
+    <a href="{% url 'cropSales' %}" class="userDashboard-btn userDashboard-btn-sky">
+      <i class="fa-solid fa-store"></i><span>Record Sale</span>
+    </a>
+    <a href="{% url 'userShareKnowledge' %}" class="userDashboard-btn userDashboard-btn-violet">
+      <i class="fa-solid fa-pen-to-square"></i><span>New Post</span>
+    </a>
+    <a href="{% url 'profile' %}" class="userDashboard-btn userDashboard-btn-amber">
+      <i class="fa-solid fa-user-gear"></i><span>Profile</span>
+    </a>
+    <a href="{% url 'userTickets' %}" class="userDashboard-btn userDashboard-btn-teal">
+      <i class="fa-solid fa-ticket"></i><span>Tickets</span>
+    </a>
+  </div>
+
+  <!-- Data Panels Section -->
+  <div class="userDashboard-panels">
+
+    <!-- Recent Crops -->
+    <div class="userDashboard-panel">
+      <div class="userDashboard-panel-head">
+        <h2 class="userDashboard-panel-title">Recent Crops</h2>
+        <a href="{% url 'crop' %}" class="userDashboard-panel-more">View all <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="userDashboard-panel-body">
+        {% if recent_crops %}
+        <div class="userDashboard-crop-list">
+          {% for uc in recent_crops %}
+          <div class="userDashboard-crop-row">
+            <div class="userDashboard-crop-icon"><i class="fa-solid fa-leaf"></i></div>
+            <div class="userDashboard-crop-info">
+              <span class="userDashboard-crop-name">{{ uc.crop.name }}</span>
+              <span class="userDashboard-crop-note">{{ uc.notes|default:"No notes"|truncatechars:38 }}</span>
+            </div>
+            <div class="userDashboard-crop-date">{{ uc.planted_date|date:"M d, Y" }}</div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="userDashboard-empty">
+          <p>No crops yet. <a href="{% url 'crop' %}">Plant your first</a></p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Community Posts -->
+    <div class="userDashboard-panel">
+      <div class="userDashboard-panel-head">
+        <h2 class="userDashboard-panel-title">Community Posts</h2>
+        <a href="{% url 'userShareKnowledge' %}" class="userDashboard-panel-more">View all <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="userDashboard-panel-body">
+        {% if recent_posts %}
+        <div class="userDashboard-post-list">
+          {% for post in recent_posts %}
+          <div class="userDashboard-post-card">
+            <div class="userDashboard-post-header">
+              <span class="userDashboard-post-date">{{ post.create_date|date:"M d, Y" }}</span>
+            </div>
+            <h3 class="userDashboard-post-title">{{ post.title|truncatechars:60 }}</h3>
+            <p class="userDashboard-post-desc">{{ post.description|truncatechars:80 }}</p>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="userDashboard-empty">
+          <p>No posts yet. <a href="{% url 'userShareKnowledge' %}">Share knowledge</a></p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div><!-- end userDashboard-panels -->
+
+</div><!-- end userDashboard-dash -->
+
+<script>
+/* Animated number counters */
+document.querySelectorAll('.counter').forEach(el => {
+  const target = +el.dataset.target || 0;
+  if (target === 0) return;
+  let count = 0;
+  const duration = 1000; // 1 second
+  const frameRate = 1000 / 60; // 60 fps
+  const totalFrames = duration / frameRate;
+  const step = target / totalFrames;
+  
+  const tick = () => {
+    count += step;
+    if (count >= target) {
+      el.textContent = target;
+    } else {
+      el.textContent = Math.floor(count);
+      requestAnimationFrame(tick);
+    }
+  };
+  requestAnimationFrame(tick);
+});
+</script>
 {% endblock content %}
