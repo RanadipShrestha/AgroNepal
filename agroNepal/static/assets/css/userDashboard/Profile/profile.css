@@ -219,7 +219,28 @@
 .btn-cancel:hover {
   background: #4b5563;
 }
-
+.profile-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+.profile-actions a {
+    flex: 1;
+    text-align: center;
+}
+.btn-change-password {
+    display: inline-block;
+    padding: 12px 0;
+    background-color: #f7b731;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+.btn-change-password:hover {
+    background-color: #fa8231;
+}
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

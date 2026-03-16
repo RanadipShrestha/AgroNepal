@@ -183,4 +183,19 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(() => alert.remove(), 500);
     });
   }, 5000);
+  // Show selected image name in upload box
+  const fileInputs = document.querySelectorAll(".shareKnowledge-file-input");
+
+  fileInputs.forEach((input) => {
+    input.addEventListener("change", function () {
+      const fileName = this.files[0]?.name;
+
+      if (fileName) {
+        const dummy = this.parentElement.querySelector(
+          ".shareKnowledge-file-dummy span",
+        );
+        dummy.textContent = fileName;
+      }
+    });
+  });
 });

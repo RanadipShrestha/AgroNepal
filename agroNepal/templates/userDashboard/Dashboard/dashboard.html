@@ -91,7 +91,7 @@
         <div class="userDashboard-crop-list">
           {% for uc in recent_crops %}
           <div class="userDashboard-crop-row">
-            <div class="userDashboard-crop-icon"><i class="fa-solid fa-leaf"></i></div>
+            
             <div class="userDashboard-crop-info">
               <span class="userDashboard-crop-name">{{ uc.crop.name }}</span>
               <span class="userDashboard-crop-note">{{ uc.notes|default:"No notes"|truncatechars:38 }}</span>

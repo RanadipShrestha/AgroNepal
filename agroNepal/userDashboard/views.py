@@ -4,8 +4,9 @@ from collections import defaultdict
 from datetime import datetime
 from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost, CustomUser
 from payment.models import PurchaseTicket
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.db.models import Sum
+from django.contrib.auth.forms import PasswordChangeForm
 # Create your views here.
 
 def userDashboard(request):
@@ -411,3 +412,19 @@ def userUpdatedProfile(request):
         return redirect('profile')
 
     return redirect('profile')
+
+def userPasswordChange(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!', extra_tags="passwordSuccess")
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the error below.', extra_tags="passwordError")
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'userDashboard/userProfile/change_password.html', {
+        'form': form
+    })

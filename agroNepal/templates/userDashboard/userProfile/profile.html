@@ -72,7 +72,10 @@
                 </div>
             </div>
         </div>
-    <a href="{% url 'edit-profile' %}" class="btn-edit">Edit Profile</a>
+    <div class="profile-actions">
+        <a href="{% url 'edit-profile' %}" class="btn-edit">Edit Profile</a>
+        <a href="{% url 'change-password' %}" class="btn-change-password">Change Password</a>
+    </div>
   </div>
 </div>
 {% endblock content %}

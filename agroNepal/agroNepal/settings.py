@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'user',
     'payment',
     'userDashboard',
+    'adminDashboard',
 ]
 
 AUTH_USER_MODEL = 'user.CustomUser'

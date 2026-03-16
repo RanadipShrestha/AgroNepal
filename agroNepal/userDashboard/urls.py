@@ -25,6 +25,7 @@ urlpatterns = [
     path('profile/', profile, name="profile"),
     path('edit-profile', userEditProfile, name="edit-profile"),
     path('userUpdatedProfile', userUpdatedProfile, name="userUpdatedProfile"),
+    path('change-password/', userPasswordChange, name="change-password"),
 
     # Ticket
     path("userTickets/", userTickets, name="userTickets")

@@ -29,6 +29,7 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('payment/', include('payment.urls')),
     path('userDashboard/', include('userDashboard.urls')),
+    path('adminDashboard/', include('adminDashboard.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
