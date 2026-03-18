@@ -1,0 +1,24 @@
+{% load static %}
+<header class="adminDashboard-header">
+  <div class="adminDashboard-left-header">
+    <button class="adminDashboard-menu-toggle"><i class="fa-solid fa-bars"></i></button>
+      <h3>{{ user.first_name|default:"Admin" }}</h3>
+  </div>
+  <p class="adminDashboard-welcome-message">Admin Pannel AgroNepal</p>
+  <div class="adminDashboard-user-info">
+    {% if user.is_authenticated %}
+        <button class="adminDashboard-profile-btn" id="admin-profile-btn">
+          {{ user.first_name|first|upper|default:"A"}}{{ user.last_name|first|upper|default:"D"}}
+        </button>
+
+        <!-- Hidden by default -->
+        <div class="dropdown-menu" id="dropdown-menu">
+          <a href='{% url "logout" %}'>
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
+        </div>
+      {% else %}
+        <a href='{% url "login" %}' class="login-btn">Login</a>
+      {% endif %}
+  </div>
+</header>

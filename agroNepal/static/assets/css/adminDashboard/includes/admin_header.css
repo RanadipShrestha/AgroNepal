@@ -1,0 +1,130 @@
+.adminDashboard-header {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  height: 65px;
+  box-sizing: border-box;
+}
+
+.adminDashboard-left-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.adminDashboard-header h2 {
+  font-size: 20px;
+  color: #333;
+  font-weight: 600;
+}
+
+
+.adminDashboard-welcome-message {
+  font-size: 18px;
+  color: #444;
+}
+
+.adminDashboard-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #2e8b57;
+  cursor: pointer;
+}
+
+.adminDashboard-user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.adminDashboard-notification-btn,
+.adminDashboard-profile-btn {
+  border: none;
+  outline: none;
+  background: #2e8b57;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 50%;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  height: 38px;
+  width: 38px;
+}
+
+.adminDashboard-notification-btn:hover,
+.adminDashboard-profile-btn:hover {
+  background: #256d46;
+}
+
+.adminDashboard-profile-container {
+  position: relative;
+  display: inline-block;
+}
+
+.adminDashboard-profile-btn {
+  background-color: #2e7d32; 
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.adminDashboard-profile-btn:hover {
+  background-color: #4caf50; 
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 55px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 170px;
+  z-index: 2000;
+}
+
+.dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f1f1f1;
+  color: #2e7d32;
+}
+
+.dropdown-menu i {
+  color: #2e7d32;
+  font-size: 15px;
+}
+
+.dropdown-menu.active {
+  display: block;
+  animation: fadeIn 0.2s ease-in-out;
+}
+

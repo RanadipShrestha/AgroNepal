@@ -281,13 +281,11 @@
 
 .alert-success {
   background: #d1fae5;
-  border-left: 4px solid #10b981;
   color: #065f46;
 }
 
 .alert-error {
   background: #fee2e2;
-  border-left: 4px solid #ef4444;
   color: #991b1b;
 }
 

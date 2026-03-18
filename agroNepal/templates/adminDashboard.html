@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Admin Dashboard{% endblock title %}</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+      ::selection {
+      background-color: green;
+      color: white;
+      }
+    </style>
+
+    <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/adminDashboard.css' %}" />
+
+    <!-- Includes files css -->
+    <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/includes/admin_header.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/includes/admin_sidebar.css' %}" />
+
+  </head>
+  <body>
+    {% include "adminDashboard/includes/header.html" %}
+    <div class="admin-main-container">
+      {% include "adminDashboard/includes/sidebar.html" %}
+      <div class="admin-content-area">
+        {% block content %}
+        {% endblock content %}
+      </div>
+    </div>
+  </body>
+</html>
