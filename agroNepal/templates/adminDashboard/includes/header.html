@@ -8,11 +8,14 @@
   <div class="adminDashboard-user-info">
     {% if user.is_authenticated %}
         <button class="adminDashboard-profile-btn" id="admin-profile-btn">
-          {{ user.first_name|first|upper|default:"A"}}{{ user.last_name|first|upper|default:"D"}}
+          {{ user.first_name|first|upper|default:"A"}}{{ user.last_name|first|upper|default:"G"}}
         </button>
-
         <!-- Hidden by default -->
+        
         <div class="dropdown-menu" id="dropdown-menu">
+          <a href=' '>
+            <i class="fa-solid fa-user"></i> Your Profile
+          </a>
           <a href='{% url "logout" %}'>
             <i class="fa-solid fa-right-from-bracket"></i> Logout
           </a>
