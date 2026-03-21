@@ -13,8 +13,7 @@
             <h1 class="adminDashboard-heading">User Management</h1>
             <p class="adminDashboard-subtext">View and manage all registered users on the AgroNepal platform.</p>
         </div>
-        <a href="" class="btn adminDashboard-btn-green add-user-btn">
-          {% comment %} {% url 'adminAddUser' %} {% endcomment %}
+        <a href="{% url 'adminAddUser' %}" class="btn adminDashboard-btn-green add-user-btn">
             <i class="fa-solid fa-plus"></i> Add New User
         </a>
     </div>

@@ -3,5 +3,6 @@ from .views import *
 
 urlpatterns = [
    path("", adminDashboard, name="admindashboard"),
-    path("users/", adminUsers, name="adminUsers"), 
+   path("users/", adminUsers, name="adminUsers"), 
+   path("admin-add-user/", adminAddUser, name="adminAddUser"), 
 ]
