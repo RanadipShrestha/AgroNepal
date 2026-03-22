@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
 
@@ -51,7 +51,40 @@ def adminAddUser(request):
             return redirect('adminUsers')
 
         except Exception as e:
-            messages.error(request, f"Error creating user: {e}", extra_tags="adminAddUser")
+            messages.error(request, f"There is an error while creating user", extra_tags="adminAddUser")
 
     return render(request, 'adminDashboard/dashboard/user/add_user.html')
+
+def adminEditUser(request, user_id):
+    edit_user = get_object_or_404(CustomUser, id=user_id)
+    if request.method == "POST":
+        edit_user.first_name = request.POST.get('first_name')
+        edit_user.last_name = request.POST.get('last_name')
+        edit_user.username = request.POST.get('username')
+        edit_user.email = request.POST.get('email')
+        edit_user.phone_number = request.POST.get('phone_number', '')
+        edit_user.address = request.POST.get('address', '')
+        edit_user.land_address = request.POST.get('land_address', '')
+        edit_user.is_staff = request.POST.get('is_staff') == 'true'
+        edit_user.is_active = request.POST.get('is_active') == 'true'
         
+        try:
+            edit_user.save()
+            messages.success(request, f"User '{edit_user.username}' updated successfully.", extra_tags="adminAddUser")
+            return redirect('adminUsers')
+        except:
+            messages.error(request, f"Error updating user.", extra_tags="adminAddUser")
+            
+    return render(request, 'adminDashboard/dashboard/user/edit_user.html', {'edit_user': edit_user})
+
+def adminDeleteUser(request):
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        user_to_delete = get_object_or_404(CustomUser, id=user_id)
+        if user_to_delete == request.user:
+            messages.error(request, "You cannot delete yourself", extra_tags="adminAddUser")
+        else:
+            username = user_to_delete.username
+            user_to_delete.delete()
+            messages.success(request,"user deleted successfully", extra_tags="adminAddUser")
+    return redirect('adminUsers')
