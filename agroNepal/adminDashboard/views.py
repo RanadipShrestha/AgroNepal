@@ -104,3 +104,11 @@ def adminAddCrop(request):
     return redirect('adminCrops')
 
 
+def adminDeleteCrop(request):
+    if request.method == 'POST':
+        crop_id = request.POST.get('crop_id')
+        crop = get_object_or_404(Crop, id=crop_id)
+        crop_name = crop.name
+        crop.delete()
+        messages.success(request, f"Crop '{crop_name}' deleted successfully.")
+    return redirect('adminCrops')

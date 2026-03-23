@@ -135,7 +135,25 @@
 </div>
 
 
-
+<!-- Delete Modal -->
+<div id="deleteCropModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Deletion</h2>
+    </div>
+    <div class="modal-wrapper-body">
+      <p>Are you sure you want to delete crop "<strong id="deleteCropName"></strong>"? This cannot be undone.</p>
+    </div>
+    <form method="POST" action="" id="deleteCropForm">
+      {% csrf_token %}
+      <input type="hidden" name="crop_id" id="deleteCropId">
+      <div class="modal-wrapper-footer">
+        <button type="button" id="cancelDeleteCropBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+        <button type="submit" class="modal-wrapper-btn modal-wrapper-confirm">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <!-- Add Confirmation Modal -->
 <div id="confirmAddModal" class="modal-wrapper">

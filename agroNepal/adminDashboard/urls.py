@@ -9,4 +9,5 @@ urlpatterns = [
    path("admin-delete-user/", adminDeleteUser, name="adminDeleteUser"), 
    path("crops/", adminCrops, name="adminCrops"), 
    path("admin-add-crop/", adminCrops, name="adminAddCrop"), 
+   path("delete-crop/", adminDeleteCrop, name="adminDeleteCrop"),
 ]
