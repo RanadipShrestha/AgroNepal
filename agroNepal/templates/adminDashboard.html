@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Admin Dashboard{% endblock title %}</title>
-    
+    <link rel="icon" type="image/png" href="{% static 'assets/image/Logo.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
@@ -16,16 +16,19 @@
     </style>
 
     <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/adminDashboard.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/dashboard/dashboard.css' %}" />
 
     <!-- Includes files css -->
     <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/includes/admin_header.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/includes/admin_sidebar.css' %}" />
 
-    <!----------Dashboard------------>
+    <!----------Dashboard user------------>
     <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/dashboard/user/user.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/dashboard/user/add_edit_user.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/dashboard/user/edit_user.css' %}" />
     
+    <!----------Dashboard crop------------>
+    <link rel="stylesheet" href="{% static 'assets/css/adminDashboard/dashboard/crop/crop.css' %}" />
   </head>
   <body>
     {% include "adminDashboard/includes/header.html" %}

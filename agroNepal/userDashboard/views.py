@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from collections import defaultdict
 from datetime import datetime
-from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost, CustomUser
+from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost, CustomUser, CropSale
 from payment.models import PurchaseTicket
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.db.models import Sum
 from django.contrib.auth.forms import PasswordChangeForm
+from .decorators import user_only_required
 # Create your views here.
 
+@user_only_required
 def userDashboard(request):
   total_crops = UserCropAdd.objects.filter(user=request.user).count()
   total_expense = CropExpense.objects.filter(user_crop__user = request.user).aggregate(Sum('amount'))['amount__sum'] or 0
@@ -29,6 +31,7 @@ def userDashboard(request):
   return render(request, "userDashboard/Dashboard/dashboard.html", context)
 
 #----------------------------------Crop Page--------------
+@user_only_required
 def addCrop(request):
   if request.method == "POST":
     crop_id = request.POST.get('crop')
@@ -61,7 +64,7 @@ def addCrop(request):
   }
   return render(request, "userDashboard/Dashboard/plantedCrop.html", context)
 
-
+@user_only_required
 def deleteUserCrop(request):
   if request.method == "POST":
     crop_id = request.POST.get('crop_id')  # Get from POST data, not URL
@@ -72,6 +75,7 @@ def deleteUserCrop(request):
   
   return redirect("crop")
 
+@user_only_required
 def cropExpense(request):
     if request.method == 'POST': 
         # Handle adding new expense
@@ -126,6 +130,7 @@ def cropExpense(request):
 
 
 #Delete a single Expense
+@user_only_required
 def deleteExpense(request):
     if request.method == 'POST': 
         expense_id = request. POST.get('expense_id')
@@ -150,6 +155,7 @@ def deleteCropExpenses(request):
     
     return redirect('cropExpense')
 
+@user_only_required
 def edit_expense(request):
     if request.method == "POST":
         expense_id = request.POST.get("expense_id")
@@ -169,7 +175,7 @@ def edit_expense(request):
 
     return redirect("cropExpense")
 
-from agro.models import CropSale
+@user_only_required
 def cropSales(request):
     if request.method == 'POST':
         # Handle adding new sale
@@ -228,7 +234,7 @@ def cropSales(request):
     }
     return render(request, "userDashboard/Dashboard/sale_expense_management.html", context)
 
-
+@user_only_required
 def editSale(request):
     if request.method == 'POST':
         sale_id = request.POST.get('sale_id')
@@ -253,7 +259,7 @@ def editSale(request):
     
     return redirect('cropSales')
 
-
+@user_only_required
 def deleteSale(request):
     if request.method == 'POST':
         sale_id = request.POST.get('sale_id')
@@ -269,7 +275,7 @@ def deleteSale(request):
     
     return redirect('cropSales')
 
-
+@user_only_required
 def deleteCropSales(request):
     if request.method == 'POST':
         crop_id = request.POST.get('crop_id')
@@ -288,7 +294,7 @@ def deleteCropSales(request):
     return redirect('cropSales')
 
 #--------------------------------------------------------------------------------
-
+@user_only_required
 def userShareKnowledge(request):
     if request.method == "POST":
         title = request.POST.get('title')
@@ -317,6 +323,7 @@ def userShareKnowledge(request):
     }
     return render(request, "userDashboard/Dashboard/community_post.html", context)
 
+@user_only_required
 def editShareKnowledge(request):
     if request.method == 'POST':
         share_id = request.POST.get('share_id')
@@ -340,6 +347,7 @@ def editShareKnowledge(request):
     
     return redirect('userShareKnowledge')
 
+@user_only_required
 def deleteShareKnowledge(request):
     if request.method == 'POST':
         share_id = request.POST.get('share_id')
@@ -357,6 +365,7 @@ def deleteShareKnowledge(request):
 
 
 #----------------Ticket---------------------------------
+@user_only_required
 def userTickets(request):
     tickets = PurchaseTicket.objects.filter(user=request.user).select_related('event').order_by('-purchase_date')
 
@@ -367,12 +376,15 @@ def userTickets(request):
     return render(request, "userDashboard/Dashboard/user_tickets.html", context)
 
 #--------------------------Profile Section -----------------------------
+@user_only_required
 def profile(request):
     return render(request, "userDashboard/userProfile/profile.html")
 
+@user_only_required
 def userEditProfile(request):
     return render(request, "userDashboard/userProfile/edit_profile.html")
 
+@user_only_required
 def userUpdatedProfile(request):
     if request.method == "POST":
         user = request.user
@@ -413,6 +425,7 @@ def userUpdatedProfile(request):
 
     return redirect('profile')
 
+@user_only_required
 def userPasswordChange(request):
     if request.method == "POST":
         form = PasswordChangeForm(request.user, request.POST)

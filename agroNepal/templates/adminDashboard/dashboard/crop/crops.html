@@ -1,0 +1,58 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block content %}
+<div class="adminDashboard-dash">
+   <!-- Messages -->
+  {% if messages %}
+  <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+    {% for message in messages %}
+    <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; {% if 'success' in message.tags %}background:#dcfce3; color:#166534; border-left: 4px solid #16a34a;{% else %}background:#fee2e2; color:#ef4444; border-left: 4px solid #dc2626;{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="adminDashboard-welcome" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h1 class="adminDashboard-heading">Master Crops Management</h1>
+        <p class="adminDashboard-subtext">Manage the global database of crops available for farmers.</p>
+    </div>
+    <button class="add-btn" onclick="document.getElementById('addModal').style.display='flex'">
+        <i class="fa-solid fa-plus"></i> Add New Crop
+    </button>
+  </div>
+
+  <div class="admin-table-container">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Crop Name</th>
+                <th>Description</th>
+                <th style="width: 200px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for crop in crops %}
+            <tr>
+                <td style="font-weight: 600; color: #1e293b;">{{ crop.name }}</td>
+                <td style="color: #64748b;">{{ crop.description|default:"No description provided"|truncatechars:100 }}</td>
+                <td>
+                    <button class="action-btn edit-btn" onclick="openEditModal('{{ crop.id }}', '{{ crop.name|escapejs }}', '{{ crop.description|escapejs }}')">
+                        <i class="fa-solid fa-edit"></i> Edit
+                    </button>
+                    <button type="button" class="action-btn delete-btn delete-crop-btn" data-cropid="{{ crop.id }}" data-cropname="{{ crop.name|escapejs }}">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align: center; color: #64748b;">No crops defined in the system.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

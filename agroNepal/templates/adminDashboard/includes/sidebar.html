@@ -4,8 +4,8 @@
     <ul>
       <li><a href='{% url "admindashboard" %}' class="{% if request.resolver_match.url_name == 'admindashboard' %}active{% endif %}"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
       <li><a href='{% url "adminUsers" %}' class="{% if request.resolver_match.url_name == 'adminUsers' %}active{% endif %}"><i class="fa-solid fa-users"></i> Users</a></li>
-      {% comment %} 
       <li><a href='{% url "adminCrops" %}' class="{% if request.resolver_match.url_name == 'adminCrops' %}active{% endif %}"><i class="fa-solid fa-seedling"></i> Master Crops</a></li>
+      {% comment %} 
       <li><a href='{% url "adminCommunityPosts" %}' class="{% if request.resolver_match.url_name == 'adminCommunityPosts' %}active{% endif %}"><i class="fa-solid fa-comments"></i> Community Posts</a></li>
       <li><a href='{% url "adminContacts" %}' class="{% if request.resolver_match.url_name == 'adminContacts' %}active{% endif %}"><i class="fa-solid fa-envelope"></i> Contacts</a></li> {% endcomment %}
     </ul>

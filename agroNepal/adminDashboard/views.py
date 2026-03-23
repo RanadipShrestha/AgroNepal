@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
+from agro.models import Crop
 
 # Create your views here.
 def adminDashboard(request):
@@ -88,3 +89,15 @@ def adminDeleteUser(request):
             user_to_delete.delete()
             messages.success(request,"user deleted successfully", extra_tags="adminAddUser")
     return redirect('adminUsers')
+
+def adminCrops(request):
+    crops = Crop.objects.all().order_by('-id')
+    return render(request, 'adminDashboard/dashboard/crop/crops.html', {'crops': crops})
+
+# def adminAddCrop(request):
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         description = request.POST.get('description', '')
+#         Crop.objects.create(name=name, description=description)
+#         messages.success(request, f"Crop '{name}' added successfully.", extra_tags="admincrop")
+#     return redirect('adminCrops')
