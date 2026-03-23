@@ -1,17 +1,39 @@
 {% extends "adminDashboard.html" %}
 {% load static %}
+{% block title %}Master Crops Management - AgroNepal{% endblock title %}
+
 {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/adminDashboard/dashboard/dashboard.css' %}" />
+<style>
+/* Base Table Styles tailored for Admin */
+.admin-table-container { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); overflow: hidden; margin-top: 1rem; }
+.admin-table { width: 100%; border-collapse: collapse; }
+.admin-table th, .admin-table td { padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+.admin-table th { background-color: #f8fafc; font-weight: 600; color: #475569; font-size: 0.875rem; text-transform: uppercase; }
+.admin-table tbody tr:hover { background-color: #f1f5f9; }
+
+.action-btn { padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; border: none; margin-right: 0.5rem; }
+.edit-btn { background: #e0f2fe; color: #0284c7; }
+.edit-btn:hover { background: #bae6fd; }
+.delete-btn { background: #fee2e2; color: #ef4444; }
+.delete-btn:hover { background: #fca5a5; }
+.add-btn { background: #dcfce3; color: #166534; padding: 0.75rem 1.5rem; font-size: 1rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s;}
+.add-btn:hover { background: #bbf7d0; }
+
+/* Simple Modal Styles */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+.modal-content { background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.modal-header h2 { font-size: 1.5rem; margin: 0; color: #1e293b; }
+.close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; }
+.form-group { margin-bottom: 1rem; }
+.form-label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: #334155; }
+.form-input { width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; }
+.submit-btn { width: 100%; background: #10b981; color: white; border: none; padding: 0.875rem; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 1rem; }
+.submit-btn:hover { background: #059669; }
+</style>
+
 <div class="adminDashboard-dash">
-   <!-- Messages -->
-  {% if messages %}
-  <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
-    {% for message in messages %}
-    <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; {% if 'success' in message.tags %}background:#dcfce3; color:#166534; border-left: 4px solid #16a34a;{% else %}background:#fee2e2; color:#ef4444; border-left: 4px solid #dc2626;{% endif %}">
-      {{ message }}
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
   <div class="adminDashboard-welcome" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
     <div>
         <h1 class="adminDashboard-heading">Master Crops Management</h1>
@@ -21,6 +43,41 @@
         <i class="fa-solid fa-plus"></i> Add New Crop
     </button>
   </div>
+
+  <!-- Messages -->
+  {% if messages %}
+  <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+    {% for message in messages %}
+    <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; {% if 'success' in message.tags %}background:#dcfce3; color:#166534; border-left: 4px solid #16a34a;{% else %}background:#fee2e2; color:#ef4444; border-left: 4px solid #dc2626;{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  <style>
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOutRight {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+    .toast-message.hide {
+      animation: slideOutRight 0.4s ease-in forwards;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toasts = document.querySelectorAll('.toast-message');
+        toasts.forEach(toast => {
+            setTimeout(() => {
+                toast.classList.add('hide');
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        });
+    });
+  </script>
+  {% endif %}
 
   <div class="admin-table-container">
     <table class="admin-table">
@@ -32,15 +89,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for crop in crops %}
+            {% for c in crops %}
             <tr>
-                <td style="font-weight: 600; color: #1e293b;">{{ crop.name }}</td>
-                <td style="color: #64748b;">{{ crop.description|default:"No description provided"|truncatechars:100 }}</td>
+                <td style="font-weight: 600; color: #1e293b;">{{ c.name }}</td>
+                <td style="color: #64748b;">{{ c.description|default:"No description provided"|truncatechars:100 }}</td>
                 <td>
-                    <button class="action-btn edit-btn" onclick="openEditModal('{{ crop.id }}', '{{ crop.name|escapejs }}', '{{ crop.description|escapejs }}')">
+                    <button class="action-btn edit-btn" onclick="openEditModal('{{ c.id }}', '{{ c.name|escapejs }}', '{{ c.description|escapejs }}')">
                         <i class="fa-solid fa-edit"></i> Edit
                     </button>
-                    <button type="button" class="action-btn delete-btn delete-crop-btn" data-cropid="{{ crop.id }}" data-cropname="{{ crop.name|escapejs }}">
+                    <button type="button" class="action-btn delete-btn delete-crop-btn" data-cropid="{{ c.id }}" data-cropname="{{ c.name|escapejs }}">
                         <i class="fa-solid fa-trash"></i> Delete
                     </button>
                 </td>
@@ -54,5 +111,47 @@
     </table>
   </div>
 </div>
+
+<!-- Add Modal -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add New Master Crop</h2>
+            <button class="close-modal" onclick="document.getElementById('addModal').style.display='none'">&times;</button>
+        </div>
+        <form method="POST" action="{% url 'adminAddCrop' %}" id="addCropForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Crop Name</label>
+                <input type="text" name="name" class="form-input" required placeholder="e.g. Tomato">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description (Optional)</label>
+                <textarea name="description" class="form-input" rows="4" placeholder="Brief description..."></textarea>
+            </div>
+            <button type="button" class="submit-btn" id="triggerAddConfirmBtn">Save Crop</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+<!-- Add Confirmation Modal -->
+<div id="confirmAddModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Addition</h2>
+    </div>
+    <div class="modal-wrapper-body">
+      <p>Are you sure you want to add this new crop?</p>
+    </div>
+    <div class="modal-wrapper-footer">
+      <button type="button" id="cancelAddBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+      <button type="button" id="confirmAddBtn" class="modal-wrapper-btn modal-wrapper-confirm" style="background-color: #10b981;">Confirm Add</button>
+    </div>
+  </div>
+</div>
+
 
 {% endblock content %}

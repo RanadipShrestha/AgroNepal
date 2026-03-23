@@ -94,10 +94,13 @@ def adminCrops(request):
     crops = Crop.objects.all().order_by('-id')
     return render(request, 'adminDashboard/dashboard/crop/crops.html', {'crops': crops})
 
-# def adminAddCrop(request):
-#     if request.method == 'POST':
-#         name = request.POST.get('name')
-#         description = request.POST.get('description', '')
-#         Crop.objects.create(name=name, description=description)
-#         messages.success(request, f"Crop '{name}' added successfully.", extra_tags="admincrop")
-#     return redirect('adminCrops')
+def adminAddCrop(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description', '')
+        Crop.objects.create(name=name, description=description)
+        messages.success(request, f"Crop '{name}' added successfully.", extra_tags="admincrop")
+        print("Added")
+    return redirect('adminCrops')
+
+
