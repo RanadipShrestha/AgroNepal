@@ -102,7 +102,17 @@ def adminAddCrop(request):
         messages.success(request, f"Crop '{name}' added successfully.", extra_tags="admincrop")
         print("Added")
     return redirect('adminCrops')
-
+def adminEditCrop(request):
+    if request.method == 'POST':
+        crop_id = request.POST.get('crop_id')
+        name = request.POST.get('name')
+        description = request.POST.get('description', '')
+        crop = get_object_or_404(Crop, id=crop_id)
+        crop.name = name
+        crop.description = description
+        crop.save()
+        messages.success(request, f"Crop '{name}' updated successfully.")
+    return redirect('adminCrops')
 
 def adminDeleteCrop(request):
     if request.method == 'POST':

@@ -53,30 +53,6 @@
     </div>
     {% endfor %}
   </div>
-  <style>
-    @keyframes slideInRight {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOutRight {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(100%); opacity: 0; }
-    }
-    .toast-message.hide {
-      animation: slideOutRight 0.4s ease-in forwards;
-    }
-  </style>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const toasts = document.querySelectorAll('.toast-message');
-        toasts.forEach(toast => {
-            setTimeout(() => {
-                toast.classList.add('hide');
-                setTimeout(() => toast.remove(), 400);
-            }, 3500);
-        });
-    });
-  </script>
   {% endif %}
 
   <div class="admin-table-container">
@@ -144,7 +120,7 @@
     <div class="modal-wrapper-body">
       <p>Are you sure you want to delete crop "<strong id="deleteCropName"></strong>"? This cannot be undone.</p>
     </div>
-    <form method="POST" action="" id="deleteCropForm">
+    <form method="POST" action="{% url 'adminDeleteCrop' %}" id="deleteCropForm">
       {% csrf_token %}
       <input type="hidden" name="crop_id" id="deleteCropId">
       <div class="modal-wrapper-footer">

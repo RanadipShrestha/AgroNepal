@@ -80,3 +80,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const toasts = document.querySelectorAll(".toast-message");
+      toasts.forEach((toast) => {
+        setTimeout(() => {
+          toast.classList.add("hide");
+          setTimeout(() => toast.remove(), 400);
+        }, 3500);
+      });
+    });
