@@ -3,43 +3,13 @@
 {% block title %}Master Crops Management - AgroNepal{% endblock title %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'assets/css/adminDashboard/dashboard/dashboard.css' %}" />
-<style>
-/* Base Table Styles tailored for Admin */
-.admin-table-container { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); overflow: hidden; margin-top: 1rem; }
-.admin-table { width: 100%; border-collapse: collapse; }
-.admin-table th, .admin-table td { padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
-.admin-table th { background-color: #f8fafc; font-weight: 600; color: #475569; font-size: 0.875rem; text-transform: uppercase; }
-.admin-table tbody tr:hover { background-color: #f1f5f9; }
-
-.action-btn { padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; border: none; margin-right: 0.5rem; }
-.edit-btn { background: #e0f2fe; color: #0284c7; }
-.edit-btn:hover { background: #bae6fd; }
-.delete-btn { background: #fee2e2; color: #ef4444; }
-.delete-btn:hover { background: #fca5a5; }
-.add-btn { background: #dcfce3; color: #166534; padding: 0.75rem 1.5rem; font-size: 1rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all 0.2s;}
-.add-btn:hover { background: #bbf7d0; }
-
-/* Simple Modal Styles */
-.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-.modal-content { background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-.modal-header h2 { font-size: 1.5rem; margin: 0; color: #1e293b; }
-.close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; }
-.form-group { margin-bottom: 1rem; }
-.form-label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: #334155; }
-.form-input { width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; }
-.submit-btn { width: 100%; background: #10b981; color: white; border: none; padding: 0.875rem; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 1rem; }
-.submit-btn:hover { background: #059669; }
-</style>
-
 <div class="adminDashboard-dash">
   <div class="adminDashboard-welcome" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
     <div>
         <h1 class="adminDashboard-heading">Master Crops Management</h1>
         <p class="adminDashboard-subtext">Manage the global database of crops available for farmers.</p>
     </div>
-    <button class="add-btn" onclick="document.getElementById('addModal').style.display='flex'">
+    <button class="add-crop-btn" onclick="document.getElementById('addModal').style.display='flex'">
         <i class="fa-solid fa-plus"></i> Add New Crop
     </button>
   </div>
@@ -48,7 +18,7 @@
   {% if messages %}
   <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
     {% for message in messages %}
-    <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; {% if 'success' in message.tags %}background:#dcfce3; color:#166534; border-left: 4px solid #16a34a;{% else %}background:#fee2e2; color:#ef4444; border-left: 4px solid #dc2626;{% endif %}">
+    <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; {% if 'success' in message.tags %}background:#dcfce3; color:#166534; {% else %}background:#fee2e2; color:#ef4444;{% endif %}">
       {{ message }}
     </div>
     {% endfor %}
@@ -110,6 +80,28 @@
     </div>
 </div>
 
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Crop</h2>
+            <button class="close-modal" onclick="document.getElementById('editModal').style.display='none'">&times;</button>
+        </div>
+        <form method="POST" action="{% url 'adminEditCrop' %}" id="editCropForm">
+            {% csrf_token %}
+            <input type="hidden" name="crop_id" id="edit_crop_id">
+            <div class="form-group">
+                <label class="form-label">Crop Name</label>
+                <input type="text" name="name" id="edit_crop_name" class="form-input" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea name="description" id="edit_crop_desc" class="form-input" rows="4"></textarea>
+            </div>
+            <button type="button" class="submit-btn" id="triggerEditConfirmBtn">Update Crop</button>
+        </form>
+    </div>
+</div>
 
 <!-- Delete Modal -->
 <div id="deleteCropModal" class="modal-wrapper">
@@ -142,10 +134,24 @@
     </div>
     <div class="modal-wrapper-footer">
       <button type="button" id="cancelAddBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
-      <button type="button" id="confirmAddBtn" class="modal-wrapper-btn modal-wrapper-confirm" style="background-color: #10b981;">Confirm Add</button>
+      <button type="button" id="confirmAddBtn" class="modal-wrapper-btn modal-wrapper-confirm">Confirm Add</button>
     </div>
   </div>
 </div>
 
-
+<!-- Edit Confirmation Modal -->
+<div id="confirmEditModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Update</h2>
+    </div>
+    <div class="modal-wrapper-body">
+      <p>Are you sure you want to save these changes to the crop?</p>
+    </div>
+    <div class="modal-wrapper-footer">
+      <button type="button" id="cancelEditBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+      <button type="button" id="confirmEditBtn" class="modal-wrapper-btn modal-wrapper-confirm" >Confirm Update</button>
+    </div>
+  </div>
+</div>
 {% endblock content %}

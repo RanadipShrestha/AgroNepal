@@ -1,3 +1,24 @@
+/* edit button for all admin dashboard  */
+.edit-btn {
+    background: #148053;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.edit-btn:hover {
+    background: #35d673;
+}
+
+
 /* Base Table Styles tailored for Admin */
 .admin-table-container {
     background: white;
@@ -124,24 +145,7 @@
     gap: 0.5rem;
 }
 
-.edit-btn {
-    background: #67a189;
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
 
-.edit-btn:hover {
-    background: #35d673;
-}
 
 .current-user-label {
     color: #94a3b8;
