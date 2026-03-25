@@ -9,11 +9,6 @@
       <li><a href='{% url "userShareKnowledge" %}' class="{% if request.resolver_match.url_name == 'userShareKnowledge' %}active{% endif %}"><i class="fa-solid fa-lightbulb"></i> Community Post </a></li>
       <li><a href='{% url "userTickets" %}' class="{% if request.resolver_match.url_name == 'userTickets' %}active{% endif %}"><i class="fa-solid fa-ticket"></i> Ticket </a></li>
     </ul>
-    <div class="sidebar-logout">
-      <a href="{% url 'logout' %}" class="sidebar-back-btn">
-        Logout
-      </a>
-    </div>
     <div class="sidebar-bottom">
       <a href="{% url 'index' %}" class="sidebar-back-btn">
        Back to Home

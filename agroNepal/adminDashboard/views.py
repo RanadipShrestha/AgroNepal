@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
-from agro.models import Crop
+from agro.models import Crop, CropSchedule
 
 # Create your views here.
 def adminDashboard(request):
@@ -91,17 +91,24 @@ def adminDeleteUser(request):
     return redirect('adminUsers')
 
 def adminCrops(request):
-    crops = Crop.objects.all().order_by('-id')
+    crops = Crop.objects.prefetch_related('schedules').all().order_by('-id')
     return render(request, 'adminDashboard/dashboard/crop/crops.html', {'crops': crops})
 
 def adminAddCrop(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description', '')
-        Crop.objects.create(name=name, description=description)
+        crop = Crop.objects.create(name=name, description=description)
         messages.success(request, f"Crop '{name}' added successfully.", extra_tags="admincrop")
-        print("Added")
+
+        day_numbers = request.POST.getlist('schedule_day[]')
+        tasks = request.POST.getlist('schedule_task[]')
+
+        for day, task in zip(day_numbers, tasks):
+            if day and task:
+                CropSchedule.objects.create(crop=crop, day_number=day, task=task)
     return redirect('adminCrops')
+
 def adminEditCrop(request):
     if request.method == 'POST':
         crop_id = request.POST.get('crop_id')

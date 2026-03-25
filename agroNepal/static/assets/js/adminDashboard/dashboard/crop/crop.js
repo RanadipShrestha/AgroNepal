@@ -5,6 +5,30 @@ function openEditModal(id, name, desc) {
   document.getElementById("editModal").style.display = "flex";
 }
 
+
+function addScheduleRow(mode, dayValue = '', taskValue = '') {
+  const containerId = mode === "add" ? "addSchedulesContainer" : "editSchedulesContainer";
+  const container = document.getElementById(containerId)
+
+  if (!container) return;
+
+  const row = document.createElement('div');
+  row.style.display = 'flex';
+  row.style.gap = '0.5rem';
+  row.style.alignItems = 'center';
+
+  const safeDay = String(dayValue).replace(/"/g, "&quot;");
+  const safeTask = String(taskValue).replace(/"/g, "&quot;");
+   row.innerHTML = `
+        <input type="number" name="schedule_day[]" class="form-input" style="width: 80px; margin-bottom: 0;" placeholder="Day" value="${safeDay}" min="0" required>
+        <input type="text" name="schedule_task[]" class="form-input" style="flex: 1; margin-bottom: 0;" placeholder="Task (e.g. Watering)" value="${safeTask}" required>
+        <button type="button" onclick="this.parentElement.remove()" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 4px;">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    `;
+  container.appendChild(row);
+}
+
 // Custom Delete Modal Logic
 document.addEventListener("DOMContentLoaded", function () {
   const deleteModal = document.getElementById("deleteCropModal");
@@ -80,6 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 });
+
+
 
     document.addEventListener("DOMContentLoaded", function () {
       const toasts = document.querySelectorAll(".toast-message");
