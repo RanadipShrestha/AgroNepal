@@ -25,21 +25,42 @@
   </div>
   {% endif %}
 
-  <div class="admin-table-container">
+    <div class="admin-table-container">
     <table class="admin-table">
         <thead>
             <tr>
                 <th>Crop Name</th>
                 <th>Description</th>
+                <th>Schedules</th>
                 <th style="width: 200px;">Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for c in crops %}
+            <script type="application/json" id="schedules-json-{{ c.id }}">
+                [
+                  {% for s in c.schedules.all %}
+                    {"day_number": {{ s.day_number|default:0 }}, "task": "{{ s.task|escapejs }}"}{% if not forloop.last %},{% endif %}
+                  {% endfor %}
+                ]
+            </script>
             <tr>
-                <td style="font-weight: 600; color: #1e293b;">{{ c.name }}</td>
-                <td style="color: #64748b;">{{ c.description|default:"No description provided"|truncatechars:100 }}</td>
-                <td>
+                <td style="font-weight: 600; color: #1e293b; vertical-align: top;">{{ c.name }}</td>
+                <td style="color: #64748b; vertical-align: top;">{{ c.description|default:"No description provided"|truncatechars:100 }}</td>
+                <td style="color: #64748b; font-size: 0.85rem; vertical-align: top;">
+                    {% if c.schedules.exists %}
+                        <div style="max-height: 120px; overflow-y: auto; padding-right: 5px;">
+                            <ul style="margin: 0; padding-left: 1rem;">
+                            {% for s in c.schedules.all %}
+                                <li style="margin-bottom: 2px;">Day {{ s.day_number|default:0 }}: {{ s.task }}</li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    {% else %}
+                        <span style="font-style: italic; color: #94a3b8;">No schedules</span>
+                    {% endif %}
+                </td>
+                <td style="vertical-align: top;">
                     <button class="action-btn edit-btn" onclick="openEditModal('{{ c.id }}', '{{ c.name|escapejs }}', '{{ c.description|escapejs }}')">
                         <i class="fa-solid fa-edit"></i> Edit
                     </button>
@@ -50,7 +71,7 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="3" style="text-align: center; color: #64748b;">No crops defined in the system.</td>
+                <td colspan="4" style="text-align: center; color: #64748b;">No crops defined in the system.</td>
             </tr>
             {% endfor %}
         </tbody>
