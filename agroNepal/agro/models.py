@@ -160,7 +160,7 @@ class CropSale(models.Model):
 class CommunityPost(models.Model):
   image = models.ImageField(upload_to="img/UserPost", null=True, blank=True)
   title = models.CharField(max_length=255)
-  slug = models.SlugField(unique=True, blank=True)
+  slug = models.SlugField(max_length=255, unique=True, blank=True)
   description = models.TextField()
   author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
   create_date = models.DateField(auto_now_add=True)
@@ -179,7 +179,7 @@ class CommunityPost(models.Model):
     base_slug = slugify(self.title)
     slug = base_slug
     num = 1
-    while Blog.objects.filter(slug=slug).exists():
+    while CommunityPost.objects.filter(slug=slug).exists():
       slug = f"{base_slug}-{num}"
       num+=1
     return slug

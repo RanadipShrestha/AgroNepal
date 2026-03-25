@@ -131,6 +131,18 @@
                 <label class="form-label">Description</label>
                 <textarea name="description" id="edit_crop_desc" class="form-input" rows="4"></textarea>
             </div>
+
+             <div class="form-group">
+                <label class="form-label" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                    Crop Schedules
+                    <button type="button" class="action-btn edit-btn" onclick="addScheduleRow('edit')" style="padding: 4px 8px; font-size: 0.8rem; background-color: #f1f5f9; color: #000; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer;">
+                        <i class="fa-solid fa-plus"></i> Add task
+                    </button>
+                </label>
+                <div id="editSchedulesContainer" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 200px; overflow-y: auto; padding-right: 5px;">
+                </div>
+            </div>
+            
             <button type="button" class="submit-btn" id="triggerEditConfirmBtn">Update Crop</button>
         </form>
     </div>

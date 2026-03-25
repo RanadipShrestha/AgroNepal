@@ -118,6 +118,15 @@ def adminEditCrop(request):
         crop.name = name
         crop.description = description
         crop.save()
+
+        crop.schedules.all().delete()
+
+        crop.schedules.all().delete()
+        day_numbers = request.POST.getlist('schedule_day[]')
+        tasks = request.POST.getlist('schedule_task[]')
+        for day, task in zip(day_numbers, tasks):
+            if day and task:
+                CropSchedule.objects.create(crop=crop, day_number=day, task=task)
         messages.success(request, f"Crop '{name}' updated successfully.")
     return redirect('adminCrops')
 

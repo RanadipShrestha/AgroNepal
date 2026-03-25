@@ -57,7 +57,6 @@
           <div class="shareKnowledge-image-wrapper">
             <img src="{{ share.image.url }}" alt="{{ share.title }}" class="shareKnowledge-thumbnail" />
           </div>
-          </div>
           {% endif %}
           <div class="shareKnowledge-content">
             <h3 class="shareKnowledge-title">{{ share.title }}</h3>
@@ -174,7 +173,7 @@
         </div>
         <div class="shareKnowledge-modal-footer">
             <button type="submit" class="shareKnowledge-submit-btn">
-              Publish Contribution
+              Post
             </button>
         </div>
       </form>
@@ -214,7 +213,7 @@
           ></textarea>
         </div>
         <div class="shareKnowledge-form-group">
-          <label for="edit_content" class="shareKnowledge-form-label">Detailed Knowledge</label>
+          <label for="edit_content" class="shareKnowledge-form-label">Detailed Content</label>
           <textarea
             id="edit_content"
             name="user_share_content"
@@ -301,10 +300,10 @@
         class="shareKnowledge-btn-cancel"
         id="cancelPublishShareBtn"
       >
-        Wait, not yet
+        Cancel
       </button>
       <button type="button" id="confirmPublishShareBtn" class="shareKnowledge-submit-btn" style="flex: 1;">
-        Yes, Publish
+        Publish
       </button>
     </div>
   </div>

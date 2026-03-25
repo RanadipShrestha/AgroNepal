@@ -312,8 +312,8 @@ def userShareKnowledge(request):
             )
             messages.success(request, f'Knowledge Share created successfully!', extra_tags="shareKnowledgeSuccess")
             return redirect('userShareKnowledge')
-        except:
-            messages.error(request, f'Error creating Knowledge Share', extra_tags="shareKnowledgeError")
+        except Exception as e:
+            messages.error(request, f'Error creating Knowledge Share: {str(e)}', extra_tags="shareKnowledgeError")
             return redirect('userShareKnowledge')
     
     shares = CommunityPost.objects.filter(author=request.user).order_by('-create_date')
@@ -342,8 +342,8 @@ def editShareKnowledge(request):
             share.save()
             
             messages.success(request, f'Knowledge Share "{title}" updated successfully!', extra_tags="shareKnowledgeEditSuccess")
-        except:
-            messages.error(request, f'Error updating Knowledge Share', extra_tags="shareKnowledgeEditError")
+        except Exception as e:
+            messages.error(request, f'Error updating Knowledge Share: {str(e)}', extra_tags="shareKnowledgeEditError")
     
     return redirect('userShareKnowledge')
 
@@ -358,8 +358,8 @@ def deleteShareKnowledge(request):
             share.delete()
             
             messages.success(request, f'Knowledge Share "{share_title}" deleted successfully!', extra_tags="shareKnowledgeDeleteSuccess")
-        except:
-            messages.error(request, f'Error deleting Knowledge Share', extra_tags="shareKnowledgeDeleteError")
+        except Exception as e:
+            messages.error(request, f'Error deleting Knowledge Share: {str(e)}', extra_tags="shareKnowledgeDeleteError")
     
     return redirect('userShareKnowledge')
 
