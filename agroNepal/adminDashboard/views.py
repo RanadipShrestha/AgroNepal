@@ -2,15 +2,22 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
 from agro.models import Crop, CropSchedule
-
+from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
+
+def is_admin(user):
+    return user.is_authenticated and (user.is_staff or user.is_superuser)
+
+@user_passes_test(is_admin)
 def adminDashboard(request):
   return render(request, 'adminDashboard/dashboard/dashboard.html')
 
+@user_passes_test(is_admin)
 def adminUsers(request):
   users = CustomUser.objects.all().order_by('-date_joined')
   return render(request, 'adminDashboard/dashboard/user/users.html', {'users': users}) 
 
+@user_passes_test(is_admin)
 def adminAddUser(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
@@ -56,6 +63,7 @@ def adminAddUser(request):
 
     return render(request, 'adminDashboard/dashboard/user/add_user.html')
 
+@user_passes_test(is_admin)
 def adminEditUser(request, user_id):
     edit_user = get_object_or_404(CustomUser, id=user_id)
     if request.method == "POST":
@@ -78,6 +86,7 @@ def adminEditUser(request, user_id):
             
     return render(request, 'adminDashboard/dashboard/user/edit_user.html', {'edit_user': edit_user})
 
+@user_passes_test(is_admin)
 def adminDeleteUser(request):
     if request.method == "POST":
         user_id = request.POST.get('user_id')
@@ -90,10 +99,12 @@ def adminDeleteUser(request):
             messages.success(request,"user deleted successfully", extra_tags="adminAddUser")
     return redirect('adminUsers')
 
+@user_passes_test(is_admin)
 def adminCrops(request):
     crops = Crop.objects.prefetch_related('schedules').all().order_by('-id')
     return render(request, 'adminDashboard/dashboard/crop/crops.html', {'crops': crops})
 
+@user_passes_test(is_admin)
 def adminAddCrop(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -120,6 +131,7 @@ def adminAddCrop(request):
 
     return redirect('adminCrops')
 
+@user_passes_test(is_admin)
 def adminEditCrop(request):
     if request.method == 'POST':
         crop_id = request.POST.get('crop_id')
@@ -157,6 +169,7 @@ def adminEditCrop(request):
 
     return redirect('adminCrops')
 
+@user_passes_test(is_admin)
 def adminDeleteCrop(request):
     if request.method == 'POST':
         crop_id = request.POST.get('crop_id')
