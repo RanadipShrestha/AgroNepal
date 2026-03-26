@@ -90,7 +90,7 @@
             {% csrf_token %}
             <div class="form-group">
                 <label class="form-label">Crop Name</label>
-                <input type="text" name="name" class="form-input" required placeholder="e.g. Tomato">
+                <input type="text" name="name" class="form-input" placeholder="e.g. Tomato">
             </div>
             <div class="form-group">
                 <label class="form-label">Description (Optional)</label>
@@ -125,7 +125,7 @@
             <input type="hidden" name="crop_id" id="edit_crop_id">
             <div class="form-group">
                 <label class="form-label">Crop Name</label>
-                <input type="text" name="name" id="edit_crop_name" class="form-input" required>
+                <input type="text" name="name" id="edit_crop_name" class="form-input" >
             </div>
             <div class="form-group">
                 <label class="form-label">Description</label>
@@ -142,7 +142,6 @@
                 <div id="editSchedulesContainer" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 200px; overflow-y: auto; padding-right: 5px;">
                 </div>
             </div>
-            
             <button type="button" class="submit-btn" id="triggerEditConfirmBtn">Update Crop</button>
         </form>
     </div>

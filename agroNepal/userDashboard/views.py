@@ -310,7 +310,7 @@ def userShareKnowledge(request):
                 author=request.user,
                 image=image
             )
-            messages.success(request, f'Knowledge Share created successfully!', extra_tags="shareKnowledgeSuccess")
+            messages.success(request, f'Commpunity Post created successfully!', extra_tags="shareKnowledgeSuccess")
             return redirect('userShareKnowledge')
         except Exception as e:
             messages.error(request, f'Error creating Knowledge Share: {str(e)}', extra_tags="shareKnowledgeError")

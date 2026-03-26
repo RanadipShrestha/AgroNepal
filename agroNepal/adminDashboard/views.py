@@ -98,15 +98,26 @@ def adminAddCrop(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description', '')
+
+        if not name:
+            messages.error(request, "Crop name is required")
+            return redirect('adminCrops')
+
         crop = Crop.objects.create(name=name, description=description)
-        messages.success(request, f"Crop '{name}' added successfully.", extra_tags="admincrop")
 
         day_numbers = request.POST.getlist('schedule_day[]')
         tasks = request.POST.getlist('schedule_task[]')
 
         for day, task in zip(day_numbers, tasks):
             if day and task:
-                CropSchedule.objects.create(crop=crop, day_number=day, task=task)
+                CropSchedule.objects.create(
+                    crop=crop,
+                    day_number=int(day),
+                    task=task
+                )
+
+        messages.success(request, f"Crop '{name}' added successfully.", extra_tags="admincrop")
+
     return redirect('adminCrops')
 
 def adminEditCrop(request):
@@ -114,20 +125,36 @@ def adminEditCrop(request):
         crop_id = request.POST.get('crop_id')
         name = request.POST.get('name')
         description = request.POST.get('description', '')
+
+        #Validation
+        if not name:
+            messages.error(request, "Crop name is required")
+            return redirect('adminCrops')
+
         crop = get_object_or_404(Crop, id=crop_id)
+
+        # Update crop
         crop.name = name
         crop.description = description
         crop.save()
 
+        #Delete old schedules
         crop.schedules.all().delete()
 
-        crop.schedules.all().delete()
+        # Add new schedules
         day_numbers = request.POST.getlist('schedule_day[]')
         tasks = request.POST.getlist('schedule_task[]')
+
         for day, task in zip(day_numbers, tasks):
             if day and task:
-                CropSchedule.objects.create(crop=crop, day_number=day, task=task)
+                CropSchedule.objects.create(
+                    crop=crop,
+                    day_number=int(day),
+                    task=task
+                )
+
         messages.success(request, f"Crop '{name}' updated successfully.")
+
     return redirect('adminCrops')
 
 def adminDeleteCrop(request):
@@ -136,5 +163,5 @@ def adminDeleteCrop(request):
         crop = get_object_or_404(Crop, id=crop_id)
         crop_name = crop.name
         crop.delete()
-        messages.success(request, f"Crop '{crop_name}' deleted successfully.")
+        messages.success(request, "Crop deleted successfully.")
     return redirect('adminCrops')
