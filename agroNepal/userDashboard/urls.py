@@ -4,6 +4,7 @@ from . views import *
 urlpatterns = [
     path("", userDashboard, name="userdashboard"), 
     path('crop/', addCrop, name='crop'),
+    path('crop-tasks/', cropTasks, name='cropTasks'),
     path('delete-crop/', deleteUserCrop, name='delete_crop'),
     path('cropexpense/', cropExpense, name='cropExpense'),
     path('delete-expense/', deleteExpense, name='deleteExpense'),

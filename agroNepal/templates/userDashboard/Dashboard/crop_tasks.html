@@ -1,0 +1,58 @@
+{% extends "userDashboard.html" %}
+{% load static %}
+{% block title %}Crop Tasks - AgroNepal{% endblock title %}
+
+{% block content %}
+
+<div class="userDashboard-dash">
+  <div class="userDashboard-welcome">
+    <h1 class="userDashboard-heading">Today's Crop Tasks</h1>
+    <p class="userDashboard-subtext">
+      Tasks scheduled for today based on your planted crops.
+    </p>
+  </div>
+
+  <div class="task-container">
+    <h2 class="task-title">
+      <i class="fa-solid fa-calendar-day"></i> Tasks for Today
+    </h2>
+
+    {% if today_tasks %}
+    <div class="table-wrapper">
+      <table class="task-table">
+        <thead>
+          <tr>
+            <th>Crop</th>
+            <th>Task</th>
+            <th>Day</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in today_tasks %}
+          <tr class="task-row">
+            <td>
+              <div class="crop-name">{{ task.crop_name }}</div>
+              <div class="planted-date">
+                Planted: {{ task.planted_date }}
+              </div>
+            </td>
+            <td class="task-text">{{ task.task }}</td>
+            <td>
+              <span class="day-badge">
+                Day {{ task.day_number }}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p class="no-task">
+        No tasks scheduled for today. Enjoy your day!
+      </p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}

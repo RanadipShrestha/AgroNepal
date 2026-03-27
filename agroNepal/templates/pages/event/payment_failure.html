@@ -4,7 +4,77 @@
 {% block title %}Payment Failed{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/payment_failed.css' %}">
+<style>
+    :root {
+        --error-color: #dc3545;
+        --text-color: #333;
+        --bg-color: #f8f9fa;
+    }
+    .payment-failed-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        background-color: var(--bg-color);
+        padding: 20px;
+    }
+    .payment-failed-card {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+    }
+    .payment-failed-icon {
+        margin-bottom: 20px;
+    }
+    .payment-failed-title {
+        color: var(--error-color);
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+    .payment-failed-message {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+    .payment-failed-details {
+        background: #fdf2f2;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: left;
+        margin-bottom: 25px;
+    }
+    .detail-item {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .detail-label {
+        font-weight: 600;
+        color: #555;
+    }
+    .detail-value {
+        color: #333;
+    }
+    .status-failed {
+        color: var(--error-color);
+        font-weight: bold;
+    }
+    .help-title {
+        font-size: 18px;
+        margin-top: 20px;
+    }
+    .help-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .help-link:hover {
+        text-decoration: underline;
+    }
+</style>
 
 <div class="payment-failed-container">
     <div class="payment-failed-card">
@@ -20,6 +90,10 @@
             <h1 class="payment-failed-title">Payment Failed</h1>
             <p class="payment-failed-message">
                 We're sorry, but your payment could not be processed. This could be due to insufficient funds, network issues, or other technical problems.
+                {% if error_message %}
+                <br><br>
+                <strong>Error details:</strong> {{ error_message }}
+                {% endif %}
             </p>
             
             <div class="payment-failed-details">

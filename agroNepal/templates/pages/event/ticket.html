@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your Ticket - {{ ticket.event.title }}{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-color: #4CAF50;
+        --secondary-color: #2E7D32;
+        --accent-color: #FFC107;
+        --text-color: #333;
+        --bg-color: #f4f7f6;
+    }
+
+    .ticket-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .success-banner {
+        background-color: var(--primary-color);
+        color: white;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px 10px 0 0;
+        margin-bottom: 0;
+    }
+
+    .ticket-card {
+        background: white;
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+        .ticket-card {
+            flex-direction: row;
+        }
+    }
+
+    .ticket-main {
+        flex: 2;
+        padding: 30px;
+        border-right: 2px dashed #ddd;
+    }
+
+    .event-title {
+        font-size: 24px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .ticket-info {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .info-item label {
+        display: block;
+        font-size: 12px;
+        color: #888;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .info-item span {
+        font-size: 16px;
+        color: var(--text-color);
+        font-weight: 600;
+    }
+
+    .qr-placeholder {
+        width: 150px;
+        height: 150px;
+        background: #eee;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        font-size: 12px;
+        color: #999;
+    }
+
+    .ticket-id {
+        font-family: monospace;
+        font-size: 12px;
+        color: #666;
+        margin-top: 10px;
+    }
+
+    .btn-print {
+        background: var(--secondary-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+        font-weight: bold;
+        transition: background 0.3s;
+    }
+
+    .btn-print:hover {
+        background: #1B5E20;
+    }
+
+    .message-box {
+        background: #e0f2f1;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 20px 0;
+        text-align: center;
+        color: var(--secondary-color);
+    }
+</style>
+
+<div class="ticket-container">
+    <div class="success-banner">
+        <h1>Payment Successful!</h1>
+        <p>Your ticket is ready.</p>
+    </div>
+
+    {% if message %}
+    <div class="message-box">
+        {{ message }}
+    </div>
+    {% endif %}
+
+    <div class="ticket-card">
+        <div class="ticket-main">
+            
+            <div class="event-title">Event Name :{{ ticket.event.name }}</div>
+            <div class="ticket-info">
+                <div class="info-item">
+                    <label>User Name</label>
+                    <span>{{ ticket.user.username }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Event Date</label>
+                    <span>{{ ticket.event.date|date:"F d, Y" }}</span>
+                </div>
+                 <div class="info-item">
+                    <label>Ticket ID</label>
+                    <span>{{ ticket.ticket_id }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Price</label>
+                    <span>Rs. {{ ticket.amount }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Status</label>
+                    <span style="color: green;">{{ ticket.status|capfirst }}</span>
+                </div>
+            </div>
+            <p style="margin-top: 20px; font-size: 14px; color: #666;">
+                Please present this ticket at the entrance. You can also find your tickets in your dashboard.
+            </p>
+        </div>
+</div>
+{% endblock %}

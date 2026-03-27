@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from agro.models import CropExpense, UserCropAdd, Crop, CommunityPost, CustomUser, CropSale
 from payment.models import PurchaseTicket
 from django.contrib.auth import get_user_model, update_session_auth_hash
@@ -441,3 +441,27 @@ def userPasswordChange(request):
     return render(request, 'userDashboard/userProfile/change_password.html', {
         'form': form
     })
+
+
+@user_only_required
+def cropTasks(request):
+    user_crops = UserCropAdd.objects.filter(user=request.user).select_related('crop').prefetch_related('crop__schedules')
+    
+    today = date.today()
+    today_tasks = []
+    
+    for uc in user_crops:
+        for schedule in uc.crop.schedules.all():
+            task_date = uc.planted_date + timedelta(days=schedule.day_number)
+            if task_date == today:
+                today_tasks.append({
+                    'crop_name': uc.crop.name,
+                    'planted_date': uc.planted_date,
+                    'task': schedule.task,
+                    'day_number': schedule.day_number,
+                })
+    
+    context = {
+        'today_tasks': today_tasks
+    }
+    return render(request, "userDashboard/Dashboard/crop_tasks.html", context)
