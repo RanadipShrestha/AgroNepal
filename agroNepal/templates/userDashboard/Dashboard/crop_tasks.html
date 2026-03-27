@@ -3,7 +3,6 @@
 {% block title %}Crop Tasks - AgroNepal{% endblock title %}
 
 {% block content %}
-
 <div class="userDashboard-dash">
   <div class="userDashboard-welcome">
     <h1 class="userDashboard-heading">Today's Crop Tasks</h1>
@@ -11,10 +10,19 @@
       Tasks scheduled for today based on your planted crops.
     </p>
   </div>
+
+  {% for message in messages %}
+    {% if "deleteCropTask" in message.tags %}
+      <div class="alert-message {% if message.tags and 'error' in message.tags %}alert-error{% else %}alert-success{% endif %}">
+        <span class="alert-icon">{% if 'error' in message.tags %}❌{% else %}✅{% endif %}</span>
+        <span class="alert-text">{{ message }}</span>
+        <button class="alert-close" onclick="this.parentElement.remove()">✕</button>
+      </div>
+    {% endif %}
+  {% endfor %}
+
   <div class="task-container">
-    <h2 class="task-title">
-      <i class="fa-solid fa-calendar-day"></i> Tasks for Today
-    </h2>
+    <h2 class="task-title">Tasks for Today</h2>
 
     {% if today_tasks %}
     <div class="table-wrapper">
@@ -24,6 +32,7 @@
             <th>Crop</th>
             <th>Task</th>
             <th>Day</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -31,15 +40,19 @@
           <tr class="task-row">
             <td>
               <div class="crop-name">{{ task.crop_name }}</div>
-              <div class="planted-date">
-                Planted: {{ task.planted_date }}
-              </div>
+              <div class="planted-date">Planted: {{ task.planted_date }}</div>
             </td>
             <td class="task-text">{{ task.task }}</td>
             <td>
-              <span class="day-badge">
-                Day {{ task.day_number }}
-              </span>
+              <span class="day-badge">Day {{ task.day_number }}</span>
+            </td>
+            <td>
+              <button
+                class="hide-btn"
+                onclick="openModal('{{ task.user_crop_id }}', '{{ task.crop_name }}')"
+              >
+                Remove
+              </button>
             </td>
           </tr>
           {% endfor %}
@@ -47,10 +60,48 @@
       </table>
     </div>
     {% else %}
-      <p class="no-task">
-        No tasks scheduled for today. Enjoy your day!
-      </p>
+      <p class="no-task">No tasks scheduled for today. Enjoy your day!</p>
     {% endif %}
   </div>
 </div>
+
+<!-- Confirmation Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-icon">🌿</div>
+    <h3 class="modal-title">Hide Crop Task?</h3>
+    <p class="modal-message">
+      Are you sure you want to hide <strong id="modalCropName"></strong>?
+      This will only remove it from your task view — your crop data stays intact.
+    </p>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <form id="hideForm" method="POST" action="">
+        {% csrf_token %}
+        <button type="submit" class="modal-confirm">Yes, Hide It</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(userCropId, cropName) {
+    document.getElementById('modalCropName').textContent = cropName;
+    document.getElementById('hideForm').action = `/userDashboard/crop-tasks/hide/${userCropId}/`;
+    document.getElementById('confirmModal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('confirmModal').classList.remove('active');
+  }
+
+  document.getElementById('confirmModal').addEventListener('click', function (e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Auto-dismiss alert after 4 seconds
+  setTimeout(() => {
+    document.querySelectorAll('.alert-message').forEach(el => el.remove());
+  }, 4000);
+</script>
 {% endblock content %}

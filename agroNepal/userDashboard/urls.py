@@ -5,6 +5,7 @@ urlpatterns = [
     path("", userDashboard, name="userdashboard"), 
     path('crop/', addCrop, name='crop'),
     path('crop-tasks/', cropTasks, name='cropTasks'),
+    path('crop-tasks/hide/<int:user_crop_id>/', hideCrop, name='hide_crop'),
     path('delete-crop/', deleteUserCrop, name='delete_crop'),
     path('cropexpense/', cropExpense, name='cropExpense'),
     path('delete-expense/', deleteExpense, name='deleteExpense'),

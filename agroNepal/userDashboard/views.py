@@ -445,23 +445,37 @@ def userPasswordChange(request):
 
 @user_only_required
 def cropTasks(request):
-    user_crops = UserCropAdd.objects.filter(user=request.user).select_related('crop').prefetch_related('crop__schedules')
-    
+    user_crops = UserCropAdd.objects.filter(
+        user=request.user,
+        is_task_hidden=False
+    ).select_related('crop').prefetch_related('crop__schedules')
+
     today = date.today()
     today_tasks = []
-    
+
     for uc in user_crops:
         for schedule in uc.crop.schedules.all():
             task_date = uc.planted_date + timedelta(days=schedule.day_number)
             if task_date == today:
                 today_tasks.append({
+                    'user_crop_id': uc.id,
                     'crop_name': uc.crop.name,
                     'planted_date': uc.planted_date,
                     'task': schedule.task,
                     'day_number': schedule.day_number,
                 })
-    
-    context = {
-        'today_tasks': today_tasks
-    }
-    return render(request, "userDashboard/Dashboard/crop_tasks.html", context)
+
+    return render(request, "userDashboard/Dashboard/crop_tasks.html", {'today_tasks': today_tasks})
+
+
+@user_only_required
+def hideCrop(request, user_crop_id):
+    if request.method == "POST":
+        try:
+            user_crop = UserCropAdd.objects.get(id=user_crop_id, user=request.user)
+            user_crop.is_task_hidden = True
+            user_crop.save()
+            messages.success(request, "Crop task delete successfully.", extra_tags="deleteCropTask")
+        except UserCropAdd.DoesNotExist:
+            messages.error(request, "Crop not found.", extra_tags="deleteCropTask")
+    return redirect("cropTasks")  # ← was "crop_tasks", must match url name exactly
