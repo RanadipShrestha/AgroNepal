@@ -27,6 +27,7 @@
             <p class="event-notes"><strong>Ticket ID:</strong> {{ ticket.ticket_id }}</p>
             <p class="event-notes"><strong>Location:</strong> {{ ticket.event.location }}</p>
             <p class="event-notes"><strong>User:</strong> {{ ticket.user.first_name}} {{ ticket.user.last_name}}</p>
+            <p class="event-notes"><strong>Payment Status:</strong> {{ ticket.status }}</p>
             <p class="event-notes"><strong>Event Date:</strong> {{ ticket.event.date|date:"M d, Y" }} at {{ ticket.event.eventStartTime }}</p>
           </div>
           <div class="crop-card-footer">
