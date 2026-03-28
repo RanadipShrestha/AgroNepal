@@ -155,7 +155,7 @@ class CropSale(models.Model):
         ordering = ['-sale_date']
 
     def __str__(self):
-        return f"Sale ₹{self.amount} for {self.user_crop.crop.name} ({self.user_crop.planted_date})"
+        return f"Sale RS: {self.amount} for {self.user_crop.crop.name} ({self.user_crop.planted_date})"
 
 class CommunityPost(models.Model):
   image = models.ImageField(upload_to="img/UserPost", null=True, blank=True)

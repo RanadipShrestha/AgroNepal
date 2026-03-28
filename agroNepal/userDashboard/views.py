@@ -451,21 +451,41 @@ def cropTasks(request):
     ).select_related('crop').prefetch_related('crop__schedules')
 
     today = date.today()
-    today_tasks = []
+    all_today_tasks = []
+    crops_with_old_tasks = []
 
     for uc in user_crops:
+        crop_old_tasks = []
+        
         for schedule in uc.crop.schedules.all():
             task_date = uc.planted_date + timedelta(days=schedule.day_number)
+            task_info = {
+                'user_crop_id': uc.id,
+                'crop_name': uc.crop.name,
+                'task': schedule.task,
+                'day_number': schedule.day_number,
+                'task_date': task_date,
+            }
+            
             if task_date == today:
-                today_tasks.append({
-                    'user_crop_id': uc.id,
-                    'crop_name': uc.crop.name,
-                    'planted_date': uc.planted_date,
-                    'task': schedule.task,
-                    'day_number': schedule.day_number,
-                })
+                all_today_tasks.append(task_info)
+            elif task_date < today:
+                crop_old_tasks.append(task_info)
+        
+        if crop_old_tasks:
+            crops_with_old_tasks.append({
+                'user_crop_id': uc.id,
+                'crop_name': uc.crop.name,
+                'planted_date': uc.planted_date,
+                'old_tasks': crop_old_tasks,
+            })
 
-    return render(request, "userDashboard/Dashboard/crop_tasks.html", {'today_tasks': today_tasks})
+    context = {
+        'all_today_tasks': all_today_tasks,
+        'crops_with_old_tasks': crops_with_old_tasks,
+    }
+
+    return render(request, "userDashboard/Dashboard/crop_tasks.html", context)
 
 
 @user_only_required

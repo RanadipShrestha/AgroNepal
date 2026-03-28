@@ -1,117 +1,330 @@
-.userDashboard-welcome {
+/* ============================================
+   CROP TASK – All styles prefixed: crop-task-
+   ============================================ */
+
+/* ---------- Welcome Section ---------- */
+.crop-task-welcome {
   margin-bottom: 2rem;
 }
 
-.userDashboard-heading {
+.crop-task-heading {
   font-size: 1.8rem;
   font-weight: 700;
   color: #1e293b;
 }
 
-.userDashboard-subtext {
+.crop-task-subtext {
   color: #64748b;
 }
 
-.task-container {
+/* ---------- Alert / Toast ---------- */
+.crop-task-alert-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 320px;
+}
+
+.crop-task-alert-message {
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: #50c27c;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: cropTaskSlideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.4s ease;
+}
+
+.crop-task-alert-success {
+  background: #2ecc71;
+}
+
+.crop-task-alert-error {
+  background: #ff4757;
+}
+
+.crop-task-alert-text {
+  font-size: 0.9rem;
+  color: #2d3436;
+  font-weight: 600;
+}
+
+.crop-task-alert-close {
+  background: none;
+  border: none;
+  color: #a4b0be;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-left: 8px;
+  transition: color 0.2s;
+}
+
+.crop-task-alert-close:hover {
+  color: #2d3436;
+}
+
+@keyframes cropTaskSlideInRight {
+  from {
+    transform: translateX(110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ---------- Section Container ---------- */
+.crop-task-section-container {
   background-color: #fff;
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.task-title {
+.crop-task-section-mb {
+  margin-bottom: 40px;
+}
+
+/* ---------- Section Title ---------- */
+.crop-task-section-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #16a34a;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.table-wrapper {
+.crop-task-section-title--today {
+  color: #2ecc71;
+}
+
+.crop-task-section-title--old {
+  color: #2ecc71;
+}
+
+/* ---------- Table ---------- */
+.crop-task-table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #eef2f7;
   overflow-x: auto;
 }
 
-.task-table {
+.crop-task-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
 }
 
-.task-table thead tr {
-  border-bottom: 1px solid #e2e8f0;
+.crop-task-table-head {
+  background: #f8fafc;
 }
 
-.task-table th {
-  padding: 12px;
+.crop-task-th {
+  padding: 16px;
+  color: #64748b;
   font-weight: 600;
-  color: #475569;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  text-align: left;
 }
 
-.task-row {
-  border-bottom: 1px solid #f1f5f9;
+.crop-task-th--center {
+  text-align: center;
+}
+
+.crop-task-th--right {
+  text-align: right;
+}
+
+.crop-task-table-row {
+  border-top: 1px solid #f1f5f9;
   transition: background-color 0.2s;
 }
 
-.task-row:hover {
+.crop-task-table-row:hover {
   background-color: #f8fafc;
 }
 
-.task-table td {
-  padding: 12px;
+.crop-task-td {
+  padding: 12px 16px;
 }
 
-.crop-name {
-  font-weight: 500;
+.crop-task-td--task {
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.crop-task-td--center {
+  text-align: center;
+}
+
+.crop-task-td--right {
+  text-align: right;
+}
+
+/* ---------- Crop Name (table) ---------- */
+.crop-task-crop-name {
+  font-weight: 700;
   color: #1e293b;
 }
 
-.planted-date {
-  font-size: 0.8rem;
-  color: #64748b;
-}
-
-.task-text {
-  color: #334155;
-}
-
-.day-badge {
+/* ---------- Day Badge ---------- */
+.crop-task-day-badge {
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  background-color: #dcfce7;
-  color: #166534;
+  background: #f0fdf4;
+  color: #16a34a;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-.no-task {
-  color: #64748b;
-  font-style: italic;
-  padding: 1rem 0;
-}
-
-/* Remove / Hide button */
-.hide-btn {
-  padding: 5px 12px;
-  border: 1px solid #fca5a5;
-  border-radius: 4px;
-  background-color: #fff1f2;
-  color: #dc2626;
-  font-size: 0.8rem;
-  font-weight: 500;
+/* ---------- Hide Button (table row) ---------- */
+.crop-task-hide-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: all 0.2s;
 }
 
-.hide-btn:hover {
-  background-color: #dc2626;
-  color: #fff;
+.crop-task-hide-btn:hover {
+  border-color: #94a3b8;
+  color: #64748b;
 }
 
-/* Modal overlay */
-.modal-overlay {
+/* ---------- Empty State ---------- */
+.crop-task-empty-state {
+  text-align: center;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #eef2f7;
+  color: #64748b;
+}
+
+.crop-task-empty-text {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ---------- Old Tasks Grid ---------- */
+.crop-task-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 10px 0;
+}
+
+/* ---------- Old Task Card ---------- */
+.crop-task-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  border: 1px solid #eef2f7;
+  position: relative;
+  overflow: hidden;
+}
+
+.crop-task-card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.crop-task-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.crop-task-card-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.crop-task-card-crop-name {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #000000;
+  font-weight: 700;
+}
+
+.crop-task-card-planted-date {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.crop-task-card-hide-btn {
+  color: #cf1c1c;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ---------- Old Task Items ---------- */
+.crop-task-card-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.crop-task-old-task-item {
+  background: #ebeeea;
+  padding: 12px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.crop-task-old-task-name {
+  font-weight: 600;
+  color: #431407;
+  font-size: 0.9rem;
+}
+
+.crop-task-old-task-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.crop-task-old-task-date {
+  font-size: 0.75rem;
+  color: #c2410c;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.crop-task-old-task-day {
+  font-size: 0.75rem;
+  color: #9a3412;
+}
+
+/* ---------- Modal Overlay ---------- */
+.crop-task-modal-overlay {
   display: none;
   position: fixed;
   inset: 0;
@@ -121,11 +334,12 @@
   justify-content: center;
 }
 
-.modal-overlay.active {
+.crop-task-modal-overlay.active {
   display: flex;
 }
 
-.modal-box {
+/* ---------- Modal Box ---------- */
+.crop-task-modal-box {
   background: #fff;
   border-radius: 12px;
   padding: 2rem;
@@ -135,32 +349,27 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-.modal-icon {
-  font-size: 2.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.modal-title {
+.crop-task-modal-title {
   font-size: 1.2rem;
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 0.5rem;
 }
 
-.modal-message {
+.crop-task-modal-message {
   color: #64748b;
   font-size: 0.95rem;
   margin-bottom: 1.5rem;
   line-height: 1.5;
 }
 
-.modal-actions {
+.crop-task-modal-actions {
   display: flex;
   gap: 0.75rem;
   justify-content: center;
 }
 
-.modal-cancel {
+.crop-task-modal-cancel {
   padding: 8px 20px;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
@@ -171,21 +380,21 @@
   transition: background-color 0.2s;
 }
 
-.modal-cancel:hover {
+.crop-task-modal-cancel:hover {
   background-color: #e2e8f0;
 }
 
-.modal-confirm {
+.crop-task-modal-confirm {
   padding: 8px 20px;
   border: none;
   border-radius: 6px;
-  background-color: #dc2626;
+  background-color: #ef4444;
   color: #fff;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
-.modal-confirm:hover {
+.crop-task-modal-confirm:hover {
   background-color: #b91c1c;
 }
