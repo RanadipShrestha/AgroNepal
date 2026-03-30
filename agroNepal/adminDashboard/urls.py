@@ -14,4 +14,7 @@ urlpatterns = [
    path("admin-add-crop/", adminAddCrop, name="adminAddCrop"), 
    path("admin-delete-crop/", adminDeleteCrop, name="adminDeleteCrop"),
    path("admin-edit-crop/", adminEditCrop, name="adminEditCrop"),
+
+   # Manage Contacts
+    path("contacts/", adminContacts, name="adminContacts"),
 ]

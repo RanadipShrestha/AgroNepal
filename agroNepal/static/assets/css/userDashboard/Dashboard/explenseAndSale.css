@@ -504,6 +504,7 @@
   color: #666;
 }
 
+
 .cancel-btn:hover {
   background-color: #e0e0e0;
 }
@@ -516,6 +517,7 @@
   background-color: #45a049;
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
 }
+
 
 @media (max-width: 480px) {
 

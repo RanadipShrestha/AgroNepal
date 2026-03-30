@@ -12,12 +12,7 @@
       <span class="userDashboard-name-glow">{{ user.first_name|default:user.username }}</span>
     </h1>
     <p class="userDashboard-subtext">Your farming dashboard. Manage your crops, expenses, and sales.</p>
-    
-    <div class="userDashboard-status-bar">
-      <span class="userDashboard-status-item"><i class="fa-solid fa-circle-check"></i> Crops tracked</span>
-      <span class="userDashboard-status-item"><i class="fa-solid fa-circle-check"></i> Finances synced</span>
-      <span class="userDashboard-status-item"><i class="fa-solid fa-circle-check"></i> Community active</span>
-    </div>
+
   </div>
 
   <!-- Stats Grid -->
@@ -26,31 +21,30 @@
     <div class="userDashboard-stat userDashboard-stat-emerald">
       <div class="userDashboard-stat-num counter" data-target="{{ total_crops }}">{{ total_crops }}</div>
       <div class="userDashboard-stat-label">Planted Crops</div>
-      <div class="userDashboard-stat-bar"></div>
+     
     </div>
 
     <div class="userDashboard-stat userDashboard-stat-rose">
       <div class="userDashboard-stat-num">Rs. {{ total_expense|floatformat:0 }}</div>
       <div class="userDashboard-stat-label">Total Expenses</div>
-      <div class="userDashboard-stat-bar"></div>
+      
     </div>
 
     <div class="userDashboard-stat userDashboard-stat-sky">
       <div class="userDashboard-stat-num">Rs. {{ total_sales|floatformat:0 }}</div>
       <div class="userDashboard-stat-label">Total Revenue</div>
-      <div class="userDashboard-stat-bar"></div>
+     
     </div>
 
     <div class="userDashboard-stat userDashboard-stat-violet">
       <div class="userDashboard-stat-num counter" data-target="{{ total_posts }}">{{ total_posts }}</div>
       <div class="userDashboard-stat-label">Community Posts</div>
-      <div class="userDashboard-stat-bar"></div>
+      
     </div>
 
     <div class="userDashboard-stat userDashboard-stat-teal">
       <div class="userDashboard-stat-num counter" data-target="{{ total_tickets }}">{{ total_tickets }}</div>
       <div class="userDashboard-stat-label">Event Tickets</div>
-      <div class="userDashboard-stat-bar"></div>
     </div>
 
   </div>
@@ -58,22 +52,22 @@
   <!-- Quick Action Buttons -->
   <div class="userDashboard-actions">
     <a href="{% url 'crop' %}" class="userDashboard-btn userDashboard-btn-green">
-      <i class="fa-solid fa-plus"></i><span>Add Crop</span>
+      <span>Add Crop</span>
     </a>
     <a href="{% url 'cropExpense' %}" class="userDashboard-btn userDashboard-btn-rose">
-      <i class="fa-solid fa-file-invoice-dollar"></i><span>Log Expense</span>
+      </i><span>Record Expense</span>
     </a>
     <a href="{% url 'cropSales' %}" class="userDashboard-btn userDashboard-btn-sky">
-      <i class="fa-solid fa-store"></i><span>Record Sale</span>
+      <span>Record Sale</span>
     </a>
     <a href="{% url 'userShareKnowledge' %}" class="userDashboard-btn userDashboard-btn-violet">
-      <i class="fa-solid fa-pen-to-square"></i><span>New Post</span>
+      </i><span>New Post</span>
     </a>
     <a href="{% url 'profile' %}" class="userDashboard-btn userDashboard-btn-amber">
-      <i class="fa-solid fa-user-gear"></i><span>Profile</span>
+      </i><span>Profile</span>
     </a>
     <a href="{% url 'userTickets' %}" class="userDashboard-btn userDashboard-btn-teal">
-      <i class="fa-solid fa-ticket"></i><span>Tickets</span>
+      </i><span>Tickets</span>
     </a>
   </div>
 

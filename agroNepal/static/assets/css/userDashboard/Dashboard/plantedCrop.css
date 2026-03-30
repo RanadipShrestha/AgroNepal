@@ -118,6 +118,7 @@
   color: #888;
 }
 
+
 @media (max-width: 480px) {
   .crop-management-container {
     padding: 20px 12px;

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
-from agro.models import Crop, CropSchedule
+from agro.models import Crop, CropSchedule, Contact
 from .decorators import admin_only_required
 # Create your views here.
 
@@ -175,3 +175,11 @@ def adminDeleteCrop(request):
         crop.delete()
         messages.success(request, "Crop deleted successfully.")
     return redirect('adminCrops')
+
+@admin_only_required
+def adminContacts(request):
+    contacts = Contact.objects.all().order_by('-id')
+    context = {
+        'contacts':contacts
+    }
+    return render(request, "adminDashboard/dashboard/contact/contacts.html", context)

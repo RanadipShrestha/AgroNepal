@@ -3,5 +3,68 @@
 {% block title %}Contact Messages - AgroNepal{% endblock title %}
 
 {% block content %}
+<div class="adminDashboard-dash">
+  <div class="adminDashboard-welcome" style="margin-bottom: 1rem;">
+    <h1 class="adminDashboard-heading">Contact Messages</h1>
+    <p class="adminDashboard-subtext">Review messages submitted through the public contact form.</p>
+  </div>
 
+  <!-- Messages -->
+  {% if messages %}
+  <div style="margin-bottom: 1rem;">
+    {% for message in messages %}
+    <div style="padding: 1rem; border-radius: 8px; margin-bottom: 0.5rem; {% if 'success' in message.tags %}background:#dcfce3; color:#166534;{% else %}background:#fee2e2; color:#ef4444;{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="admin-table-container">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th style="width: 250px;">Sender</th>
+                <th>Email</th>
+                <th style="width: 150px;">Subject</th>
+                <th >Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in contacts %}
+            <tr style="vertical-align: top;">
+                <td>
+                    <div style="font-weight: 600; color: #1e293b;">{{ c.first_name }} {{ c.last_name }}</div>
+                    
+                </td>
+                <td>
+                    
+                    <div style="color: #64748b; font-size: 0.875rem; margin-top: 0.25rem;">
+                        <a href="mailto:{{ c.email }}" style="color: #000000; text-decoration: none;">{{ c.email }}</a>
+                    </div>
+                </td>
+                <td>
+                  <div class="contact-subject">Subject: {{ c.subject }}</div>
+                </td>
+                <td>
+                    
+                    <div class="contact-msg">{{ c.message|linebreaks }}</div>
+                </td>
+                <td>
+                    <button type="button" class="action-btn delete-btn delete-contact-btn" data-contactid="{{ c.id }}" data-contactname="{{ c.first_name|escapejs }} {{ c.last_name|escapejs }}">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align: center; color: #64748b; padding: 2rem;">No new contact messages.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 {% endblock content %}
