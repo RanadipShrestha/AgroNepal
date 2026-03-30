@@ -183,3 +183,13 @@ def adminContacts(request):
         'contacts':contacts
     }
     return render(request, "adminDashboard/dashboard/contact/contacts.html", context)
+
+@admin_only_required
+def adminDeleteContact(request):
+    if request.method == 'POST':
+        contact_id = request.POST.get('contact_id')
+        contact = get_object_or_404(Contact, id=contact_id)
+        subject = contact.subject
+        contact.delete()
+        messages.success(request, f"Contact message '{subject}' deleted successfully.", extra_tags="deleteContact")
+    return redirect('adminContacts')
