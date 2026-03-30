@@ -35,6 +35,7 @@
         <thead class="crop-task-table-head">
           <tr>
             <th class="crop-task-th">Crop</th>
+            <th class="crop-task-th">Planted Date</th>
             <th class="crop-task-th">Task</th>
             <th class="crop-task-th crop-task-th--center">Day</th>
             <th class="crop-task-th crop-task-th--right">Action</th>
@@ -45,6 +46,9 @@
           <tr class="crop-task-table-row">
             <td class="crop-task-td">
               <div class="crop-task-crop-name">{{ task.crop_name }}</div>
+            </td>
+            <td class="crop-task-td">
+               <div class="crop-task-crop-name">{{ task.planted_date }}</div>
             </td>
             <td class="crop-task-td crop-task-td--task">{{ task.task }}</td>
             <td class="crop-task-td crop-task-td--center">
@@ -125,7 +129,7 @@
       <button class="crop-task-modal-cancel" onclick="cropTaskCloseModal()">Cancel</button>
       <form id="cropTaskHideForm" method="POST" action="">
         {% csrf_token %}
-        <button type="submit" class="crop-task-modal-confirm">Yes, Hide It</button>
+        <button type="submit" class="crop-task-modal-confirm">Confirm</button>
       </form>
     </div>
   </div>

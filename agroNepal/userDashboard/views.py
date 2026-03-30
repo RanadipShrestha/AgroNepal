@@ -76,6 +76,33 @@ def deleteUserCrop(request):
   return redirect("crop")
 
 @user_only_required
+def editUserCrop(request):
+    if request.method == "POST":
+        user_crop_id = request.POST.get('user_crop_id')
+        crop_id = request.POST.get('crop')
+        planted_date = request.POST.get('planted_date')
+        notes = request.POST.get('notes', '')
+
+        if not user_crop_id or not crop_id:
+            messages.error(request, "Failed to identify the crop record or the new crop type.")
+            return redirect("crop")
+
+        try:
+            user_crop = get_object_or_404(UserCropAdd, id=user_crop_id, user=request.user)
+            crop = get_object_or_404(Crop, id=crop_id)
+            
+            user_crop.crop = crop
+            user_crop.planted_date = planted_date
+            user_crop.notes = notes
+            user_crop.save()
+            
+            messages.success(request, f"{crop.name} Updated Successfully", extra_tags="cropUpdatedSuccessfully")
+        except Exception as e:
+            messages.error(request, f"Error updating crop: {str(e)}")
+            
+    return redirect("crop")
+
+@user_only_required
 def cropExpense(request):
     if request.method == 'POST': 
         # Handle adding new expense
@@ -465,6 +492,7 @@ def cropTasks(request):
                 'task': schedule.task,
                 'day_number': schedule.day_number,
                 'task_date': task_date,
+                'planted_date': uc.planted_date,  
             }
             
             if task_date == today:

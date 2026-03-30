@@ -18,4 +18,7 @@ urlpatterns = [
    # Manage Contacts
     path("contacts/", adminContacts, name="adminContacts"),
     path("delete-contact/", adminDeleteContact, name="adminDeleteContact"),
+
+    # Manage Events
+    path("events/", adminEvents, name="adminEvents"),
 ]

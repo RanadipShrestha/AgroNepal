@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.classList.remove("active");
     }
   });
-  
+
   if (toast && toast.children.length > 0) {
     setTimeout(() => {
       const items = toast.getElementsByClassName("message-toast-item");

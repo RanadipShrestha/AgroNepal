@@ -6,7 +6,7 @@
   {% if messages %}
     <div class="messages-container">
       {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} {% if 'cropAddedSuccessfully' in message.tags or 'cropDeletedSuccessfully' in message.tags %}alert-success{% else %}alert-danger{% endif %}">
+        <div class="alert alert-{{ message.tags }} {% if 'cropAddedSuccessfully' in message.tags or 'cropDeletedSuccessfully' in message.tags or 'cropUpdatedSuccessfully' in message.tags %}alert-success{% else %}alert-danger{% endif %}">
           <span class="alert-message">{{ message }}</span>
         </div>
       {% endfor %}
@@ -47,6 +47,14 @@
             <span class="days-planted">
               Planted {{ user_crop.planted_date|timesince }} ago
             </span>
+            <button type="button" class="edit-crop-btn" 
+              data-user-crop-id="{{ user_crop.id }}"
+              data-crop-id="{{ user_crop.crop.id }}"
+              data-crop-name="{{ user_crop.crop.name }}"
+              data-planted-date="{{ user_crop.planted_date|date:'Y-m-d' }}"
+              data-notes="{{ user_crop.notes|default:'' }}">
+              Edit
+            </button>
             <button type="button" class="delete-crop-btn" 
         data-crop-id="{{ user_crop.id }}"
         data-crop-name="{{ user_crop.crop.name }}">
@@ -118,6 +126,56 @@
   </div>
 </div>
 
+<!----------Edit Crop part -------------->
+<div id="editCropModal" class="modal">
+  <div class="modal-content large-modal">
+    <div class="modal-header">
+      <h2>Edit Crop</h2>
+      <button type="button" class="close-btn" id="closeEditModalBtn">x</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-description">
+        Update your planted crop details.
+      </p>
+      <form id="editCropForm" method="POST" action="{% url 'edit_crop' %}">
+        {% csrf_token %}
+        <input type="hidden" name="user_crop_id" id="editUserCropId">
+        <div class="form-group">
+          <label for="editCropSelect" class="form-label">Select Crop: </label>
+          <select id="editCropSelect" name="crop" class="form-select" required>
+            <option value="">Choose a crop...</option>
+            {% for crop in crops %}
+              <option value="{{ crop.id }}">{{ crop.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editCropDateInput" class="form-label">Planted Date:</label>
+          <input
+            type="date"
+            id="editCropDateInput"
+            name="planted_date"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="editCropNoteInput" class="form-label">Notes (Optional):</label>
+          <textarea
+            id="editCropNoteInput"
+            name="notes"
+            class="form-textarea"
+            placeholder="Add any additional notes about this crop..."
+          ></textarea>
+        </div>
+
+        <button type="submit" id="updateBtn" class="submit-btn">Update Crop</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!------ Confirmation Modal ------->
 <div id="confirmationModal" class="modal">
   <div class="modal-content">
@@ -129,8 +187,8 @@
       
     </div>
     <div class="modal-footer">
-      <button type="button" id="cancelBtn" class="modal-btn cancel-btn">Cancel</button>
-      <button type="button" id="confirmBtn" class="modal-btn confirm-btn">Confirm</button>
+      <button type="button" id="cancelAddCropBtn" class="modal-btn cancel-btn">Cancel</button>
+      <button type="button" id="confirmAddCropBtn" class="modal-btn confirm-btn">Confirm</button>
     </div>
   </div>
 </div>
