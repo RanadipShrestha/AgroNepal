@@ -21,4 +21,5 @@ urlpatterns = [
 
     # Manage Events
     path("events/", adminEvents, name="adminEvents"),
+    path("events/add/", adminAddEvent, name="adminAddEvent"),
 ]

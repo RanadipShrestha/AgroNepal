@@ -9,7 +9,9 @@
         <h1 class="adminDashboard-heading">Events Management</h1>
         <p class="adminDashboard-subtext">Organize and manage AgroNepal community events.</p>
     </div>
-    
+    <a href="{% url 'adminAddEvent' %}" class="add-event-btn">
+        <i class="fa-solid fa-plus"></i> Add New Event
+    </a>
   </div>
 
    <div class="admin-table-container">
@@ -43,16 +45,16 @@
                    <div style="font-weight: 600; color: #1e293b;">{{ e.name }}</div>
                 </td>
                 <td style="font-weight: 600; color: #10b981;">
-                   <i class="fa-solid fa-user-tie"></i> {{ e.guest }}
+                   {{ e.guest }}
                 </td>
-                <td><span class="badge badge-price">Rs. {{ e.price }}</span></td>
-                <td style="color: #64748b;">{{ e.location }}</td>
+                <td>Rs. {{ e.price }}</td>
+                <td >{{ e.location }}</td>
                 <td>
                     <div style="font-size: 0.875rem; color: #1e293b;">{{ e.date }}</div>
                     <div style="font-size: 0.75rem; color: #64748b;">{{ e.eventStartTime }} ({{ e.event_duration }})</div>
                 </td>
                 <td>
-                    <span class="badge badge-ticket">{{ e.available_ticket }} / {{ e.total_ticket }}</span>
+                    <span class="badge">{{ e.available_ticket }} / {{ e.total_ticket }}</span>
                 </td>
                 <td style="max-width: 200px; color: #64748b; font-size: 0.85rem;">
                     {{ e.description|truncatechars:80 }}

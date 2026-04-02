@@ -202,3 +202,39 @@ def adminEvents(request):
         'events': events
     }
     return render(request, 'adminDashboard/dashboard/event/events.html', context)
+
+@admin_only_required
+def adminAddEvent(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        price = request.POST.get('price')
+        description = request.POST.get('description')
+        location = request.POST.get('location')
+        date = request.POST.get('date')
+        eventStartTime = request.POST.get('eventStartTime')
+        event_duration = request.POST.get('event_duration')
+        guest = request.POST.get('guest')
+        total_ticket = request.POST.get('total_ticket')
+
+        try:
+            Event.objects.create(
+                name=name,
+                image=image,
+                price=price,
+                description=description,
+                location=location,
+                date=date,
+                eventStartTime=eventStartTime,
+                event_duration=event_duration,
+                guest=guest,
+                total_ticket=total_ticket,
+                available_ticket=total_ticket,
+                author=request.user
+            )
+            messages.success(request, "New Event Added Successfully", extra_tags="eventAdd")
+            return redirect('adminEvents')
+
+        except:
+            messages.error(request, 'There is issues in the enter data please correct that', extra_tags="eventAdd")
+    return render(request, 'adminDashboard/dashboard/event/add_event.html')
