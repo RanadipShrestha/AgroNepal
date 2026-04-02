@@ -170,7 +170,7 @@
           ></textarea>
         </div>
 
-        <button type="submit" id="updateBtn" class="submit-btn">Update Crop</button>
+        <button type="button" id="updateBtn" class="submit-btn">Update Crop</button>
       </form>
     </div>
   </div>
@@ -180,12 +180,11 @@
 <div id="confirmationModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
-      <h2>Confirm Crop Addition</h2>
+      <h2 id="confirmationModalHeader">Confirmation</h2>
     </div>
     <div class="modal-body">
-      <p>Are you sure you want to add this crop?</p>
-      
-    </div>
+      <p id="confirmationModalMessage">Are you sure you want to proceed?</p>
+    </div>  
     <div class="modal-footer">
       <button type="button" id="cancelAddCropBtn" class="modal-btn cancel-btn">Cancel</button>
       <button type="button" id="confirmAddCropBtn" class="modal-btn confirm-btn">Confirm</button>

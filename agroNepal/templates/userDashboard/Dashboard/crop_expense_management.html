@@ -111,7 +111,7 @@
               data-expense-id="{{ expense.id }}"
               data-crop-name="{{ crop_data.crop_name }}"
               data-amount="{{ expense.amount }}"
-              data-spend-date="{{ expense.spend_date }}"
+              data-spend-date="{{ expense.spend_date|date:'Y-m-d' }}"
               data-note="{{ expense.note|default_if_none:'' }}"
             >
               <i class="fas fa-edit"></i>

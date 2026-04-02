@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <th>Event</th>
+                <th>Event Name</th>
                 <th>Guest</th>
                 <th>Price</th>
                 <th>Location</th>
@@ -36,8 +37,10 @@
                         {% else %}
                         <div class="event-img" style="background: #f1f5f9; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-calendar"></i></div>
                         {% endif %}
-                        <div style="font-weight: 600; color: #1e293b;">{{ e.name }}</div>
                     </div>
+                </td>
+                <td style="font-weight: 600; color: #10b981;">
+                   <div style="font-weight: 600; color: #1e293b;">{{ e.name }}</div>
                 </td>
                 <td style="font-weight: 600; color: #10b981;">
                    <i class="fa-solid fa-user-tie"></i> {{ e.guest }}

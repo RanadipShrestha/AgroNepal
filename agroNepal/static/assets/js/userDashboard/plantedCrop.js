@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', function () {
   
   const addForm = document.getElementById("addCropForm");
   const editForm = document.getElementById("editCropForm");
+  const updateBtn = document.getElementById("updateBtn");
+  
+  const confirmationModalHeader = document.getElementById("confirmationModalHeader");
+  const confirmationModalMessage = document.getElementById("confirmationModalMessage");
+  let pendingForm = null;
+  let pendingModal = null;
 
   // --- Modal Openers (Direct IDs) ---
   if (addCropBtn) {
@@ -73,26 +79,50 @@ document.addEventListener('DOMContentLoaded', function () {
       if (modal) {
         modal.style.display = "none";
         if (modal === addCropModal && addForm) addForm.reset();
+        if (modal === editCropModal && editForm) editForm.reset();
       }
     }
 
     // Cancel Buttons
     if (target.id === "cancelAddCropBtn") {
       if (confirmationModal) confirmationModal.style.display = "none";
-      if (addCropModal) addCropModal.style.display = "block";
+      if (pendingModal) pendingModal.style.display = "block";
     }
     if (target.id === "cancelDeleteBtn") {
       if (deleteModal) deleteModal.style.display = "none";
     }
   });
 
-  // --- Add Crop Form Logic (with Confirmation) ---
+  // --- Confirmation & Submission Logic ---
   const submitBtn = document.getElementById("submitBtn");
   const confirmAddCropBtn = document.getElementById("confirmAddCropBtn");
 
   if (submitBtn) {
     submitBtn.addEventListener("click", () => {
+      if (!addForm.checkValidity()) {
+        addForm.reportValidity();
+        return;
+      }
+      pendingForm = addForm;
+      pendingModal = addCropModal;
+      if (confirmationModalHeader) confirmationModalHeader.textContent = "Confirm Crop Addition";
+      if (confirmationModalMessage) confirmationModalMessage.textContent = "Are you sure you want to add this crop?";
       if (addCropModal) addCropModal.style.display = "none";
+      if (confirmationModal) confirmationModal.style.display = "block";
+    });
+  }
+
+  if (updateBtn) {
+    updateBtn.addEventListener("click", () => {
+      if (!editForm.checkValidity()) {
+        editForm.reportValidity();
+        return;
+      }
+      pendingForm = editForm;
+      pendingModal = editCropModal;
+      if (confirmationModalHeader) confirmationModalHeader.textContent = "Confirm Crop Update";
+      if (confirmationModalMessage) confirmationModalMessage.textContent = "Are you sure you want to update this crop?";
+      if (editCropModal) editCropModal.style.display = "none";
       if (confirmationModal) confirmationModal.style.display = "block";
     });
   }
@@ -100,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (confirmAddCropBtn) {
     confirmAddCropBtn.addEventListener("click", () => {
       if (confirmationModal) confirmationModal.style.display = "none";
-      if (addForm) addForm.submit();
+      if (pendingForm) pendingForm.submit();
     });
   }
 
@@ -109,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (event.target.classList.contains("modal")) {
       event.target.style.display = "none";
       if (event.target === addCropModal && addForm) addForm.reset();
+      if (event.target === editCropModal && editForm) editForm.reset();
     }
   });
 

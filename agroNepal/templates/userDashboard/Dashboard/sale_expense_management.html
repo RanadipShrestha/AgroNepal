@@ -93,7 +93,7 @@
               <i class="fas fa-trash-alt"></i>
               <span>Delete</span>
             </button>
-            <button type="button" class="edit-expense-sale-btn" data-sale-id="{{ sale.id }}" data-crop-name="{{ crop_data.crop_name }}" data-amount="{{ sale.amount }}" data-quantity="{{ sale.quantity|default_if_none:'' }}" data-sale-date="{{ sale.sale_date }}" data-buyer-name="{{ sale.buyer_name|default_if_none:'' }}" data-note="{{ sale.note|default_if_none:'' }}">
+            <button type="button" class="edit-expense-sale-btn" data-sale-id="{{ sale.id }}" data-crop-name="{{ crop_data.crop_name }}" data-amount="{{ sale.amount }}" data-quantity="{{ sale.quantity|default_if_none:'' }}" data-sale-date="{{ sale.sale_date|date:'Y-m-d' }}" data-buyer-name="{{ sale.buyer_name|default_if_none:'' }}" data-note="{{ sale.note|default_if_none:'' }}">
               <i class="fas fa-edit"></i>
               <span>Edit</span>
             </button>

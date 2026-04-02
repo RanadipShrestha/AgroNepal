@@ -36,7 +36,7 @@
 
 /* Edit Button */
 .edit-crop-btn {
-  background-color: #2196f3;
+  background-color: #428b4e;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -48,7 +48,7 @@
 }
 
 .edit-crop-btn:hover {
-  background-color: #1976d2;
+  background-color: #109251;
 }
 .crop-card-footer {
   display: flex;
