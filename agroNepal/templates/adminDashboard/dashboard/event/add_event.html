@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
-  <div class="adminDashboard-welcome" style="margin-bottom: 1rem;">
+  <div class="adminDashboard-welcome" style="margin-bottom: 2rem; text-align: center;">
     <h1 class="adminDashboard-heading">Create New Event</h1>
     <p class="adminDashboard-subtext">Fill in the details to schedule a new AgroNepal community event.</p>
   </div>
@@ -64,8 +64,8 @@
         </div>
 
         <div class="cancle-scheduleEvent-div">
-            <a href="{% url 'adminEvents' %}" class="add_event-cancel-btn"><i class="fa-solid fa-xmark"></i> Cancel</a>
-            <button type="button" class="add_event-submit-btn" id="add_event-triggerConfirmBtn"><i class="fa-solid fa-check"></i> Schedule Event</button>
+            <a href="{% url 'adminEvents' %}" class="add_event-cancel-btn"></i> Cancel</a>
+            <button type="button" class="add_event-submit-btn" id="add_event-triggerConfirmBtn"> Schedule Event</button>
         </div>
     </form>
   </div>

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Blog, Comment, Contact, Event, CommunityPost, CommunityPostComment
 from django.db.models import Q
 from django.contrib import messages
+from django.utils import timezone
 # Create your views here.
 
 def index(request):
@@ -111,7 +112,8 @@ def edit_blog_comment(request, comment_id):
          
 
 def event(request):
-  events = Event.objects.all()
+  today = timezone.now().date()
+  events = Event.objects.filter(date__gte=today).order_by('date')
   context = {
     "events":events
   }

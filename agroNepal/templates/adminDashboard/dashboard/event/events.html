@@ -4,77 +4,134 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
-  <div class="adminDashboard-welcome" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+  <div class="adminDashboard-welcome" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;  padding: 1.5rem; border-radius: 12px; ">
     <div>
-        <h1 class="adminDashboard-heading">Events Management</h1>
-        <p class="adminDashboard-subtext">Organize and manage AgroNepal community events.</p>
+        <h1 class="adminDashboard-heading" style="margin: 0; color: #1e293b;">Events Management</h1>
+        <p class="adminDashboard-subtext" style="margin: 0.25rem 0 0 0; color: #64748b;">Organize and manage AgroNepal community events.</p>
     </div>
-    <a href="{% url 'adminAddEvent' %}" class="add-event-btn">
+    <a href="{% url 'adminAddEvent' %}" class="add-event-btn" style="background: #10b981; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background 0.2s;">
         <i class="fa-solid fa-plus"></i> Add New Event
     </a>
   </div>
 
-   <div class="admin-table-container">
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>Event</th>
-                <th>Event Name</th>
-                <th>Guest</th>
-                <th>Price</th>
-                <th>Location</th>
-                <th>Date & Time</th>
-                <th>Tickets</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for e in events %}
-            <tr>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 1rem;">
-                        {% if e.image %}
-                        <img src="{{ e.image.url }}" alt="{{ e.name }}" class="event-img">
-                        {% else %}
-                        <div class="event-img" style="background: #f1f5f9; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-calendar"></i></div>
-                        {% endif %}
-                    </div>
-                </td>
-                <td style="font-weight: 600; color: #10b981;">
-                   <div style="font-weight: 600; color: #1e293b;">{{ e.name }}</div>
-                </td>
-                <td style="font-weight: 600; color: #10b981;">
-                   {{ e.guest }}
-                </td>
-                <td>Rs. {{ e.price }}</td>
-                <td >{{ e.location }}</td>
-                <td>
-                    <div style="font-size: 0.875rem; color: #1e293b;">{{ e.date }}</div>
-                    <div style="font-size: 0.75rem; color: #64748b;">{{ e.eventStartTime }} ({{ e.event_duration }})</div>
-                </td>
-                <td>
-                    <span class="badge">{{ e.available_ticket }} / {{ e.total_ticket }}</span>
-                </td>
-                <td style="max-width: 200px; color: #64748b; font-size: 0.85rem;">
-                    {{ e.description|truncatechars:80 }}
-                </td>
-                <td style="white-space: nowrap;">
-                    <a href="" class="action-btn edit-btn">
-                        <i class="fa-solid fa-edit"></i> Edit
-                    </a>
-                    <button type="button" class="action-btn delete-btn delete-event-trigger" data-id="{{ e.id }}" data-name="{{ e.name|escapejs }}">
-                        <i class="fa-solid fa-trash"></i> Delete
-                    </button>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="8" style="text-align: center; color: #64748b; padding: 3rem;">No events scheduled.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  <!-- Upcoming Events Section -->
+  <div class="section-container" style="margin-bottom: 3rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 700; color: #1e293b; margin: 0;">Active & Upcoming Events</h2>
+        
+    </div>
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Guest</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Date & Time</th>
+                    <th>Tickets</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in upcoming_events %}
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            {% if e.image %}
+                            <img src="{{ e.image.url }}" alt="{{ e.name }}" class="event-img">
+                            {% else %}
+                            <div class="event-img" style="background: #f1f5f9; display: flex; align-items: center; justify-content: center; height: 50px; width: 50px; border-radius: 8px;"><i class="fa-solid fa-calendar" style="color: #64748b;"></i></div>
+                            {% endif %}
+                            <div>
+                                <div style="font-weight: 600; color: #1e293b;">{{ e.name }}</div>
+                               
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                         <div style="font-size: 0.75rem; color: #64748b;">{{ e.guest }}</div>
+                    </td>
+                    <td>
+                        <div style="font-weight: 500; color: #10b981;">Rs. {{ e.price }}</div>
+                    </tb>
+                    <td>
+                        
+                        <div style="font-size: 0.75rem; color: #64748b;">{{ e.description|truncatechars:40 }}</div>
+                    </td>
+                    <td style="color: #64748b; font-size: 0.875rem;">{{ e.location }}</td>
+                    <td>
+                        <div style="font-size: 0.875rem; color: #1e293b; font-weight: 500;">{{ e.date }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">{{ e.eventStartTime }} ({{ e.event_duration }})</div>
+                    </td>
+                    <td>
+                        <div>
+                            <span class="badge" style="background: #f1f5f9; color: #1e293b;">{{ e.available_ticket }} / {{ e.total_ticket }}</span>
+                        </div>
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <a href="" class="action-btn edit-btn">Edit</i></a>
+                        <button type="button" class="action-btn delete-btn delete-event-trigger" data-id="{{ e.id }}" data-name="{{ e.name|escapejs }}" style="color: #dc2626; background: none; border: none; cursor: pointer;"><i class="fa-solid fa-trash"></i>Delete</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align: center; color: #64748b; padding: 4rem;">
+                        <img src="{% static 'assets/img/empty-calendar.svg' %}" alt="" style="width: 64px; opacity: 0.5; margin-bottom: 1rem;">
+                        <p>No active or upcoming events scheduled.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+  <!-- Past Events Section -->
+  <div class="section-container">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 700; color: #1e293b; margin: 0;">Past Events</h2>
+    </div>
+    <div class="admin-table-container" style="opacity: 0.8;">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Final Attendance</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in past_events %}
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="event-img" style="background: #f1f5f9; display: flex; align-items: center; justify-content: center; height: 40px; width: 40px; border-radius: 8px; filter: grayscale(1);"><i class="fa-solid fa-calendar-check" style="color: #94a3b8;"></i></div>
+                            <div>
+                                <div style="font-weight: 500; color: #64748b;">{{ e.name }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span style="color: #64748b; font-size: 0.875rem;">{{ e.total_ticket|add:"-e.available_ticket" }} Tickets Sold</span>
+                    </td>
+                    <td style="color: #94a3b8; font-size: 0.875rem;">{{ e.location }}</td>
+                    <td style="color: #94a3b8; font-size: 0.875rem;">{{ e.date }}</td>
+                    <td style="white-space: nowrap;">
+                        <button type="button" class="action-btn delete-btn delete-event-trigger" data-id="{{ e.id }}" data-name="{{ e.name|escapejs }}" style="color: #94a3b8; background: none; border: none; cursor: pointer;"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: #94a3b8; padding: 3rem;">No past events records.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
   </div>
 </div>
 {% endblock content %}

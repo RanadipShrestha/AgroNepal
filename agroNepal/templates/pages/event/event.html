@@ -8,7 +8,13 @@
     <div class="event-grid">
       {% for event in events %} 
       <div class="event-card">
+        {% if event.image %}
         <img src="{{ event.image.url }}" alt="{{event.name}}" class="event-img">
+        {% else %}
+        <div class="event-img" >
+          <i class="fa-solid fa-calendar" style="font-size: 3rem; color: #cbd5e1;"></i>
+        </div>
+        {% endif %}
         <div class="event-body">
           <h2 class="event-title">Event Name : {{event.name}}</h2>
           <p class="event-details">
@@ -22,12 +28,12 @@
             <span>Event Start Time : {{event.eventStartTime}}</span>
             <span>Event Duration : {{ event.event_duration }}</span> 
           </p>
+          <p class="event-description">
+            Discription: {{event.description|truncatewords:35}}
+          </p>
           <p  class="event-details">
             <span style="font-weight:600; color: #2a774bff;">Total Ticket : {{event.total_ticket}}</span>
             <span style="font-weight:600; color: #2a774bff;">Available Ticket : {{event.available_ticket}}</span></p>
-          <p class="event-description">
-            {{event.description|truncatewords:35}}
-          </p>
           <div class="event-footer">
             <span class="event-price">Rs : {{event.price}}</span>
             <a href='{% url "buy_ticket" event.slug %}' class="btn-buy">Readmore / Buy Now</a>

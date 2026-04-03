@@ -3,6 +3,7 @@ from django.contrib import messages
 from user.models import CustomUser
 from agro.models import Crop, CropSchedule, Contact, Event
 from .decorators import admin_only_required
+from django.utils import timezone
 # Create your views here.
 
 @admin_only_required
@@ -197,9 +198,12 @@ def adminDeleteContact(request):
 
 @admin_only_required
 def adminEvents(request):
-    events = Event.objects.all().order_by('-create_date')
+    today = timezone.now().date()
+    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')
+    past_events = Event.objects.filter(date__lt=today).order_by('-date')
     context = {
-        'events': events
+        'upcoming_events': upcoming_events,
+        'past_events': past_events,
     }
     return render(request, 'adminDashboard/dashboard/event/events.html', context)
 
@@ -229,7 +233,7 @@ def adminAddEvent(request):
                 guest=guest,
                 total_ticket=total_ticket,
                 available_ticket=total_ticket,
-                author=request.user
+                author=request.user,
             )
             messages.success(request, "New Event Added Successfully", extra_tags="eventAdd")
             return redirect('adminEvents')
