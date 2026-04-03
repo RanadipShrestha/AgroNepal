@@ -4,35 +4,35 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
-  <div class="adminDashboard-welcome" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;  padding: 1.5rem; border-radius: 12px; ">
+  <div class="adminDashboard-welcome" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-radius: 12px;">
     <div>
         <h1 class="adminDashboard-heading" style="margin: 0; color: #1e293b;">Events Management</h1>
         <p class="adminDashboard-subtext" style="margin: 0.25rem 0 0 0; color: #64748b;">Organize and manage AgroNepal community events.</p>
     </div>
     <a href="{% url 'adminAddEvent' %}" class="add-event-btn" style="background: #10b981; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background 0.2s;">
-        <i class="fa-solid fa-plus"></i> Add New Event
+        Add New Event
     </a>
   </div>
-  
-    {% if messages %}
-<div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
-  {% for message in messages %}
-    {% if 'adminEvent' in message.tags %}
-    <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; 
-      {% if 'success' in message.tags %}background:#dcfce3; color:#166534; 
-      {% else %}background:#fee2e2; color:#ef4444;
-      {% endif %}">
-      {{ message }}
-    </div>
-    {% endif %}
-  {% endfor %}
-</div>
-{% endif %}
+
+  {% if messages %}
+  <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+    {% for message in messages %}
+      {% if 'adminEvent' in message.tags %}
+      <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards;
+        {% if 'success' in message.tags %}background:#dcfce3; color:#166534;
+        {% else %}background:#fee2e2; color:#ef4444;
+        {% endif %}">
+        {{ message }}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <!-- Upcoming Events Section -->
   <div class="section-container" style="margin-bottom: 3rem;">
     <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
         <h2 style="font-size: 1.25rem; font-weight: 700; color: #1e293b; margin: 0;">Active & Upcoming Events</h2>
-        
     </div>
     <div class="admin-table-container">
         <table class="admin-table">
@@ -41,7 +41,6 @@
                     <th>Event</th>
                     <th>Guest</th>
                     <th>Price</th>
-                    <th>Description</th>
                     <th>Location</th>
                     <th>Date & Time</th>
                     <th>Tickets</th>
@@ -53,26 +52,17 @@
                 <tr>
                     <td>
                         <div style="display: flex; align-items: center; gap: 1rem;">
-                            {% if e.image %}
-                            <img src="{{ e.image.url }}" alt="{{ e.name }}" class="event-img">
-                            {% else %}
-                            <div class="event-img" style="background: #f1f5f9; display: flex; align-items: center; justify-content: center; height: 50px; width: 50px; border-radius: 8px;"><i class="fa-solid fa-calendar" style="color: #64748b;"></i></div>
-                            {% endif %}
+                           
                             <div>
                                 <div style="font-weight: 600; color: #1e293b;">{{ e.name }}</div>
-                               
                             </div>
                         </div>
                     </td>
                     <td>
-                         <div style="font-size: 0.75rem; color: #64748b;">{{ e.guest }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">{{ e.guest }}</div>
                     </td>
                     <td>
                         <div style="font-weight: 500; color: #10b981;">Rs. {{ e.price }}</div>
-                    </tb>
-                    <td>
-                        
-                        <div style="font-size: 0.75rem; color: #64748b;">{{ e.description|truncatechars:40 }}</div>
                     </td>
                     <td style="color: #64748b; font-size: 0.875rem;">{{ e.location }}</td>
                     <td>
@@ -80,13 +70,32 @@
                         <div style="font-size: 0.75rem; color: #64748b;">{{ e.eventStartTime }} ({{ e.event_duration }})</div>
                     </td>
                     <td>
-                        <div>
-                            <span class="badge" style="background: #f1f5f9; color: #1e293b;">{{ e.available_ticket }} / {{ e.total_ticket }}</span>
-                        </div>
+                        <span class="badge">{{ e.available_ticket }} / {{ e.total_ticket }}</span>
                     </td>
                     <td style="white-space: nowrap;">
-                        <a href="{% url 'adminEditEvent' e.id %}" class="action-btn edit-btn">Edit</i></a>
-                        <button type="button" class="action-btn delete-btn delete-event-trigger" data-id="{{ e.id }}" data-name="{{ e.name|escapejs }}" style="color: #dc2626; background: none; border: none; cursor: pointer;"><i class="fa-solid fa-trash"></i>Delete</button>
+                        <button type="button" class="action-btn view-btn view-event-trigger"
+                            data-name="{{ e.name|escapejs }}"
+                            data-guest="{{ e.guest|escapejs }}"
+                            data-price="{{ e.price }}"
+                            data-location="{{ e.location|escapejs }}"
+                            data-date="{{ e.date }}"
+                            data-start="{{ e.eventStartTime }}"
+                            data-duration="{{ e.event_duration|escapejs }}"
+                            data-total="{{ e.total_ticket }}"
+                            data-available="{{ e.available_ticket }}"
+                            data-description="{{ e.description|escapejs }}"
+                            data-image="{% if e.image %}{{ e.image.url }}{% endif %}">
+                            <i class="fa-solid fa-eye"></i> View
+                        </button>
+                        <a href="{% url 'adminEditEvent' e.id %}" class="action-btn edit-btn">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </a>
+                        <button type="button" class="action-btn delete-btn delete-event-trigger"
+                            data-id="{{ e.id }}"
+                            data-name="{{ e.name|escapejs }}"
+                            style="background: none; border: none; cursor: pointer;">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
                     </td>
                 </tr>
                 {% empty %}
@@ -112,7 +121,6 @@
             <thead>
                 <tr>
                     <th>Event</th>
-                    <th>Final Attendance</th>
                     <th>Location</th>
                     <th>Date</th>
                     <th>Actions</th>
@@ -123,24 +131,41 @@
                 <tr>
                     <td>
                         <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div class="event-img" style="background: #f1f5f9; display: flex; align-items: center; justify-content: center; height: 40px; width: 40px; border-radius: 8px; filter: grayscale(1);"><i class="fa-solid fa-calendar-check" style="color: #94a3b8;"></i></div>
+                            
                             <div>
                                 <div style="font-weight: 500; color: #64748b;">{{ e.name }}</div>
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <span style="color: #64748b; font-size: 0.875rem;">{{ e.total_ticket|add:"-e.available_ticket" }} Tickets Sold</span>
-                    </td>
                     <td style="color: #94a3b8; font-size: 0.875rem;">{{ e.location }}</td>
                     <td style="color: #94a3b8; font-size: 0.875rem;">{{ e.date }}</td>
                     <td style="white-space: nowrap;">
-                        <button type="button" class="action-btn delete-btn delete-event-trigger" data-id="{{ e.id }}" data-name="{{ e.name|escapejs }}" style="color: #94a3b8; background: none; border: none; cursor: pointer;"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" class="action-btn view-btn view-event-trigger"
+                            data-name="{{ e.name|escapejs }}"
+                            data-guest="{{ e.guest|escapejs }}"
+                            data-price="{{ e.price }}"
+                            data-location="{{ e.location|escapejs }}"
+                            data-date="{{ e.date }}"
+                            data-start="{{ e.eventStartTime }}"
+                            data-duration="{{ e.event_duration|escapejs }}"
+                            data-total="{{ e.total_ticket }}"
+                            data-available="{{ e.available_ticket }}"
+                            data-description="{{ e.description|escapejs }}"
+                            data-image="{% if e.image %}{{ e.image.url }}{% endif %}"
+                            style="color: #64748b; background: #f1f5f9;">
+                            <i class="fa-solid fa-eye"></i> View
+                        </button>
+                        <button type="button" class="action-btn delete-btn delete-event-trigger"
+                            data-id="{{ e.id }}"
+                            data-name="{{ e.name|escapejs }}"
+                            style="color: #94a3b8; background: none; border: none; cursor: pointer;">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" style="text-align: center; color: #94a3b8; padding: 3rem;">No past events records.</td>
+                    <td colspan="4" style="text-align: center; color: #94a3b8; padding: 3rem;">No past events records.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -148,4 +173,85 @@
     </div>
   </div>
 </div>
+
+<!-- Event View Modal -->
+<div class="modal-wrapper" id="eventViewModal">
+  <div class="modal-wrapper-content" style="max-width: 520px; text-align: left; padding: 0; overflow: hidden;">
+
+    <div style="background: #f0fdf4; padding: 1.25rem 1.5rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: flex-start;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+          <div style="width: 44px; height: 44px; border-radius: 8px; overflow: hidden; background: #dcfce7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <img id="view-modal-img" src="" alt="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+            <i id="view-modal-icon" class="fa-solid fa-calendar" style="color: #16a34a;"></i>
+          </div>
+          <h2 id="view-modal-name" style="margin: 0; font-size: 1.1rem; font-weight: 700; color: #1e293b;"></h2>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span id="view-modal-price" style="background: #dcfce7; color: #166534; padding: 3px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600;"></span>
+          <span id="view-modal-tickets" style="background: #e0f2fe; color: #0369a1; padding: 3px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600;"></span>
+        </div>
+      </div>
+      <button onclick="document.getElementById('eventViewModal').classList.remove('active')"
+        style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #94a3b8; line-height: 1; padding: 0; margin-left: 1rem;">&times;</button>
+    </div>
+
+    <div style="padding: 1.25rem 1.5rem;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; color: #64748b; width: 120px; vertical-align: top;">Guest</td>
+          <td id="view-modal-guest" style="padding: 10px 0; font-weight: 500; color: #1e293b;"></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; color: #64748b; vertical-align: top;">Location</td>
+          <td id="view-modal-location" style="padding: 10px 0; font-weight: 500; color: #1e293b;"></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; color: #64748b; vertical-align: top;">Date</td>
+          <td id="view-modal-date" style="padding: 10px 0; font-weight: 500; color: #1e293b;"></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+          <td style="padding: 10px 0; color: #64748b; vertical-align: top;">Start Time</td>
+          <td id="view-modal-time" style="padding: 10px 0; font-weight: 500; color: #1e293b;"></td>
+        </tr>
+        <tr>
+          <td style="padding: 10px 0; color: #64748b; vertical-align: top;">Description</td>
+          <td id="view-modal-description" style="padding: 10px 0; color: #475569; line-height: 1.6;"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="modal-wrapper-footer" style="padding: 1rem 1.5rem; border-top: 1px solid #e2e8f0; margin-top: 0;">
+      <button class="modal-wrapper-btn modal-wrapper-cancel"
+        onclick="document.getElementById('eventViewModal').classList.remove('active')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.view-event-trigger').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const img = document.getElementById('view-modal-img');
+      const icon = document.getElementById('view-modal-icon');
+      if (this.dataset.image) {
+        img.src = this.dataset.image;
+        img.style.display = 'block';
+        icon.style.display = 'none';
+      } else {
+        img.style.display = 'none';
+        icon.style.display = 'inline';
+      }
+      document.getElementById('view-modal-name').textContent        = this.dataset.name;
+      document.getElementById('view-modal-price').textContent       = 'Rs. ' + this.dataset.price;
+      document.getElementById('view-modal-tickets').textContent     = this.dataset.available + ' / ' + this.dataset.total + ' tickets';
+      document.getElementById('view-modal-guest').textContent       = this.dataset.guest;
+      document.getElementById('view-modal-location').textContent    = this.dataset.location;
+      document.getElementById('view-modal-date').textContent        = this.dataset.date;
+      document.getElementById('view-modal-time').textContent        = this.dataset.start + ' (' + this.dataset.duration + ')';
+      document.getElementById('view-modal-description').textContent = this.dataset.description;
+      document.getElementById('eventViewModal').classList.add('active');
+    });
+  });
+</script>
+
 {% endblock content %}

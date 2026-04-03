@@ -132,3 +132,11 @@
   background: #ef4444;
   color: white;
 }
+
+.view-btn {
+  background: #24b364;
+  color: #ffffff;
+}
+.view-btn:hover {
+  background: #5a8f61;
+}
