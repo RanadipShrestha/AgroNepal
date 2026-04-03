@@ -1,0 +1,96 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}Edit Event - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+  <div class="adminDashboard-welcome" style="margin-bottom: 1rem; text-align: center;">
+    <h1 class="adminDashboard-heading">Edit Event: {{ event.name }}</h1>
+    <p class="adminDashboard-subtext">Modify the details of the existing event schedule.</p>
+  </div>
+
+  <div class="edit-event-form-container">
+    <form method="POST" action="{% url 'adminEditEvent' event.id %}" enctype="multipart/form-data" id="edit-event-eventForm">
+        {% csrf_token %}
+        <div class="edit-event-form-grid">
+            <div class="edit-event-form-group edit-event-full-width">
+                <label class="edit-event-form-label" for="name">Event Name</label>
+                <input type="text" id="name" name="name" class="edit-event-form-control" required value="{{ event.name }}">
+            </div>
+
+            <div class="edit-event-form-group">
+                <label class="edit-event-form-label" for="price">Price (Rs.)</label>
+                <input type="number" id="price" name="price" class="edit-event-form-control" required value="{{ event.price }}">
+            </div>
+
+            <div class="edit-event-form-group">
+                <label class="edit-event-form-label" for="guest">Guest Name</label>
+                <input type="text" id="guest" name="guest" class="edit-event-form-control" required value="{{ event.guest }}">
+            </div>
+
+            <div class="edit-event-form-group">
+                <label class="edit-event-form-label" for="location">Location</label>
+                <input type="text" id="location" name="location" class="edit-event-form-control" required value="{{ event.location }}">
+            </div>
+
+            <div class="edit-event-form-group">
+                <label class="edit-event-form-label" for="date">Event Date</label>
+                <input type="date" id="date" name="date" class="edit-event-form-control" required value="{{ event.date|date:'Y-m-d' }}">
+            </div>
+
+            <div class="edit-event-form-group">
+                <label class="edit-event-form-label" for="eventStartTime">Start Time</label>
+                <input type="time" id="eventStartTime" name="eventStartTime" class="edit-event-form-control" required value="{{ event.eventStartTime|time:'H:i' }}">
+            </div>
+
+            <div class="edit-event-form-group">
+                <label class="edit-event-form-label" for="event_duration">Duration</label>
+                <input type="text" id="event_duration" name="event_duration" class="edit-event-form-control" required value="{{ event.event_duration }}">
+            </div>
+
+            <div class="edit-event-form-group">
+                <label class="edit-event-form-label" for="total_ticket">Total Tickets</label>
+                <input type="number" id="total_ticket" name="total_ticket" class="edit-event-form-control" required value="{{ event.total_ticket }}">
+            </div>
+
+            <div class="edit-event-form-group">
+                <label class="edit-event-form-label" for="image">Update Event Image (Optional)</label>
+                <input type="file" id="image" name="image" class="edit-event-form-control" accept="image/*">
+                {% if event.image %}
+                <div class="edit-event-current-image">
+                    <img src="{{ event.image.url }}" alt="Current Image">
+                    <span style="font-size: 0.875rem; color: #64748b;">Current Image</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="edit-event-form-group edit-event-full-width">
+                <label class="edit-event-form-label" for="description">Event Description</label>
+                <textarea id="description" name="description" class="edit-event-form-control" required>{{ event.description }}</textarea>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+            <a href="{% url 'adminEvents' %}" class="edit-event-cancel-btn"></i> Cancel</a>
+            <button type="button" class="edit-event-submit-btn" id="edit-event-triggerConfirmBtn">Save Changes</button>
+        </div>
+    </form>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="edit-event-confirmModal" class="edit-event-modal-wrapper">
+  <div class="edit-event-modal-wrapper-content">
+    <div class="edit-event-modal-wrapper-header">
+      <h2 style="margin-top: 0;">Confirm Update</h2>
+    </div>
+    <div class="edit-event-modal-wrapper-body">
+      <p style="color: #4e8b62;">Are you sure you want to save these changes to the event?</p>
+    </div>
+    <div class="edit-event-modal-wrapper-footer">
+      <button type="button" id="edit-event-cancelBtn" class="edit-event-modal-wrapper-btn edit-event-modal-wrapper-cancel">Cancel</button>
+      <button type="button" id="edit-event-confirmBtn" class="edit-event-modal-wrapper-btn edit-event-modal-wrapper-confirm">Update Now</button>
+    </div>
+  </div>
+</div>
+{% endblock content %}

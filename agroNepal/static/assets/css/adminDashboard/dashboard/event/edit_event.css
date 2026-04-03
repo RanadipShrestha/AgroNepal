@@ -3,7 +3,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   padding: 2rem;
-  margin-top: 1rem;
+  margin: 1rem auto;
   max-width: 900px;
 }
 .edit-event-form-grid {
@@ -35,7 +35,7 @@
 }
 .edit-event-form-control:focus {
   outline: none;
-  border-color: #0284c7;
+  border-color: #7cf79a;
   box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
 }
 textarea.edit-event-form-control {
