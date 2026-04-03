@@ -216,7 +216,6 @@ def adminAddEvent(request):
         event_duration = request.POST.get('event_duration')
         guest = request.POST.get('guest')
         total_ticket = request.POST.get('total_ticket')
-
         try:
             Event.objects.create(
                 name=name,

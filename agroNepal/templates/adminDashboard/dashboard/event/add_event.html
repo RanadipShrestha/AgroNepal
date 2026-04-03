@@ -1,4 +1,4 @@
-{% comment %} {% extends "adminDashboard.html" %}
+{% extends "adminDashboard.html" %}
 {% load static %}
 {% block title %}Add Event - AgroNepal{% endblock title %}
 
@@ -8,5 +8,82 @@
     <h1 class="adminDashboard-heading">Create New Event</h1>
     <p class="adminDashboard-subtext">Fill in the details to schedule a new AgroNepal community event.</p>
   </div>
+  <div class="add_event-form-container">
+    <form method="POST" action="{% url 'adminAddEvent' %}" enctype="multipart/form-data" id="add_event-eventForm">
+        {% csrf_token %}
+        <div class="add_event-form-grid">
+            <div class="add_event-form-group add_event-full-width">
+                <label class="add_event-form-label" for="name">Event Name</label>
+                <input type="text" id="name" name="name" class="add_event-form-control" required placeholder="e.g. Organic Farming Workshop 2024">
+            </div>
+
+            <div class="add_event-form-group">
+                <label class="add_event-form-label" for="price">Price (Rs.)</label>
+                <input type="number" id="price" name="price" class="add_event-form-control" required placeholder="0 for free events">
+            </div>
+
+            <div class="add_event-form-group">
+                <label class="add_event-form-label" for="guest">Guest Name</label>
+                <input type="text" id="guest" name="guest" class="add_event-form-control" required placeholder="e.g. Dr. Ram Prasad">
+            </div>
+
+            <div class="add_event-form-group">
+                <label class="add_event-form-label" for="location">Location</label>
+                <input type="text" id="location" name="location" class="add_event-form-control" required placeholder="e.g. Kathmandu, Nepal">
+            </div>
+
+            <div class="add_event-form-group">
+                <label class="add_event-form-label" for="date">Event Date</label>
+                <input type="date" id="date" name="date" class="add_event-form-control" required>
+            </div>
+
+            <div class="add_event-form-group">
+                <label class="add_event-form-label" for="eventStartTime">Start Time</label>
+                <input type="time" id="eventStartTime" name="eventStartTime" class="add_event-form-control" required>
+            </div>
+
+            <div class="add_event-form-group">
+                <label class="add_event-form-label" for="event_duration">Duration</label>
+                <input type="text" id="event_duration" name="event_duration" class="add_event-form-control" required placeholder="e.g. 3 Hours">
+            </div>
+
+            <div class="add_event-form-group">
+                <label class="add_event-form-label" for="total_ticket">Total Tickets</label>
+                <input type="number" id="total_ticket" name="total_ticket" class="add_event-form-control" required placeholder="e.g. 50">
+            </div>
+
+            <div class="add_event-form-group">
+                <label class="add_event-form-label" for="image">Event Header Image</label>
+                <input type="file" id="image" name="image" class="add_event-form-control" accept="image/*">
+            </div>
+
+            <div class="add_event-form-group add_event-full-width">
+                <label class="add_event-form-label" for="description">Event Description</label>
+                <textarea id="description" name="description" class="add_event-form-control" required placeholder="Provide details about the event..."></textarea>
+            </div>
+        </div>
+
+        <div class="cancle-scheduleEvent-div">
+            <a href="{% url 'adminEvents' %}" class="add_event-cancel-btn"><i class="fa-solid fa-xmark"></i> Cancel</a>
+            <button type="button" class="add_event-submit-btn" id="add_event-triggerConfirmBtn"><i class="fa-solid fa-check"></i> Schedule Event</button>
+        </div>
+    </form>
+  </div>
 </div>
-{% endblock content %} {% endcomment %}
+
+<!-- Confirmation Modal -->
+<div id="add_event-confirmModal" class="add_event-modal-wrapper">
+  <div class="add_event-modal-wrapper-content">
+    <div class="add_event-modal-wrapper-header">
+      <h2 style="margin-top: 0;">Confirm Schedule</h2>
+    </div>
+    <div class="add_event-modal-wrapper-body">
+      <p style="color: #64748b;">Are you sure you want to schedule this new event?</p>
+    </div>
+    <div class="add_event-modal-wrapper-footer">
+      <button type="button" id="add_event-cancelBtn" class="add_event-modal-wrapper-btn add_event-modal-wrapper-cancel">Cancel</button>
+      <button type="button" id="add_event-confirmBtn" class="add_event-modal-wrapper-btn add_event-modal-wrapper-confirm">Schedule Now</button>
+    </div>
+  </div>
+</div>
+{% endblock content %} 

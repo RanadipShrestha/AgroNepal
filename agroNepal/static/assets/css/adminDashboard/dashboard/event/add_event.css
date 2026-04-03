@@ -123,3 +123,8 @@ textarea.add_event-form-control {
   background: #10b981;
   color: white;
 }
+.cancle-scheduleEvent-div {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
