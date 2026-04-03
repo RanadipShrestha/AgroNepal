@@ -32,11 +32,21 @@ def adminAddUser(request):
         is_active = request.POST.get('is_active') == 'on'
 
         if not email or not username or not password:
-            messages.error(request, "Required fields missing!", extra_tags="adminAddUser")
+            messages.error(request, "Required fields missing!", extra_tags="adminUserAddError")
             return redirect('adminAddUser')
 
         if password != confirm_password:
-            messages.error(request, "Passwords do not match. Please try again.", extra_tags="adminAddUser")
+            messages.error(request, "Passwords do not match. Please try again.", extra_tags="adminUserAddError")
+            return redirect('adminAddUser')
+
+        # Check for duplicate username
+        if CustomUser.objects.filter(username=username).exists():
+            messages.error(request, f"Username '{username}' is already taken.", extra_tags="adminUserAddError")
+            return redirect('adminAddUser')
+
+        # Check for duplicate email
+        if CustomUser.objects.filter(email=email).exists():
+            messages.error(request, f"Email '{email}' is already registered.", extra_tags="adminUserAddError")
             return redirect('adminAddUser')
 
         try:
@@ -53,11 +63,11 @@ def adminAddUser(request):
                 is_active=is_active
             )
 
-            messages.success(request, f"User '{username}' created successfully.", extra_tags="adminAddUser")
+            messages.success(request, f"User '{username}' created successfully.", extra_tags="adminUser")
             return redirect('adminUsers')
 
         except Exception as e:
-            messages.error(request, f"There is an error while creating user", extra_tags="adminAddUser")
+            messages.error(request, "There is an error while creating user.", extra_tags="adminUserAddError")
 
     return render(request, 'adminDashboard/dashboard/user/add_user.html')
 
@@ -77,10 +87,10 @@ def adminEditUser(request, user_id):
         
         try:
             edit_user.save()
-            messages.success(request, f"User '{edit_user.username}' updated successfully.", extra_tags="adminAddUser")
+            messages.success(request, f"User '{edit_user.username}' updated successfully.", extra_tags="adminUser")
             return redirect('adminUsers')
         except:
-            messages.error(request, f"Error updating user.", extra_tags="adminAddUser")
+            messages.error(request, f"Error updating user.", extra_tags="adminUser")
             
     return render(request, 'adminDashboard/dashboard/user/edit_user.html', {'edit_user': edit_user})
 
@@ -90,11 +100,11 @@ def adminDeleteUser(request):
         user_id = request.POST.get('user_id')
         user_to_delete = get_object_or_404(CustomUser, id=user_id)
         if user_to_delete == request.user:
-            messages.error(request, "You cannot delete yourself", extra_tags="adminAddUser")
+            messages.error(request, "You cannot delete yourself", extra_tags="adminUser")
         else:
             username = user_to_delete.username
             user_to_delete.delete()
-            messages.success(request,"user deleted successfully", extra_tags="adminAddUser")
+            messages.success(request,"user deleted successfully", extra_tags="adminUser")
     return redirect('adminUsers')
 
 @admin_only_required
@@ -163,7 +173,7 @@ def adminEditCrop(request):
                     task=task
                 )
 
-        messages.success(request, f"Crop '{name}' updated successfully.")
+        messages.success(request, f"Crop '{name}' updated successfully.", extra_tags="admincrop")
 
     return redirect('adminCrops')
 
@@ -174,7 +184,7 @@ def adminDeleteCrop(request):
         crop = get_object_or_404(Crop, id=crop_id)
         crop_name = crop.name
         crop.delete()
-        messages.success(request, "Crop deleted successfully.")
+        messages.success(request, "Crop deleted successfully.",  extra_tags="admincrop")
     return redirect('adminCrops')
 
 @admin_only_required
@@ -235,9 +245,39 @@ def adminAddEvent(request):
                 available_ticket=total_ticket,
                 author=request.user,
             )
-            messages.success(request, "New Event Added Successfully", extra_tags="eventAdd")
+            messages.success(request, "New Event Added Successfully", extra_tags="adminEvent")
             return redirect('adminEvents')
 
         except:
-            messages.error(request, 'There is issues in the enter data please correct that', extra_tags="eventAdd")
+            messages.error(request, 'There is issues in the enter data please correct that', extra_tags="adminEvent")
     return render(request, 'adminDashboard/dashboard/event/add_event.html')
+
+@admin_only_required
+def adminEditEvent(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    if request.method == 'POST':
+        event.name = request.POST.get('name')
+        if 'image' in request.FILES:
+            event.image = request.FILES.get('image')
+        event.price = request.POST.get('price')
+        event.description = request.POST.get('description')
+        event.location = request.POST.get('location')
+        event.date = request.POST.get('date')
+        event.eventStartTime = request.POST.get('eventStartTime')
+        event.event_duration = request.POST.get('event_duration')
+        event.guest = request.POST.get('guest')
+        
+        old_total = event.total_ticket
+        new_total = int(request.POST.get('total_ticket'))
+        diff = new_total - old_total
+        event.total_ticket = new_total
+        event.available_ticket = max(0, event.available_ticket + diff)
+        
+        try:
+            event.save()
+            messages.success(request, f"Event '{event.name}' updated successfully.", extra_tags="adminEvent")
+            return redirect('adminEvents')
+        except Exception as e:
+            messages.error(request, "There is an error while updateding Event. Please Try Again.", extra_tags="adminEvent")
+            
+    return render(request, 'adminDashboard/dashboard/event/edit_event.html', {'event': event})
