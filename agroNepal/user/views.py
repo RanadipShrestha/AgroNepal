@@ -8,6 +8,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib import messages
 from .forms import CustomUserCreationForm
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import get_user_model, update_session_auth_hash
 
 def register(request):
     if request.method == "POST":
@@ -63,11 +65,6 @@ def login(request):
 def logout_view(request):
     logout(request)
     return redirect('index')
-
-
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import get_user_model, update_session_auth_hash
-
 
 def profile(request):
     if request.user.is_staff or request.user.is_superuser:
@@ -137,7 +134,9 @@ def passwordChange(request):
             messages.error(request, 'Please correct the error below.', extra_tags="userProfileUpdate")
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'userProfile/change_password.html', {
+    
+    context = {
         'form': form,
         'base_template': base_template,
-    })
+    }
+    return render(request, 'userProfile/change_password.html', context )
