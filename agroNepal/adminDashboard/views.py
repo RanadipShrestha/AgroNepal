@@ -281,3 +281,13 @@ def adminEditEvent(request, event_id):
             messages.error(request, "There is an error while updateding Event. Please Try Again.", extra_tags="adminEvent")
             
     return render(request, 'adminDashboard/dashboard/event/edit_event.html', {'event': event})
+
+@admin_only_required
+def adminDeleteEvent(request):
+    if request.method == 'POST':
+        event_id = request.POST.get('event_id')
+        event = get_object_or_404(Event, id=event_id)
+        event_name = event.name
+        event.delete()
+        messages.success(request, f"Event '{event_name}' deleted successfully", extra_tags="adminEvent")
+    return redirect('adminEvents')

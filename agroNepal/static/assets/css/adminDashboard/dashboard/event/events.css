@@ -140,3 +140,136 @@
 .view-btn:hover {
   background: #5a8f61;
 }
+
+.view-event-header {
+  background: #f0fdf4;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.view-event-header-left {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.view-event-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #dcfce7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.view-event-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.view-event-icon {
+  color: #16a34a;
+}
+
+.view-event-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.view-event-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.view-event-badge {
+  padding: 3px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.view-event-badge-green {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.view-event-badge-blue {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.view-event-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #94a3b8;
+  line-height: 1;
+  padding: 0;
+  margin-left: 1rem;
+}
+
+.view-event-body {
+  padding: 1.25rem 1.5rem;
+}
+
+.view-event-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.view-event-table tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.view-event-table tr:last-child {
+  border-bottom: none;
+}
+
+.view-event-label {
+  padding: 10px 0;
+  color: #64748b;
+  width: 120px;
+  vertical-align: top;
+}
+
+.view-event-value {
+  padding: 10px 0;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.view-event-description {
+  padding: 10px 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.view-event-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 0;
+}
+
+.view-event-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.view-event-cancel {
+  background: #e2e8f0;
+  border: none;
+}
