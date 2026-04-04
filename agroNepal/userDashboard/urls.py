@@ -24,10 +24,6 @@ urlpatterns = [
     path('edit-share-knowledge/', editShareKnowledge, name='editShareKnowledge'),
     path('delete-share-knowledge/', deleteShareKnowledge, name='deleteShareKnowledge'),
 
-    # Profile Section
-    path('profile/', profile, name="profile"),
-    path('edit-profile', userEditProfile, name="edit-profile"),
-    path('change-password/', userPasswordChange, name="change-password"),
 
     # Ticket
     path("user-tickets/", userTickets, name="userTickets")

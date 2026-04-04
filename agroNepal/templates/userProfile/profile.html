@@ -1,15 +1,17 @@
 {% extends "userdashboard.html" %} {% load static %} {% block content %}
 <!-- Messages Display Section -->
 {% if messages %}
-<div class="messages-container">
-  {% for message in messages %}
-    {% if 'userProfileUpdate' in message.tags %}
-      <div class="alert alert-success" id="alert-{{ forloop.counter }}">
-        {{ message }}
-        <button class="close-alert" onclick="closeAlert('alert-{{ forloop.counter }}')">&times;</button>
-      </div>
-    {% endif %}
-  {% endfor %}
+<div class="userProfile-messages-container">
+  {% for message in messages %} {% if 'userProfileUpdate' in message.tags %}
+  <div class="userUpdatd-success">
+    <span class="userUpdatd-alert-message">{{ message }}</span>
+  </div>
+  {% elif 'usernameExistsError' in message.tags or 'EmailExistsError' in
+  message.tags %}
+  <div class="UserProfile-error">
+    <span class="usernameExistsError-alert-message">{{ message }}</span>
+  </div>
+  {% endif %} {% endfor %}
 </div>
 {% endif %}
 

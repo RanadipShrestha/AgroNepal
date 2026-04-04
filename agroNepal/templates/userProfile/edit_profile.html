@@ -1,4 +1,8 @@
-{% extends "userDashboard.html" %} {% load static %} {% block content %} 
+{% if request.user.is_superuser %}
+    {% extends "admindashboard.html" %}
+{% else %}
+    {% extends "userdashboard.html" %}
+{% endif %} {% load static %} {% block content %} 
 {% if messages %}
 <div class="messages-container">
   {% for message in messages %}
