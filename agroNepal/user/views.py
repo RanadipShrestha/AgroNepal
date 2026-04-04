@@ -70,12 +70,17 @@ from django.contrib.auth import get_user_model, update_session_auth_hash
 
 
 def profile(request):
-    return render(request, "userProfile/profile.html")
+    if request.user.is_staff or request.user.is_superuser:
+        base_template = "adminDashboard.html"
+    else:
+        base_template = "userDashboard.html"
+    return render(request, "userProfile/profile.html", {"base_template": base_template})
 
 
 
 def editProfile(request):
     user = request.user
+    base_template = "adminDashboard.html" if (user.is_staff or user.is_superuser) else "userDashboard.html"
 
     if request.method == "POST":
         # Getting updated data
@@ -114,15 +119,18 @@ def editProfile(request):
         return redirect('profile')
 
     # GET request → show form
-    return render(request, "userProfile/edit_profile.html", {"user": user})
+    return render(request, "userProfile/edit_profile.html", {"user": user, "base_template": base_template})
 
 
 def passwordChange(request):
+    user = request.user
+    base_template = "adminDashboard.html" if (user.is_staff or user.is_superuser) else "userDashboard.html"
+
     if request.method == "POST":
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
+            saved_user = form.save()
+            update_session_auth_hash(request, saved_user)
             messages.success(request, 'Your password was successfully updated!', extra_tags="userProfileUpdate")
             return redirect('profile')
         else:
@@ -130,5 +138,6 @@ def passwordChange(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'userProfile/change_password.html', {
-        'form': form
+        'form': form,
+        'base_template': base_template,
     })
