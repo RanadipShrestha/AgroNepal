@@ -405,18 +405,15 @@ def userTickets(request):
 #--------------------------Profile Section -----------------------------
 @user_only_required
 def profile(request):
-    return render(request, "userDashboard/userProfile/profile.html")
+    return render(request, "userProfile/profile.html")
+
 
 @user_only_required
 def userEditProfile(request):
-    return render(request, "userDashboard/userProfile/edit_profile.html")
+    user = request.user
 
-@user_only_required
-def userUpdatedProfile(request):
     if request.method == "POST":
-        user = request.user
-
-        # Getting New Updated User Data
+        # Getting updated data
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         username = request.POST.get('username')
@@ -425,18 +422,19 @@ def userUpdatedProfile(request):
         address = request.POST.get('address')
         land_address = request.POST.get('land_address')
 
-        # Checking username or email already exists or not
         CustomUser = get_user_model()
 
+        # Check username uniqueness
         if CustomUser.objects.filter(username=username).exclude(pk=user.pk).exists():
-            messages.error(request, "Username already exists.", extra_tags="error")
+            messages.error(request, "Username already exists.", extra_tags="userProfileUpdate")
             return redirect('edit-profile')
 
+        # Check email uniqueness
         if CustomUser.objects.filter(email=email).exclude(pk=user.pk).exists():
-            messages.error(request, "Email already exists.", extra_tags="error")
+            messages.error(request, "Email already exists.", extra_tags="userProfileUpdate")
             return redirect('edit-profile')
 
-        # User information update
+        # Update user
         user.first_name = first_name
         user.last_name = last_name
         user.username = username
@@ -447,10 +445,11 @@ def userUpdatedProfile(request):
 
         user.save()
 
-        messages.success(request, "Your Profile Updated Successfully", extra_tags="success")
+        messages.success(request, "Your Profile Updated Successfully", extra_tags="userProfileUpdate")
         return redirect('profile')
 
-    return redirect('profile')
+    # GET request → show form
+    return render(request, "userProfile/edit_profile.html", {"user": user})
 
 @user_only_required
 def userPasswordChange(request):
@@ -459,13 +458,13 @@ def userPasswordChange(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            messages.success(request, 'Your password was successfully updated!', extra_tags="passwordSuccess")
+            messages.success(request, 'Your password was successfully updated!', extra_tags="userProfileUpdate")
             return redirect('profile')
         else:
-            messages.error(request, 'Please correct the error below.', extra_tags="passwordError")
+            messages.error(request, 'Please correct the error below.', extra_tags="userProfileUpdate")
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'userDashboard/userProfile/change_password.html', {
+    return render(request, 'userProfile/change_password.html', {
         'form': form
     })
 

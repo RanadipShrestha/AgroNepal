@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
           alert.remove();
         }, 400);
       },
-      5000 + index * 200,
+      3500 + index * 200,
     ); // Stagger dismissal if multiple alerts
   });
 });

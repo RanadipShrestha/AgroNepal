@@ -291,3 +291,5 @@ def adminDeleteEvent(request):
         event.delete()
         messages.success(request, f"Event '{event_name}' deleted successfully", extra_tags="adminEvent")
     return redirect('adminEvents')
+
+

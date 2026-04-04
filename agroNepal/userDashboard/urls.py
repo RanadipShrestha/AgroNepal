@@ -27,7 +27,6 @@ urlpatterns = [
     # Profile Section
     path('profile/', profile, name="profile"),
     path('edit-profile', userEditProfile, name="edit-profile"),
-    path('user-updated-profile', userUpdatedProfile, name="userUpdatedProfile"),
     path('change-password/', userPasswordChange, name="change-password"),
 
     # Ticket
