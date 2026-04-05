@@ -24,4 +24,7 @@ urlpatterns = [
     path("events/add/", adminAddEvent, name="adminAddEvent"),
     path("events/edit/<int:event_id>/", adminEditEvent, name="adminEditEvent"),
     path("delete-event/", adminDeleteEvent, name="adminDeleteEvent"),
+
+     # Manage Blogs
+    path("blogs/", adminBlogs, name="adminBlogs"),
 ]

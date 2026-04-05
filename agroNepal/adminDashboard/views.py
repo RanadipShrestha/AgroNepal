@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
-from agro.models import Crop, CropSchedule, Contact, Event
+from agro.models import Crop, CropSchedule, Contact, Event, Blog
 from .decorators import admin_only_required
 from django.utils import timezone
 # Create your views here.
@@ -291,3 +291,14 @@ def adminDeleteEvent(request):
         event.delete()
         messages.success(request, f"Event '{event_name}' deleted successfully", extra_tags="adminEvent")
     return redirect('adminEvents')
+
+
+#-------------------Blog Management------------
+
+@admin_only_required
+def adminBlogs(request):
+    blogs = Blog.objects.all().order_by('-create_date')
+    context = {
+        'blogs': blogs
+    }
+    return render(request, 'adminDashboard/dashboard/blog/blogs.html', context)
