@@ -4,7 +4,7 @@
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     padding: 2rem;
     margin-top: 1rem;
-    max-width: 800px;
+    max-width: 1200px;
 }
 .form-group {
     margin-bottom: 1.5rem;
@@ -18,7 +18,7 @@
 .center-wrapper {
     display: flex;
     justify-content: center;
-    align-items: center;   /* optional (vertical center) */
+    align-items: center; 
     flex-direction: column;
 }
 .form-control {

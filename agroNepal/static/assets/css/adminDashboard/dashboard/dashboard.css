@@ -38,12 +38,6 @@
   color: var(--primary-color);
 }
 
-.adminDashboard-subtext {
-  font-size: 15px;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
 .adminDashboard-status-bar {
   display: flex;
   gap: 20px;

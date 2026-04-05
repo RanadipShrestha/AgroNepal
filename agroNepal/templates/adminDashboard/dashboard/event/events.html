@@ -4,12 +4,12 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
-  <div class="adminDashboard-welcome" style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-radius: 12px;">
+  <div class="adminDashboard-welcome">
     <div>
         <h1 class="adminDashboard-heading" style="margin: 0; color: #1e293b;">Events Management</h1>
         <p class="adminDashboard-subtext" style="margin: 0.25rem 0 0 0; color: #64748b;">Organize and manage AgroNepal community events.</p>
     </div>
-    <a href="{% url 'adminAddEvent' %}" class="add-event-btn" style="background: #10b981; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background 0.2s;">
+    <a href="{% url 'adminAddEvent' %}" class="add-event-btn">
         Add New Event
     </a>
   </div>

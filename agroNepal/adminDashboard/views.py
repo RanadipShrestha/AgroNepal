@@ -302,3 +302,46 @@ def adminBlogs(request):
         'blogs': blogs
     }
     return render(request, 'adminDashboard/dashboard/blog/blogs.html', context)
+
+@admin_only_required
+def adminAddBlog(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        blog_content = request.POST.get('blog_content', '')
+        image = request.FILES.get('image')
+        
+        try:
+            Blog.objects.create(
+                title=title,
+                description=description,
+                blog_content=blog_content,
+                image=image,
+                author=request.user
+            )
+            messages.success(request, "Blog added successfully.", extra_tags="adminBlog")
+            return redirect('adminBlogs')
+        except Exception:
+            messages.error(request, "Error adding blog.", extra_tags="adminBlog")
+            
+    return render(request, 'adminDashboard/dashboard/blog/add_blog.html')
+
+@admin_only_required
+def adminEditBlog(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    if request.method == 'POST':
+        blog.title = request.POST.get('title')
+        blog.description = request.POST.get('description')
+        blog.blog_content = request.POST.get('blog_content', '')
+        
+        if 'image' in request.FILES:
+            blog.image = request.FILES.get('image')
+            
+        try:
+            blog.save()
+            messages.success(request, f"Blog '{blog.title}' updated successfully.")
+            return redirect('adminBlogs')
+        except Exception as e:
+            messages.error(request, f"Error updating blog: {e}")
+            
+    return render(request, 'adminDashboard/dashboard/edit_blog.html', {'blog': blog})

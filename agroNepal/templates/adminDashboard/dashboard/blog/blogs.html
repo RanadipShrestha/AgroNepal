@@ -9,7 +9,7 @@
         <h1 class="adminDashboard-heading">Blogs Management</h1>
         <p class="adminDashboard-subtext">Manage blog posts published on the platform.</p>
     </div>
-    <a href="" class="btn adminDashboard-btn-green">
+    <a href="{% url 'adminAddBlog' %}" class="btn adminDashboard-btn-green">
         Add New Blog
     </a>
   </div>
@@ -17,7 +17,7 @@
   {% if messages %}
   <div id="admin-message-toast" style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none;">
     {% for message in messages %}
-      {% if "deleteContact" in message.extra_tags %}
+      {% if "adminBlog" in message.extra_tags %}
       <div class="message-toast-item" style="pointer-events: auto; min-width: 280px; padding: 12px 20px; border-radius: 10px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); display: flex; align-items: center; gap: 12px; animation: slideIn 0.3s ease-out; {% if 'success' in message.tags %}background: #10b981; color: white;{% else %}background: #ef4444; color: white;{% endif %}">
         <span style="font-weight: 500;">{{ message }}</span>
       </div>
