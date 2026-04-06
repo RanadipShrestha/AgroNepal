@@ -1,0 +1,81 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}User Crop Expenses - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+    <!-- Header Section -->
+    <div class="admin-dashboard-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 class="adminDashboard-heading">User Crop Expenses</h1>
+            <p class="adminDashboard-subtext">View and search through crop expenses recorded by users.</p>
+        </div>
+        
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'adminUserExpenses' %}" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ search_query }}" 
+                placeholder="Search by username..." 
+                style="padding: 0.5rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; font-size: 0.95rem; width: 250px;"
+            >
+            <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.5rem 1rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-search"></i> Search
+            </button>
+            {% if search_query %}
+            <a href="{% url 'adminUserExpenses' %}" class="btn" style="padding: 0.5rem 1rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 8px; text-decoration: none;">
+                Clear
+            </a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- User Expenses Table -->
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Crop Name</th>
+                    <th>Amount</th>
+                    <th>Spend Date</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>
+                        <div class="user-name">{{ expense.user_crop.user.username }}</div>
+                        <div class="user-email" style="font-size: 0.8rem; color: #64748b;">{{ expense.user_crop.user.email }}</div>
+                    </td>
+                    <td>
+                        <div class="user-name">{{ expense.user_crop.crop.name }}</div>
+                    </td>
+                    <td>
+                        <div class="user-name" style="color: #ef4444;">- Rs. {{ expense.amount }}</div>
+                    </td>
+                    <td class="table-date">{{ expense.spend_date|date:"M d, Y" }}</td>
+                    <td>
+                        <div style="font-size: 0.85rem; color: #475569; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ expense.note|default:'No note' }}">
+                            {{ expense.note|default:"No note" }}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        {% if search_query %}
+                            No expenses found for user "{{ search_query }}".
+                        {% else %}
+                            No expenses found.
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

@@ -32,4 +32,6 @@ urlpatterns = [
 
     # Manage Tickets
     path("tickets/", adminTickets, name="adminTickets"),
+
+    path("adminUserExpenses/", adminUserExpenses, name="adminUserExpenses"),
 ]

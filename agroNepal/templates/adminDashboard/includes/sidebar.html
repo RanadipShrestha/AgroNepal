@@ -9,6 +9,7 @@
       <li><a href='{% url "adminEvents" %}' class="{% if request.resolver_match.url_name == 'adminEvents' %}active{% endif %}"><i class="fa-solid fa-calendar-days"></i> Events</a></li>
       <li><a href='{% url "adminBlogs" %}' class="{% if request.resolver_match.url_name == 'adminBlogs' %}active{% endif %}"><i class="fa-solid fa-blog"></i> Blogs</a></li>
       <li><a href='{% url "adminTickets" %}' class="{% if request.resolver_match.url_name == 'adminTickets' %}active{% endif %}"><i class="fa-solid fa-ticket"></i> Tickets</a></li>
+      <li><a href='{% url "adminUserExpenses" %}' class="{% if request.resolver_match.url_name == 'adminUserExpenses' %}active{% endif %}"><i class="fa-solid fa-money-bill-wave"></i> User Expenses</a></li>
       {% comment %} 
       <li><a href='{% url "adminCommunityPosts" %}' class="{% if request.resolver_match.url_name == 'adminCommunityPosts' %}active{% endif %}"><i class="fa-solid fa-comments"></i> Community Posts</a></li>
       {% endcomment %}

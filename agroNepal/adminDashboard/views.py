@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
-from agro.models import Crop, CropSchedule, Contact, Event, Blog
+from agro.models import Crop, CropSchedule, Contact, Event, Blog, CropExpense, CropSale
 from payment.models import PurchaseTicket
 from .decorators import admin_only_required
 from django.utils import timezone
@@ -375,3 +375,32 @@ def adminTickets(request):
         'search_query': query
     }
     return render(request, 'adminDashboard/dashboard/ticket/tickets.html', context)
+
+
+@admin_only_required
+def adminUserExpenses(request):
+    query = request.GET.get('q', '')
+    if query:
+        expenses = CropExpense.objects.filter(user_crop__user__username__icontains=query).order_by('-spend_date')
+    else:
+        expenses = CropExpense.objects.all().order_by('-spend_date')
+        
+    context = {
+        'expenses': expenses,
+        'search_query': query
+    }
+    return render(request, 'adminDashboard/dashboard/ExpenseAndSale/user_expenses.html', context)
+
+@admin_only_required
+def adminUserSales(request):
+    query = request.GET.get('q', '')
+    if query:
+        sales = CropSale.objects.filter(user_crop__user__username__icontains=query).order_by('-sale_date')
+    else:
+        sales = CropSale.objects.all().order_by('-sale_date')
+        
+    context = {
+        'sales': sales,
+        'search_query': query
+    }
+    return render(request, 'adminDashboard/dashboard/crop/user_sales.html', context)
