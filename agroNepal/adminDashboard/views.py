@@ -5,6 +5,7 @@ from agro.models import Crop, CropSchedule, Contact, Event, Blog
 from payment.models import PurchaseTicket
 from .decorators import admin_only_required
 from django.utils import timezone
+from django.db.models import Q
 # Create your views here.
 
 @admin_only_required
@@ -363,7 +364,9 @@ def adminDeleteBlog(request):
 def adminTickets(request):
     query = request.GET.get('q', '')
     if query:
-        tickets = PurchaseTicket.objects.filter(user__username__icontains=query).order_by('-purchase_date')
+        tickets = PurchaseTicket.objects.filter(
+            Q(user__username__icontains=query) | Q(event__name__icontains=query)
+        ).order_by('-purchase_date')
     else:
         tickets = PurchaseTicket.objects.all().order_by('-purchase_date')
         
