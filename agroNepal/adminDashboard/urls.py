@@ -34,4 +34,6 @@ urlpatterns = [
     path("tickets/", adminTickets, name="adminTickets"),
 
     path("adminUserExpenses/", adminUserExpenses, name="adminUserExpenses"),
+    path("adminUserSales/", adminUserSales, name="adminUserSales"),
+    path("adminUserPlantedCrops/", adminUserPlantedCrops, name="adminUserPlantedCrops"),
 ]

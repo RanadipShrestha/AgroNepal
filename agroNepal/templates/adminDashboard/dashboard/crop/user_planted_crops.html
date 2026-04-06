@@ -1,0 +1,85 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}User Planted Crops - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+    <!-- Header Section -->
+    <div class="admin-dashboard-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 class="adminDashboard-heading">User Planted Crops</h1>
+            <p class="adminDashboard-subtext">View and search planted crop records of all users.</p>
+        </div>
+        
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'adminUserPlantedCrops' %}" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ search_query }}" 
+                placeholder="Search by username or crop..." 
+                style="padding: 0.5rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; font-size: 0.95rem; width: 250px;"
+            >
+            <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.5rem 1rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-search"></i> Search
+            </button>
+            {% if search_query %}
+            <a href="{% url 'adminUserPlantedCrops' %}" class="btn" style="padding: 0.5rem 1rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 8px; text-decoration: none;">
+                Clear
+            </a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- User Planted Crops Table -->
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Crop Name</th>
+                    <th>Planted Date</th>
+                    <th>Notes</th>
+                    <th>Task Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user_crop in user_crops %}
+                <tr>
+                    <td>
+                        <div class="user-name">{{ user_crop.user.username }}</div>
+                        <div class="user-email" style="font-size: 0.8rem; color: #64748b;">{{ user_crop.user.email }}</div>
+                    </td>
+                    <td>
+                        <div class="user-name">{{ user_crop.crop.name }}</div>
+                    </td>
+                    <td class="table-date">{{ user_crop.planted_date|date:"M d, Y" }}</td>
+                    <td>
+                        <div style="font-size: 0.85rem; color: #475569; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ user_crop.notes|default:'No notes' }}">
+                            {{ user_crop.notes|default:"No notes" }}
+                        </div>
+                    </td>
+                    <td>
+                        {% if user_crop.is_task_hidden %}
+                            <span class="badge badge-user" style="background-color: #fca5a5; color: #7f1d1d;">Hidden</span>
+                        {% else %}
+                            <span class="badge badge-admin" style="background-color: #dcfce3; color: #166534;">Visible</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        {% if search_query %}
+                            No planted crops found for "{{ search_query }}".
+                        {% else %}
+                            No planted crops found.
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

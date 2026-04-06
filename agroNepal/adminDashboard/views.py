@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
-from agro.models import Crop, CropSchedule, Contact, Event, Blog, CropExpense, CropSale
+from agro.models import Crop, CropSchedule, Contact, Event, Blog, CropExpense, CropSale, UserCropAdd
 from payment.models import PurchaseTicket
 from .decorators import admin_only_required
 from django.utils import timezone
@@ -403,4 +403,20 @@ def adminUserSales(request):
         'sales': sales,
         'search_query': query
     }
-    return render(request, 'adminDashboard/dashboard/crop/user_sales.html', context)
+    return render(request, 'adminDashboard/dashboard/ExpenseAndSale/user_sales.html', context)
+
+@admin_only_required
+def adminUserPlantedCrops(request):
+    query = request.GET.get('q', '')
+    if query:
+        user_crops = UserCropAdd.objects.filter(
+            Q(user__username__icontains=query) | Q(crop__name__icontains=query)
+        ).order_by('-planted_date')
+    else:
+        user_crops = UserCropAdd.objects.all().order_by('-planted_date')
+        
+    context = {
+        'user_crops': user_crops,
+        'search_query': query
+    }
+    return render(request, 'adminDashboard/dashboard/crop/user_planted_crops.html', context)
