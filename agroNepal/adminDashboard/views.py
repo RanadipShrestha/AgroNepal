@@ -347,3 +347,13 @@ def adminEditBlog(request, blog_id):
         'blog': blog
     }       
     return render(request, 'adminDashboard/dashboard/blog/edit_blog.html', context)
+
+@admin_only_required
+def adminDeleteBlog(request):
+    if request.method == 'POST':
+        blog_id = request.POST.get('blog_id')
+        blog = get_object_or_404(Blog, id=blog_id)
+        blog_title = blog.title
+        blog.delete()
+        messages.success(request, f"Blog '{blog_title}' deleted successfully.")
+    return redirect('adminBlogs')
