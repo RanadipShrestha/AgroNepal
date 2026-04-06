@@ -1,0 +1,88 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}Ticket Management - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+    <!-- Header Section -->
+    <div class="admin-dashboard-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 class="adminDashboard-heading">Ticket Management</h1>
+            <p class="adminDashboard-subtext">View and manage all user event tickets.</p>
+        </div>
+        
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'adminTickets' %}" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ search_query }}" 
+                placeholder="Search by username..." 
+                style="padding: 0.5rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; font-size: 0.95rem; width: 250px;"
+            >
+            <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.5rem 1rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-search"></i> Search
+            </button>
+            {% if search_query %}
+            <a href="{% url 'adminTickets' %}" class="btn" style="padding: 0.5rem 1rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 8px; text-decoration: none;">
+                Clear
+            </a>
+            {% endif %}
+        </form>
+    </div>
+
+
+    <!-- Tickets Table -->
+    <div class="admin-table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>User</th>
+                    <th>Event</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Purchase Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                    <td>
+                        <div style="font-family: monospace; font-size: 0.85rem; color: #475569;">{{ ticket.ticket_id|stringformat:"s"|truncatechars:13 }}</div>
+                    </td>
+                    <td>
+                        <div class="user-name">{{ ticket.user.username }}</div>
+                        <div class="user-email" style="font-size: 0.8rem; color: #64748b;">{{ ticket.user.email }}</div>
+                    </td>
+                    <td>
+                        <div class="user-name">{{ ticket.event.name }}</div>
+                    </td>
+                    <td>
+                        <div class="user-name">Rs. {{ ticket.amount }}</div>
+                    </td>
+                    <td>
+                        {% if ticket.status == 'complete' %}
+                            <span class="badge badge-admin" style="background-color: #d1fae5; color: #065f46;">Complete</span>
+                        {% else %}
+                            <span class="badge badge-user" style="background-color: #fef08a; color: #854d0e;">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td class="table-date">{{ ticket.purchase_date|date:"M d, Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        {% if search_query %}
+                            No tickets found for user "{{ search_query }}".
+                        {% else %}
+                            No tickets found.
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

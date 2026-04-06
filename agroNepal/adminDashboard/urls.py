@@ -8,7 +8,6 @@ urlpatterns = [
    path("admin-edit-user/<int:user_id>/", adminEditUser, name="adminEditUser"), 
    path("admin-delete-user/", adminDeleteUser, name="adminDeleteUser"), 
 
-
    #Crop Ko CRUD Ko
    path("crops/", adminCrops, name="adminCrops"), 
    path("admin-add-crop/", adminAddCrop, name="adminAddCrop"), 
@@ -30,4 +29,7 @@ urlpatterns = [
     path("blogs/add/", adminAddBlog, name="adminAddBlog"),
     path("blogs/edit/<int:blog_id>/", adminEditBlog, name="adminEditBlog"),
     path("delete-blog/", adminDeleteBlog, name="adminDeleteBlog"),
+
+    # Manage Tickets
+    path("tickets/", adminTickets, name="adminTickets"),
 ]

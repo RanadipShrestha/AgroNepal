@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
 from agro.models import Crop, CropSchedule, Contact, Event, Blog
+from payment.models import PurchaseTicket
 from .decorators import admin_only_required
 from django.utils import timezone
 # Create your views here.
@@ -357,3 +358,17 @@ def adminDeleteBlog(request):
         blog.delete()
         messages.success(request, f"Blog '{blog_title}' deleted successfully.")
     return redirect('adminBlogs')
+
+@admin_only_required
+def adminTickets(request):
+    query = request.GET.get('q', '')
+    if query:
+        tickets = PurchaseTicket.objects.filter(user__username__icontains=query).order_by('-purchase_date')
+    else:
+        tickets = PurchaseTicket.objects.all().order_by('-purchase_date')
+        
+    context = {
+        'tickets': tickets,
+        'search_query': query
+    }
+    return render(request, 'adminDashboard/dashboard/ticket/tickets.html', context)
