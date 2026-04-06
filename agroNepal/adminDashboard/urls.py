@@ -28,4 +28,5 @@ urlpatterns = [
      # Manage Blogs
     path("blogs/", adminBlogs, name="adminBlogs"),
     path("blogs/add/", adminAddBlog, name="adminAddBlog"),
+    path("blogs/edit/<int:blog_id>/", adminEditBlog, name="adminEditBlog"),
 ]

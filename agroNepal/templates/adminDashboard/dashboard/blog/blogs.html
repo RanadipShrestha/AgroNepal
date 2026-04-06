@@ -50,7 +50,7 @@
                 <td style="color:#64748b; font-size:0.875rem;">{{ b.create_date|date:"M d, Y" }}</td>
                 <td>
                     <div style="display: flex; gap: 0.5rem;">
-                        <a href="" class="action-btn edit-btn">
+                        <a href="{% url 'adminEditBlog' b.id %}" class="action-btn edit-btn">
                             <i class="fa-solid fa-edit"></i> Edit
                         </a>
                         <button type="button" class="action-btn delete-btn delete-blog-btn" data-blogid="{{ b.id }}" data-blogtitle="{{ b.title|escapejs }}">

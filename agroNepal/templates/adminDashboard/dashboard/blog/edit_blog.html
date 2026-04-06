@@ -1,0 +1,77 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}Edit Blog - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+  <div class="adminDashboard-welcome" style="margin-bottom: 1rem;">
+    <h1 class="adminDashboard-heading">Edit Blog</h1>
+    <p class="adminDashboard-subtext">Update details for '{{ blog.title }}'</p>
+  </div>
+
+  <!-- Messages -->
+  {% if messages %}
+  <div id="admin-message-toast" style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none;">
+    {% for message in messages %}
+      {% if "adminBlog" in message.extra_tags %}
+      <div class="message-toast-item" style="pointer-events: auto; min-width: 280px; padding: 12px 20px; border-radius: 10px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); display: flex; align-items: center; gap: 12px; animation: slideIn 0.3s ease-out; {% if 'success' in message.tags %}background: #10b981; color: white;{% else %}background: #ef4444; color: white;{% endif %}">
+        <span style="font-weight: 500;">{{ message }}</span>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="blog-form-container">
+    <form method="POST" action="{% url 'adminEditBlog' blog.id %}" enctype="multipart/form-data" id="blogForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label" for="title">Blog Title</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{ blog.title }}" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">Short Description</label>
+            <textarea id="description" name="description" class="form-control" required>{{ blog.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="blog_content">Full Content</label>
+            <textarea id="blog_content" name="blog_content" class="form-control" style="min-height: 200px;">{{ blog.blog_content }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="image">Blog Image</label>
+            {% if blog.image %}
+            <div style="margin-bottom: 0.5rem;">
+                <img src="{{ blog.image.url }}" alt="Current Image" style="max-width: 200px; border-radius: 8px;">
+                <p style="font-size: 0.875rem; color: #64748b;">Current image</p>
+            </div>
+            {% endif %}
+            <input type="file" id="image" name="image" class="form-control" accept="image/*">
+            <span style="font-size: 0.875rem; color: #64748b;">Leave blank to keep current image</span>
+        </div>
+        <div >
+            <a href="{% url 'adminBlogs' %}" class="cancel-btn"> Cancel</a>
+            <button type="button" class="add-blog-submit-btn" id="editBlogTriggerConfirmBtn"> Save Changes</button>
+        </div>
+    </form>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Update</h2>
+    </div>
+    <div class="modal-wrapper-body">
+      <p>Are you sure you want to save these changes to the blog?</p>
+    </div>
+    <div class="modal-wrapper-footer">
+      <button type="button" id="cancelBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+      <button type="button" id="confirmBtn" class="modal-wrapper-btn modal-wrapper-confirm" style="background-color: #10b981; ">Update</button>
+    </div>
+  </div>
+</div>
+{% endblock content %}

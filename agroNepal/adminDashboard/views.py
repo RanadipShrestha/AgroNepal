@@ -339,9 +339,11 @@ def adminEditBlog(request, blog_id):
             
         try:
             blog.save()
-            messages.success(request, f"Blog '{blog.title}' updated successfully.")
+            messages.success(request, "Blog updated successfully.", extra_tags="adminBlog")
             return redirect('adminBlogs')
         except Exception as e:
-            messages.error(request, f"Error updating blog: {e}")
-            
-    return render(request, 'adminDashboard/dashboard/edit_blog.html', {'blog': blog})
+            messages.error(request, "Error updating blog.", extra_tags="adminBlog")
+    context = {
+        'blog': blog
+    }       
+    return render(request, 'adminDashboard/dashboard/blog/edit_blog.html', context)

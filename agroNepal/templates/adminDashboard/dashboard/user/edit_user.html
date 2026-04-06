@@ -6,9 +6,8 @@
 <div class="adminDashboard-dash center-wrapper">
   <div class="adminDashboard-welcome" style="margin-bottom: 1rem;">
     <h1 class="adminDashboard-heading">Edit User Profile</h1>
-    <p class="adminDashboard-subtext">Update details for {{ edit_user.username }}</p>
   </div>
-  <div class="form-container">
+  <div class="admin-user-form-container">
     <form method="POST" action="{% url 'adminEditUser' edit_user.id %}" id="editUserForm">
         {% csrf_token %}
         <div class="form-row">
@@ -49,7 +48,7 @@
                 <input type="email" id="email" name="email" class="form-control" value="{{ edit_user.email }}" required>
             </div>
 
-        <div class="form-group" style="display: flex; gap: 2rem;">
+        <div  style="display: flex; gap: 2rem;">
             <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                 <input type="checkbox" name="is_staff" value="true" {% if edit_user.is_staff %}checked{% endif %}>
                 <span style="font-weight: 600; color: #475569;">Is Staff (Can access admin dashboard)</span>
