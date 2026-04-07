@@ -1,0 +1,92 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}Community Posts - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+  <div class="post-adminDashboard-welcome">
+    <div>
+        <h1 class="adminDashboard-heading">Community Posts Moderation</h1>
+        <p class="adminDashboard-subtext">Review user-generated community content and remove inappropriate posts.</p>
+    </div>
+    <a href="{% url 'adminAddCommunityPost' %}" class="btn adminDashboard-btn-green">
+        Add New Post
+    </a>
+  </div>
+
+     {% if messages %}
+<div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+  {% for message in messages %}
+    {% if 'adminCommunityPost' in message.tags %}
+    <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; 
+      {% if 'success' in message.tags %}background:#dcfce3; color:#166534; 
+      {% else %}background:#fee2e2; color:#ef4444;
+      {% endif %}">
+      {{ message }}
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="admin-table-container">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th style="width: 300px;">Post Detail</th>
+                <th>Content Snippet</th>
+                <th style="width: 150px;">Date</th>
+                <th style="width: 150px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in posts %}
+            <tr>
+                <td>
+                    <div class="post-title">{{ p.title }}</div>
+                    <div class="post-author">By: {{ p.author.username }}</div>
+                </td>
+                <td>
+                    <div class="post-desc">{{ p.description|truncatechars:120 }}</div>
+                </td>
+                <td style="color:#64748b; font-size:0.875rem;">{{ p.create_date|date:"M d, Y" }}</td>
+                <td>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'adminEditCommunityPost' p.id %}" class="edit-btn">
+                            <i class="fa-solid fa-edit"></i> Edit
+                        </a>
+                        <button type="button" class="action-btn delete-btn delete-post-btn" data-postid="{{ p.id }}" data-posttitle="{{ p.title|escapejs }}">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: #64748b;">No community posts found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+</div>
+<!-- Delete Post Modal -->
+<div id="deletePostModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Deletion</h2>
+    </div>
+    <div class="modal-wrapper-body">
+      <p>Are you sure you want to delete post "<strong id="deletePostTitle"></strong>"? This cannot be undone.</p>
+    </div>
+    <form method="POST" action="{% url 'adminDeleteCommunityPost' %}" id="deletePostForm">
+      {% csrf_token %}
+      <input type="hidden" name="post_id" id="deletePostId">
+      <div class="modal-wrapper-footer">
+        <button type="button" id="cancelDeletePostBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+        <button type="submit" class="modal-wrapper-btn modal-wrapper-confirm">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
