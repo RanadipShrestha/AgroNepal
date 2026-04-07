@@ -33,6 +33,14 @@ urlpatterns = [
     # Manage Tickets
     path("tickets/", adminTickets, name="adminTickets"),
 
+
+    # Manage Community Posts
+    path("community-posts/", adminCommunityPosts, name="adminCommunityPosts"),
+    path("community-posts/add/", adminAddCommunityPost, name="adminAddCommunityPost"),
+    path("community-posts/edit/<int:post_id>/", adminEditCommunityPost, name="adminEditCommunityPost"),
+    path("delete-post/", adminDeleteCommunityPost, name="adminDeleteCommunityPost"),
+
+    #User expesne, sale and crop planted record
     path("adminUserExpenses/", adminUserExpenses, name="adminUserExpenses"),
     path("adminUserSales/", adminUserSales, name="adminUserSales"),
     path("adminUserPlantedCrops/", adminUserPlantedCrops, name="adminUserPlantedCrops"),

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from user.models import CustomUser
-from agro.models import Crop, CropSchedule, Contact, Event, Blog, CropExpense, CropSale, UserCropAdd
+from agro.models import Crop, CropSchedule, Contact, Event, Blog, CropExpense, CropSale, UserCropAdd, CommunityPost
 from payment.models import PurchaseTicket
 from .decorators import admin_only_required
 from django.utils import timezone
@@ -357,7 +357,7 @@ def adminDeleteBlog(request):
         blog = get_object_or_404(Blog, id=blog_id)
         blog_title = blog.title
         blog.delete()
-        messages.success(request, f"Blog '{blog_title}' deleted successfully.")
+        messages.success(request, "Blog deleted successfully.", extra_tags="adminBlog")
     return redirect('adminBlogs')
 
 @admin_only_required
@@ -389,7 +389,7 @@ def adminUserExpenses(request):
         'expenses': expenses,
         'search_query': query
     }
-    return render(request, 'adminDashboard/dashboard/ExpenseAndSale/user_expenses.html', context)
+    return render(request, 'adminDashboard/dashboard/expenseAndSale/user_expenses.html', context)
 
 @admin_only_required
 def adminUserSales(request):
@@ -403,7 +403,7 @@ def adminUserSales(request):
         'sales': sales,
         'search_query': query
     }
-    return render(request, 'adminDashboard/dashboard/ExpenseAndSale/user_sales.html', context)
+    return render(request, 'adminDashboard/dashboard/expenseAndSale/user_sales.html', context)
 
 @admin_only_required
 def adminUserPlantedCrops(request):
@@ -420,3 +420,66 @@ def adminUserPlantedCrops(request):
         'search_query': query
     }
     return render(request, 'adminDashboard/dashboard/crop/user_planted_crops.html', context)
+
+#------------Community post ----------------
+@admin_only_required
+def adminCommunityPosts(request):
+    posts = CommunityPost.objects.all().order_by('-create_date')
+    context = {
+        'posts': posts
+    }
+    return render(request, 'adminDashboard/dashboard/communityPost/community_posts.html', context)
+
+@admin_only_required
+def adminAddCommunityPost(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        user_share_content = request.POST.get('user_share_content', '')
+        image = request.FILES.get('image')
+        
+        try:
+            CommunityPost.objects.create(
+                title=title,
+                description=description,
+                user_share_content=user_share_content,
+                image=image,
+                author=request.user
+            )
+            messages.success(request, "Community post added successfully.", extra_tags="adminCommunityPost")
+            return redirect('adminCommunityPosts')
+        except Exception:
+            messages.error(request, "Error adding post", extra_tags="adminCommunityPost")
+    return render(request, 'adminDashboard/dashboard/communityPost/add_community_post.html')
+
+@admin_only_required
+def adminEditCommunityPost(request, post_id):
+    post = get_object_or_404(CommunityPost, id=post_id)
+    if request.method == 'POST':
+        post.title = request.POST.get('title')
+        post.description = request.POST.get('description')
+        post.user_share_content = request.POST.get('user_share_content', '')
+        
+        if 'image' in request.FILES:
+            post.image = request.FILES.get('image')
+            
+        try:
+            post.save()
+            messages.success(request, "Community post updated successfully.", extra_tags="adminCommunityPost")
+            return redirect('adminCommunityPosts')
+        except Exception as e:
+            messages.error(request, "Error updating post", extra_tags="adminCommunityPost")
+    context ={
+        'post': post
+    }
+    return render(request, 'adminDashboard/dashboard/communityPost/edit_community_post.html', context)
+
+@admin_only_required
+def adminDeleteCommunityPost(request):
+    if request.method == 'POST':
+        post_id = request.POST.get('post_id')
+        post = get_object_or_404(CommunityPost, id=post_id)
+        post_title = post.title
+        post.delete()
+        messages.success(request, "Post deleted successfully.", extra_tags="adminCommunityPost")
+    return redirect('adminCommunityPosts')
