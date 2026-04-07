@@ -1,0 +1,65 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}Edit Community Post - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+  <div class="adminDashboard-welcome" style="margin-bottom: 1rem;">
+    <h1 class="adminDashboard-heading">Edit Community Post</h1>
+    <p class="adminDashboard-subtext">Update details for '{{ post.title }}'</p>
+  </div>
+  <div class="blog-form-container">
+    <form method="POST" action="{% url 'adminEditCommunityPost' post.id %}" enctype="multipart/form-data" id="postForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label" for="title">Post Title</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{ post.title }}" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">Short Description</label>
+            <textarea id="description" name="description" class="form-control" required>{{ post.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="user_share_content">Full Content</label>
+            <textarea id="user_share_content" name="user_share_content" class="form-control" style="min-height: 200px;">{{ post.user_share_content }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="image">Post Image</label>
+            {% if post.image %}
+            <div style="margin-bottom: 0.5rem;">
+                <img src="{{ post.image.url }}" alt="Current Image" style="max-width: 200px; border-radius: 8px;">
+                <p style="font-size: 0.875rem; color: #64748b;">Current image</p>
+            </div>
+            {% endif %}
+            <input type="file" id="image" name="image" class="form-control" accept="image/*">
+            <span style="font-size: 0.875rem; color: #64748b;">Leave blank to keep current image</span>
+        </div>
+        <div >
+            <a href="{% url 'adminCommunityPosts' %}" class="cancel-btn"> Cancel</a>
+            <button type="button" class="admin-community-post-submit-btn" id="communityPostTriggerConfirmBtn"> Save Changes</button>
+        </div>
+    </form>
+  </div>
+  </div>
+</div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Publish</h2>
+    </div>
+    <div class="modal-wrapper-body">
+      <p>Are you sure you want to publish this community post?</p>
+    </div>
+    <div class="modal-wrapper-footer">
+      <button type="button" id="cancelBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+      <button type="button" id="confirmBtn" class="modal-wrapper-btn modal-wrapper-confirm" style="background-color: #2e8b57;">Publish</button>
+    </div>
+  </div>
+</div>
+{% endblock content %}
