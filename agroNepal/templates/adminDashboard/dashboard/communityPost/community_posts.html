@@ -69,6 +69,45 @@
         </tbody>
     </table>
   </div>
+
+    <!-- Pagination -->
+    {% if posts.has_other_pages %}
+    <div class="admin-pagination-wrapper">
+        <nav class="admin-pagination" aria-label="Community posts pagination">
+            {% if posts.has_previous %}
+                <a href="?page={{ posts.previous_page_number }}" class="page-btn">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            {% else %}
+                <span class="page-btn disabled">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </span>
+            {% endif %}
+
+            <div class="page-numbers">
+                {% for num in posts.paginator.page_range %}
+                    {% if posts.number == num %}
+                        <span class="page-num active">{{ num }}</span>
+                    {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+                        <a href="?page={{ num }}" class="page-num">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}" class="page-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            {% else %}
+                <span class="page-btn disabled">
+                    Next <i class="fas fa-chevron-right"></i>
+                </span>
+            {% endif %}
+        </nav>
+        <p class="admin-pagination-info">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</p>
+    </div>
+    {% endif %}
+
 </div>
 <!-- Delete Post Modal -->
 <div id="deletePostModal" class="modal-wrapper">
