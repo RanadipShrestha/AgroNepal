@@ -18,21 +18,69 @@
 </div>
 
 <div class="blog-container">
-  <div class="blogs">
-    {% if blogs %}
-      {% for blog in blogs %}
-        <div class="blog-card">
-          <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
-          <div class="blog-content">
-            <p class="author"> By : {{blog.author.username}}
-            <h3>{{blog.title}}</h3>
-            <p class="blog-description">{{blog.description|truncatewords:30}}</p>
-            <a href='{% url "readMoreBlog" slug=blog.slug %}' class="read-more">Read More</a>
+  <div class="main-content-area">
+    <div class="blogs">
+      {% if blogs %}
+        {% for blog in blogs %}
+          <div class="blog-card">
+            {% if blog.image %}
+              <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+            {% else %}
+              <div style="width: 100%; height: 180px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 15px 15px 0 0;">
+                  <i class="fas fa-image" style="color: #ccc; font-size: 3rem;"></i>
+              </div>
+            {% endif %}
+            <div class="blog-content">
+              <p class="author"> By : {{blog.author.username}}
+              <h3>{{blog.title}}</h3>
+              <p class="blog-description">{{blog.description|truncatewords:30}}</p>
+              <a href='{% url "readMoreBlog" slug=blog.slug %}' class="read-more">Read More</a>
+            </div>
           </div>
+        {% endfor %}
+      {% else %}
+           <p>No blog posts found{% if search_data %} for "{{ search_data }}"{% endif %}.</p>
+      {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if blogs.has_other_pages %}
+    <div class="blog-pagination-wrapper">
+      <nav class="blog-pagination" aria-label="Blog pagination">
+
+        {% if blogs.has_previous %}
+          <a href="?{% if search_data %}search={{ search_data }}&{% endif %}page={{ blogs.previous_page_number }}" class="page-btn prev-btn">
+            <i class="fas fa-chevron-left"></i> Previous
+          </a>
+        {% else %}
+          <span class="page-btn prev-btn disabled">
+            <i class="fas fa-chevron-left"></i> Previous
+          </span>
+        {% endif %}
+
+        <div class="page-numbers">
+          {% for num in blogs.paginator.page_range %}
+            {% if blogs.number == num %}
+              <span class="page-num active">{{ num }}</span>
+            {% elif num > blogs.number|add:'-3' and num < blogs.number|add:'3' %}
+              <a href="?{% if search_data %}search={{ search_data }}&{% endif %}page={{ num }}" class="page-num">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
         </div>
-      {% endfor %}
-    {% else %}
-         <p>No blog posts found{% if search_query %} for "{{ search_query }}"{% endif %}.</p>
+
+        {% if blogs.has_next %}
+          <a href="?{% if search_data %}search={{ search_data }}&{% endif %}page={{ blogs.next_page_number }}" class="page-btn next-btn">
+            Next <i class="fas fa-chevron-right"></i>
+          </a>
+        {% else %}
+          <span class="page-btn next-btn disabled">
+            Next <i class="fas fa-chevron-right"></i>
+          </span>
+        {% endif %}
+
+      </nav>
+      <p class="page-info">Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}</p>
+    </div>
     {% endif %}
   </div>
 
@@ -41,15 +89,19 @@
   <div class="sidebar">
     <h2>Recent Blogs</h2>
     {% for recent_blog in recent_blogs %}
-      <div class="recent-item">
-       <img src="{{ recent_blog.image.url }}" alt="{{ recent_blog.title }}">
-       <div>
-        <a href='{% url "readMoreBlog" slug=recent_blog.slug %}'>
-          <p class="date">{{recent_blog.title|truncatewords:5}}</p>
-        </a>
-        <p>{{ recent_blog.create_date}}</p>
-      </div>
-      </div>
+      <a href='{% url "readMoreBlog" slug=recent_blog.slug %}' class="recent-item">
+       {% if recent_blog.image %}
+         <img src="{{ recent_blog.image.url }}" alt="{{ recent_blog.title }}">
+       {% else %}
+         <div class="placeholder-img" style="background: #e8f5e9; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-image" style="color: #4CAF50; opacity: 0.5;"></i>
+         </div>
+       {% endif %}
+       <div class="recent-info">
+          <p class="recent-title">{{ recent_blog.title }}</p>
+          <p class="recent-date"><i class="far fa-clock"></i> {{ recent_blog.create_date|date:"M d, Y" }}</p>
+       </div>
+      </a>
     {% endfor %}
   </div>
 </div>

@@ -6,7 +6,9 @@
 
   <!--Blog Image-->
   <div class="post-image">
-    <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+    {% if blog.image %}
+      <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+    {% endif %}
   </div>
 
   <!--Blog auther ra create date-->
