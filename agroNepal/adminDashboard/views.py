@@ -6,6 +6,7 @@ from payment.models import PurchaseTicket
 from .decorators import admin_only_required
 from django.utils import timezone
 from django.db.models import Q
+from django.core.paginator import Paginator
 # Create your views here.
 
 @admin_only_required
@@ -14,7 +15,10 @@ def adminDashboard(request):
 
 @admin_only_required
 def adminUsers(request):
-  users = CustomUser.objects.all().order_by('-date_joined')
+  users_list = CustomUser.objects.all().order_by('-date_joined')
+  paginator = Paginator(users_list, 10)
+  page_number = request.GET.get('page')
+  users = paginator.get_page(page_number)
   return render(request, 'adminDashboard/dashboard/user/users.html', {'users': users}) 
 
 @admin_only_required
@@ -111,7 +115,10 @@ def adminDeleteUser(request):
 
 @admin_only_required
 def adminCrops(request):
-    crops = Crop.objects.prefetch_related('schedules').all().order_by('-id')
+    crops_list = Crop.objects.prefetch_related('schedules').all().order_by('-id')
+    paginator = Paginator(crops_list, 10)
+    page_number = request.GET.get('page')
+    crops = paginator.get_page(page_number)
     return render(request, 'adminDashboard/dashboard/crop/crops.html', {'crops': crops})
 
 @admin_only_required
@@ -191,7 +198,10 @@ def adminDeleteCrop(request):
 
 @admin_only_required
 def adminContacts(request):
-    contacts = Contact.objects.all().order_by('-id')
+    contacts_list = Contact.objects.all().order_by('-id')
+    paginator = Paginator(contacts_list, 10)
+    page_number = request.GET.get('page')
+    contacts = paginator.get_page(page_number)
     context = {
         'contacts':contacts
     }
@@ -211,8 +221,19 @@ def adminDeleteContact(request):
 @admin_only_required
 def adminEvents(request):
     today = timezone.now().date()
-    upcoming_events = Event.objects.filter(date__gte=today).order_by('date')
-    past_events = Event.objects.filter(date__lt=today).order_by('-date')
+    upcoming_list = Event.objects.filter(date__gte=today).order_by('date')
+    past_list = Event.objects.filter(date__lt=today).order_by('-date')
+    
+    # Upcoming events pagination
+    up_paginator = Paginator(upcoming_list, 10)
+    up_page = request.GET.get('up_page')
+    upcoming_events = up_paginator.get_page(up_page)
+    
+    # Past events pagination
+    past_paginator = Paginator(past_list, 10)
+    past_page = request.GET.get('past_page')
+    past_events = past_paginator.get_page(past_page)
+    
     context = {
         'upcoming_events': upcoming_events,
         'past_events': past_events,
@@ -299,7 +320,10 @@ def adminDeleteEvent(request):
 
 @admin_only_required
 def adminBlogs(request):
-    blogs = Blog.objects.all().order_by('-create_date')
+    blogs_list = Blog.objects.all().order_by('-create_date')
+    paginator = Paginator(blogs_list, 10)
+    page_number = request.GET.get('page')
+    blogs = paginator.get_page(page_number)
     context = {
         'blogs': blogs
     }
@@ -364,12 +388,16 @@ def adminDeleteBlog(request):
 def adminTickets(request):
     query = request.GET.get('q', '')
     if query:
-        tickets = PurchaseTicket.objects.filter(
+        tickets_list = PurchaseTicket.objects.filter(
             Q(user__username__icontains=query) | Q(event__name__icontains=query)
         ).order_by('-purchase_date')
     else:
-        tickets = PurchaseTicket.objects.all().order_by('-purchase_date')
+        tickets_list = PurchaseTicket.objects.all().order_by('-purchase_date')
         
+    paginator = Paginator(tickets_list, 10)
+    page_number = request.GET.get('page')
+    tickets = paginator.get_page(page_number)
+    
     context = {
         'tickets': tickets,
         'search_query': query
@@ -381,10 +409,14 @@ def adminTickets(request):
 def adminUserExpenses(request):
     query = request.GET.get('q', '')
     if query:
-        expenses = CropExpense.objects.filter(user_crop__user__username__icontains=query).order_by('-spend_date')
+        expenses_list = CropExpense.objects.filter(user_crop__user__username__icontains=query).order_by('-spend_date')
     else:
-        expenses = CropExpense.objects.all().order_by('-spend_date')
+        expenses_list = CropExpense.objects.all().order_by('-spend_date')
         
+    paginator = Paginator(expenses_list, 10)
+    page_number = request.GET.get('page')
+    expenses = paginator.get_page(page_number)
+    
     context = {
         'expenses': expenses,
         'search_query': query
@@ -395,10 +427,14 @@ def adminUserExpenses(request):
 def adminUserSales(request):
     query = request.GET.get('q', '')
     if query:
-        sales = CropSale.objects.filter(user_crop__user__username__icontains=query).order_by('-sale_date')
+        sales_list = CropSale.objects.filter(user_crop__user__username__icontains=query).order_by('-sale_date')
     else:
-        sales = CropSale.objects.all().order_by('-sale_date')
+        sales_list = CropSale.objects.all().order_by('-sale_date')
         
+    paginator = Paginator(sales_list, 10)
+    page_number = request.GET.get('page')
+    sales = paginator.get_page(page_number)
+    
     context = {
         'sales': sales,
         'search_query': query
@@ -409,12 +445,16 @@ def adminUserSales(request):
 def adminUserPlantedCrops(request):
     query = request.GET.get('q', '')
     if query:
-        user_crops = UserCropAdd.objects.filter(
+        user_crops_list = UserCropAdd.objects.filter(
             Q(user__username__icontains=query) | Q(crop__name__icontains=query)
         ).order_by('-planted_date')
     else:
-        user_crops = UserCropAdd.objects.all().order_by('-planted_date')
+        user_crops_list = UserCropAdd.objects.all().order_by('-planted_date')
         
+    paginator = Paginator(user_crops_list, 10)
+    page_number = request.GET.get('page')
+    user_crops = paginator.get_page(page_number)
+    
     context = {
         'user_crops': user_crops,
         'search_query': query
@@ -424,7 +464,10 @@ def adminUserPlantedCrops(request):
 #------------Community post ----------------
 @admin_only_required
 def adminCommunityPosts(request):
-    posts = CommunityPost.objects.all().order_by('-create_date')
+    posts_list = CommunityPost.objects.all().order_by('-create_date')
+    paginator = Paginator(posts_list, 10)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
     context = {
         'posts': posts
     }

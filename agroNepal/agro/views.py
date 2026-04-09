@@ -3,6 +3,7 @@ from .models import Blog, Comment, Contact, Event, CommunityPost, CommunityPostC
 from django.db.models import Q
 from django.contrib import messages
 from django.utils import timezone
+from django.core.paginator import Paginator
 # Create your views here.
 
 def index(request):
@@ -34,15 +35,19 @@ def blog(request):
   search_data = request.GET.get('search', '')
   
   if search_data:
-   blogs = Blog.objects.filter(
+   blogs_list = Blog.objects.filter(
     Q(title__icontains=search_data) | 
     Q(description__icontains=search_data) |
     Q(blog_content__icontains=search_data)
-   )
+   ).order_by('-create_date')
   else:
-   blogs = blogs = Blog.objects.raw("SELECT * FROM agro_blog")
+   blogs_list = Blog.objects.all().order_by('-create_date')
 
-  recent_blogs = Blog.objects.all()[:5]
+  paginator = Paginator(blogs_list, 6)
+  page_number = request.GET.get('page')
+  blogs = paginator.get_page(page_number)
+
+  recent_blogs = Blog.objects.all().order_by('-create_date')[:5]
   context = {
     'blogs': blogs,
     'recent_blogs':recent_blogs,
@@ -113,7 +118,12 @@ def edit_blog_comment(request, comment_id):
 
 def event(request):
   today = timezone.now().date()
-  events = Event.objects.filter(date__gte=today).order_by('date')
+  events_list = Event.objects.filter(date__gte=today).order_by('date')
+  
+  paginator = Paginator(events_list, 6)
+  page_number = request.GET.get('page')
+  events = paginator.get_page(page_number)
+  
   context = {
     "events":events
   }
@@ -123,19 +133,24 @@ def community_public_post(request):
     search_data = request.GET.get('search', '')
 
     if search_data:
-      shares = CommunityPost.objects.filter(
+      shares_list = CommunityPost.objects.filter(
          Q(title__icontains = search_data) |
          Q(description__icontains = search_data) |
          Q(user_share_content__icontains = search_data) 
-      )
+      ).order_by("-create_date")
     else:
-      shares = CommunityPost.objects.all().order_by("-create_date")
+      shares_list = CommunityPost.objects.all().order_by("-create_date")
+    
+    paginator = Paginator(shares_list, 6)
+    page_number = request.GET.get('page')
+    shares = paginator.get_page(page_number)
     
     recent_shares = CommunityPost.objects.all().order_by('-create_date')[:5]
 
     context = {
        'shares':shares,
-       'recent_shares':recent_shares
+       'recent_shares':recent_shares,
+       'search_data': search_data,
     }
     return render(request, "pages/communityPost/communityPublicPost.html", context)
 

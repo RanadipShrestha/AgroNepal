@@ -81,5 +81,44 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Pagination -->
+    {% if user_crops.has_other_pages %}
+    <div class="admin-pagination-wrapper">
+        <nav class="admin-pagination" aria-label="Planted crops pagination">
+            {% if user_crops.has_previous %}
+                <a href="?page={{ user_crops.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            {% else %}
+                <span class="page-btn disabled">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </span>
+            {% endif %}
+
+            <div class="page-numbers">
+                {% for num in user_crops.paginator.page_range %}
+                    {% if user_crops.number == num %}
+                        <span class="page-num active">{{ num }}</span>
+                    {% elif num > user_crops.number|add:'-3' and num < user_crops.number|add:'3' %}
+                        <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-num">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if user_crops.has_next %}
+                <a href="?page={{ user_crops.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            {% else %}
+                <span class="page-btn disabled">
+                    Next <i class="fas fa-chevron-right"></i>
+                </span>
+            {% endif %}
+        </nav>
+        <p class="admin-pagination-info">Page {{ user_crops.number }} of {{ user_crops.paginator.num_pages }}</p>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock content %}
