@@ -70,6 +70,45 @@
         </tbody>
     </table>
   </div>
+
+    <!-- Pagination -->
+    {% if blogs.has_other_pages %}
+    <div class="admin-pagination-wrapper">
+        <nav class="admin-pagination" aria-label="Blogs pagination">
+            {% if blogs.has_previous %}
+                <a href="?page={{ blogs.previous_page_number }}" class="page-btn">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            {% else %}
+                <span class="page-btn disabled">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </span>
+            {% endif %}
+
+            <div class="page-numbers">
+                {% for num in blogs.paginator.page_range %}
+                    {% if blogs.number == num %}
+                        <span class="page-num active">{{ num }}</span>
+                    {% elif num > blogs.number|add:'-3' and num < blogs.number|add:'3' %}
+                        <a href="?page={{ num }}" class="page-num">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if blogs.has_next %}
+                <a href="?page={{ blogs.next_page_number }}" class="page-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            {% else %}
+                <span class="page-btn disabled">
+                    Next <i class="fas fa-chevron-right"></i>
+                </span>
+            {% endif %}
+        </nav>
+        <p class="admin-pagination-info">Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}</p>
+    </div>
+    {% endif %}
+
 </div>
 
 <!-- Delete Blog Modal -->
