@@ -14,23 +14,65 @@
 </div>
 
 <div class="blog-container">
-  <div class="blogs">
-    {% if shares %}
-      {% for share in shares %}
-        <div class="blog-card">
-          {% if share.image %}
-            <img src="{{ share.image.url }}" alt="{{ share.title }}">
-          {% endif %}
-          <div class="blog-content">
-            <p class="author"> By : {{share.author.username}}
-            <h3>{{share.title}}</h3>
-            <p class="blog-description">{{share.description|truncatewords:30}}</p>
-             <a href='{% url "community_public_post_detail" slug=share.slug %}' class="read-more">Read More</a>
+  <div class="main-content-area">
+    <div class="blogs">
+      {% if shares %}
+        {% for share in shares %}
+          <div class="blog-card">
+            {% if share.image %}
+              <img src="{{ share.image.url }}" alt="{{ share.title }}">
+            {% endif %}
+            <div class="blog-content">
+              <p class="author"> By : {{share.author.username}}
+              <h3>{{share.title}}</h3>
+              <p class="blog-description">{{share.description|truncatewords:30}}</p>
+               <a href='{% url "community_public_post_detail" slug=share.slug %}' class="read-more">Read More</a>
+            </div>
           </div>
+        {% endfor %}
+      {% else %}
+           <p>No community stories found{% if search_data %} for "{{ search_data }}"{% endif %}.</p>
+      {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if shares.has_other_pages %}
+    <div class="blog-pagination-wrapper">
+      <nav class="blog-pagination" aria-label="Community posts pagination">
+
+        {% if shares.has_previous %}
+          <a href="?{% if search_data %}search={{ search_data }}&{% endif %}page={{ shares.previous_page_number }}" class="page-btn prev-btn">
+            <i class="fas fa-chevron-left"></i> Previous
+          </a>
+        {% else %}
+          <span class="page-btn prev-btn disabled">
+            <i class="fas fa-chevron-left"></i> Previous
+          </span>
+        {% endif %}
+
+        <div class="page-numbers">
+          {% for num in shares.paginator.page_range %}
+            {% if shares.number == num %}
+              <span class="page-num active">{{ num }}</span>
+            {% elif num > shares.number|add:'-3' and num < shares.number|add:'3' %}
+              <a href="?{% if search_data %}search={{ search_data }}&{% endif %}page={{ num }}" class="page-num">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
         </div>
-      {% endfor %}
-    {% else %}
-         <p>No community stories found{% if search_data %} for "{{ search_data }}"{% endif %}.</p>
+
+        {% if shares.has_next %}
+          <a href="?{% if search_data %}search={{ search_data }}&{% endif %}page={{ shares.next_page_number }}" class="page-btn next-btn">
+            Next <i class="fas fa-chevron-right"></i>
+          </a>
+        {% else %}
+          <span class="page-btn next-btn disabled">
+            Next <i class="fas fa-chevron-right"></i>
+          </span>
+        {% endif %}
+
+      </nav>
+      <p class="page-info">Page {{ shares.number }} of {{ shares.paginator.num_pages }}</p>
+    </div>
     {% endif %}
   </div>
 
@@ -39,21 +81,19 @@
   <div class="sidebar">
     <h2>Recent Post</h2>
     {% for recent_share in recent_shares %}
-      <div class="recent-item">
+      <a href='{% url "community_public_post_detail" slug=recent_share.slug %}' class="recent-item">
        {% if recent_share.image %}
          <img src="{{ recent_share.image.url }}" alt="{{ recent_share.title }}">
        {% else %}
-         <div style="width: 60px; height: 60px; background: #e8f5e9; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
+         <div class="placeholder-img" style="background: #e8f5e9; display: flex; align-items: center; justify-content: center;">
             <i class="fas fa-user" style="color: #4CAF50; opacity: 0.5;"></i>
          </div>
        {% endif %}
-       <div>
-        <a href='{% url "community_public_post_detail" slug=recent_share.slug %}'>
-          <p class="date">{{recent_share.title|truncatewords:5}}</p>
-        </a>
-        <p>{{ recent_share.create_date}}</p>
-      </div>
-      </div>
+       <div class="recent-info">
+          <p class="recent-title">{{ recent_share.title }}</p>
+          <p class="recent-date"><i class="far fa-clock"></i> {{ recent_share.create_date|date:"M d, Y" }}</p>
+       </div>
+      </a>
     {% endfor %}
   </div>
 </div>
