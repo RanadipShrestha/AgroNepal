@@ -58,14 +58,49 @@
                     </button>
                 </td>
             </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3" style="text-align: center; color: #64748b; padding: 2rem;">No new contact messages.</td>
-            </tr>
             {% endfor %}
         </tbody>
     </table>
   </div>
+
+    <!-- Pagination -->
+    {% if contacts.has_other_pages %}
+    <div class="admin-pagination-wrapper">
+        <nav class="admin-pagination" aria-label="Contacts pagination">
+            {% if contacts.has_previous %}
+                <a href="?page={{ contacts.previous_page_number }}" class="page-btn">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+            {% else %}
+                <span class="page-btn disabled">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </span>
+            {% endif %}
+
+            <div class="page-numbers">
+                {% for num in contacts.paginator.page_range %}
+                    {% if contacts.number == num %}
+                        <span class="page-num active">{{ num }}</span>
+                    {% elif num > contacts.number|add:'-3' and num < contacts.number|add:'3' %}
+                        <a href="?page={{ num }}" class="page-num">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if contacts.has_next %}
+                <a href="?page={{ contacts.next_page_number }}" class="page-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            {% else %}
+                <span class="page-btn disabled">
+                    Next <i class="fas fa-chevron-right"></i>
+                </span>
+            {% endif %}
+        </nav>
+        <p class="admin-pagination-info">Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}</p>
+    </div>
+    {% endif %}
+
 </div>
 <!-- Delete Contact Modal -->
 <div id="deleteContactModal" class="modal-wrapper">
