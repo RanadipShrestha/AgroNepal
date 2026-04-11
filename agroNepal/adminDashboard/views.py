@@ -4,14 +4,81 @@ from user.models import CustomUser
 from agro.models import Crop, CropSchedule, Contact, Event, Blog, CropExpense, CropSale, UserCropAdd, CommunityPost
 from payment.models import PurchaseTicket
 from .decorators import admin_only_required
-from django.utils import timezone
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.utils import timezone
+from django.db.models.functions import TruncMonth
+from datetime import timedelta
+from django.db.models import Count, Sum
 # Create your views here.
 
 @admin_only_required
 def adminDashboard(request):
-  return render(request, 'adminDashboard/dashboard/dashboard.html')
+    total_users = CustomUser.objects.count()
+    total_crops = Crop.objects.count()
+    total_posts = CommunityPost.objects.count()
+    total_contacts = Contact.objects.count()
+    total_events = Event.objects.count()
+    total_blogs = Blog.objects.count()
+
+    # User Growth Data (Last 6 months)
+    six_months_ago = timezone.now() - timedelta(days=180)
+    user_growth = CustomUser.objects.filter(date_joined__gte=six_months_ago) \
+        .annotate(month=TruncMonth('date_joined')) \
+        .values('month') \
+        .annotate(count=Count('id')) \
+        .order_by('month')
+
+    user_growth_labels = [item['month'].strftime('%b %Y') for item in user_growth]
+    user_growth_data = [item['count'] for item in user_growth]
+
+    # Top Planted Crops Data
+    top_crops = UserCropAdd.objects.values('crop__name') \
+        .annotate(count=Count('id')) \
+        .order_by('-count')[:7]
+    
+    top_crops_labels = [item['crop__name'] for item in top_crops]
+    top_crops_data = [item['count'] for item in top_crops]
+
+    # Top 10 Active Farmers (by total crops planted)
+    top_users = UserCropAdd.objects.values('user__username', 'user__first_name') \
+        .annotate(count=Count('id')) \
+        .order_by('-count')[:10]
+    
+    top_users_labels = [item['user__first_name'] or item['user__username'] for item in top_users]
+    top_users_data = [item['count'] for item in top_users]
+
+    # Top 10 Ticket Buyers
+    ticket_buyers = PurchaseTicket.objects.values('user__username', 'user__first_name') \
+        .annotate(count=Count('id')) \
+        .order_by('-count')[:10]
+    
+    ticket_buyers_labels = [item['user__first_name'] or item['user__username'] for item in ticket_buyers]
+    ticket_buyers_data = [item['count'] for item in ticket_buyers]
+
+    # Financial Data
+    total_sales = CropSale.objects.aggregate(total=Sum('amount'))['total'] or 0
+    total_expenses = CropExpense.objects.aggregate(total=Sum('amount'))['total'] or 0
+
+    context = {
+        'total_users': total_users,
+        'total_crops': total_crops,
+        'total_posts': total_posts,
+        'total_contacts': total_contacts,
+        'total_events': total_events,
+        'user_growth_labels': user_growth_labels,
+        'user_growth_data': user_growth_data,
+        'top_crops_labels': top_crops_labels,
+        'top_crops_data': top_crops_data,
+        'top_users_labels': top_users_labels,
+        'top_users_data': top_users_data,
+        'ticket_buyers_labels': ticket_buyers_labels,
+        'ticket_buyers_data': ticket_buyers_data,
+        'total_sales': total_sales,
+        'total_expenses': total_expenses,
+    }
+    return render(request, 'adminDashboard/dashboard/dashboard.html', context)
+
 
 @admin_only_required
 def adminUsers(request):

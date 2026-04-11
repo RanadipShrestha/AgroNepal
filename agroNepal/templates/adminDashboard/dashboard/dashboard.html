@@ -1,12 +1,313 @@
 {% extends "adminDashboard.html" %}
 {% load static %}
-{% block title %}
-Admin Dashboard
-{% endblock title %}
+{% block title %}Admin Dashboard - AgroNepal{% endblock title %}
 
 {% block content %}
-<div class="adminDashboard-welcome">
-  <h1 class="adminDashboard-heading">Welcome Admin</h1>
-  
+<!-- Use the specific dashboard CSS we generated -->
+<link rel="stylesheet" href="{% static 'assets/css/adminDashboard/dashboard/dashboard.css' %}" />
+
+<div class="adminDashboard-dash">
+
+  <!-- Welcome Section -->
+  <div class="adminDashboard-welcome">
+    <h1 class="adminDashboard-heading">
+      Welcome Admin,
+      <span class="adminDashboard-name-glow">{{ user.first_name|default:user.username }}</span>
+    </h1>
+    <p class="adminDashboard-subtext">Global Administration Dashboard. Monitor the entire AgroNepal platform.</p>
+    
+    <div class="adminDashboard-status-bar">
+      <span class="adminDashboard-status-item"><i class="fa-solid fa-users"></i> Platform active</span>
+      <span class="adminDashboard-status-item"><i class="fa-solid fa-seedling"></i> Crops managed</span>
+      <span class="adminDashboard-status-item"><i class="fa-solid fa-comments"></i> Community engaged</span>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="adminDashboard-stats">
+
+    <div class="adminDashboard-stat adminDashboard-stat-emerald">
+      <div class="adminDashboard-stat-num counter" data-target="{{ total_users }}">{{ total_users }}</div>
+      <div class="adminDashboard-stat-label">Total Users</div>
+      <div class="adminDashboard-stat-bar"></div>
+    </div>
+
+    <div class="adminDashboard-stat adminDashboard-stat-rose">
+      <div class="adminDashboard-stat-num counter" data-target="{{ total_crops }}">{{ total_crops }}</div>
+      <div class="adminDashboard-stat-label">Master Crops</div>
+      <div class="adminDashboard-stat-bar"></div>
+    </div>
+
+    <div class="adminDashboard-stat adminDashboard-stat-violet">
+      <div class="adminDashboard-stat-num counter" data-target="{{ total_posts }}">{{ total_posts }}</div>
+      <div class="adminDashboard-stat-label">Community Posts</div>
+      <div class="adminDashboard-stat-bar"></div>
+    </div>
+
+    <div class="adminDashboard-stat adminDashboard-stat-sky">
+      <div class="adminDashboard-stat-num counter" data-target="{{ total_contacts }}">{{ total_contacts }}</div>
+      <div class="adminDashboard-stat-label">Contact Messages</div>
+      <div class="adminDashboard-stat-bar"></div>
+    </div>
+
+    <div class="adminDashboard-stat adminDashboard-stat-rose">
+      <div class="adminDashboard-stat-num counter" data-target="{{ total_events }}">{{ total_events }}</div>
+      <div class="adminDashboard-stat-label">Scheduled Events</div>
+      <div class="adminDashboard-stat-bar"></div>
+    </div>
+
+  </div>
+
+  <!-- Quick Action Buttons -->
+  <div class="adminDashboard-actions">
+    <a href="{% url 'adminUsers' %}" class="adminDashboard-btn adminDashboard-btn-green">
+      <i class="fa-solid fa-users"></i><span>Users View</span>
+    </a>
+    <a href="{% url 'adminCrops' %}" class="adminDashboard-btn adminDashboard-btn-rose">
+      <i class="fa-solid fa-seedling"></i><span>Master Crops</span>
+    </a>
+    <a href="{% url 'adminCommunityPosts' %}" class="adminDashboard-btn adminDashboard-btn-violet">
+      <i class="fa-solid fa-comments"></i><span>Community Posts</span>
+    </a>
+    <a href="{% url 'adminContacts' %}" class="adminDashboard-btn adminDashboard-btn-sky">
+      <i class="fa-solid fa-envelope"></i><span>Contact Support</span>
+    </a>
+    <a href="{% url 'adminEvents' %}" class="adminDashboard-btn adminDashboard-btn-rose">
+      <i class="fa-solid fa-calendar-days"></i><span>Events Flow</span>
+    </a>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="adminDashboard-panels">
+    <!-- User Growth Chart -->
+    <div class="adminDashboard-panel">
+      <div class="adminDashboard-panel-head">
+        <h2 class="adminDashboard-panel-title">User Growth</h2>
+        <span class="adminDashboard-status-item"><i class="fa-solid fa-chart-line"></i> Last 6 Months</span>
+      </div>
+      <div class="adminDashboard-panel-body">
+        <canvas id="userGrowthChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Top Planted Crops Chart -->
+    <div class="adminDashboard-panel">
+      <div class="adminDashboard-panel-head">
+        <h2 class="adminDashboard-panel-title">Top Planted Crops</h2>
+        <span class="adminDashboard-status-item"><i class="fa-solid fa-leaf"></i> User Favorites</span>
+      </div>
+      <div class="adminDashboard-panel-body">
+        <canvas id="topCropsChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Top Active Farmers Chart -->
+    <div class="adminDashboard-panel">
+      <div class="adminDashboard-panel-head">
+        <h2 class="adminDashboard-panel-title">Top 10 Active Farmers</h2>
+        <span class="adminDashboard-status-item"><i class="fa-solid fa-award"></i> Leaderboard</span>
+      </div>
+      <div class="adminDashboard-panel-body">
+        <canvas id="topUsersChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Top Ticket Buyers Chart -->
+    <div class="adminDashboard-panel">
+      <div class="adminDashboard-panel-head">
+        <h2 class="adminDashboard-panel-title">Top 10 Ticket Buyers</h2>
+        <span class="adminDashboard-status-item"><i class="fa-solid fa-ticket"></i> Active Attendees</span>
+      </div>
+      <div class="adminDashboard-panel-body">
+        <canvas id="ticketBuyersChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Financial Activity Chart -->
+    <div class="adminDashboard-panel" style="grid-column: span 2;">
+      <div class="adminDashboard-panel-head">
+        <h2 class="adminDashboard-panel-title">Financial Activity</h2>
+        <span class="adminDashboard-status-item"><i class="fa-solid fa-money-bill-transfer"></i> Sales vs Expenses</span>
+      </div>
+      <div class="adminDashboard-panel-body" style="height: 300px;">
+        <canvas id="financialChart"></canvas>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<!-- Load Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/* Animated number counters */
+document.querySelectorAll('.counter').forEach(el => {
+  const target = +el.dataset.target || 0;
+  if (target === 0) return;
+  let count = 0;
+  const duration = 1000;
+  const frameRate = 1000 / 60;
+  const totalFrames = duration / frameRate;
+  const step = target / totalFrames;
+  
+  const tick = () => {
+    count += step;
+    if (count >= target) {
+      el.textContent = target;
+    } else {
+      el.textContent = Math.floor(count);
+      requestAnimationFrame(tick);
+    }
+  };
+  requestAnimationFrame(tick);
+});
+
+/* Charts Implementation */
+document.addEventListener('DOMContentLoaded', function() {
+  // Common chart options
+  const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          font: { family: "'Inter', sans-serif", size: 12 },
+          usePointStyle: true,
+          padding: 20
+        }
+      }
+    }
+  };
+
+  // User Growth Chart
+  const growthCtx = document.getElementById('userGrowthChart').getContext('2d');
+  new Chart(growthCtx, {
+    type: 'line',
+    data: {
+      labels: {{ user_growth_labels|safe }},
+      datasets: [{
+        label: 'New Users',
+        data: {{ user_growth_data|safe }},
+        borderColor: '#10b981',
+        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 3,
+        pointBackgroundColor: '#10b981',
+        pointRadius: 4
+      }]
+    },
+    options: {
+      ...commonOptions,
+      scales: {
+        y: { beginAtZero: true, grid: { display: false } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  // Top Planted Crops Chart
+  const topCropsCtx = document.getElementById('topCropsChart').getContext('2d');
+  new Chart(topCropsCtx, {
+    type: 'bar',
+    data: {
+      labels: {{ top_crops_labels|safe }},
+      datasets: [{
+        label: 'Planted Times',
+        data: {{ top_crops_data|safe }},
+        backgroundColor: [
+          '#10b981', '#059669', '#047857', '#065f46', '#064e3b', '#34d399', '#6ee7b7'
+        ],
+        borderRadius: 5
+      }]
+    },
+    options: {
+      ...commonOptions,
+      indexAxis: 'y',
+      scales: {
+        x: { beginAtZero: true, grid: { display: false } },
+        y: { grid: { display: false } }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+
+  // Top Active Farmers Chart
+  const topUsersCtx = document.getElementById('topUsersChart').getContext('2d');
+  new Chart(topUsersCtx, {
+    type: 'bar',
+    data: {
+      labels: {{ top_users_labels|safe }},
+      datasets: [{
+        label: 'Crops Planted',
+        data: {{ top_users_data|safe }},
+        backgroundColor: '#6366f1',
+        borderRadius: 5
+      }]
+    },
+    options: {
+      ...commonOptions,
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+        x: { grid: { display: false } }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+
+  // Top Ticket Buyers Chart
+  const ticketBuyersCtx = document.getElementById('ticketBuyersChart').getContext('2d');
+  new Chart(ticketBuyersCtx, {
+    type: 'bar',
+    data: {
+      labels: {{ ticket_buyers_labels|safe }},
+      datasets: [{
+        label: 'Tickets Purchased',
+        data: {{ ticket_buyers_data|safe }},
+        backgroundColor: '#8b5cf6',
+        borderRadius: 5
+      }]
+    },
+    options: {
+      ...commonOptions,
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+        x: { grid: { display: false } }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+
+  // Financial Chart
+  const financialCtx = document.getElementById('financialChart').getContext('2d');
+  new Chart(financialCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Sales (NPR)', 'Expenses (NPR)'],
+      datasets: [{
+        label: 'Total Amount',
+        data: [{{ total_sales }}, {{ total_expenses }}],
+        backgroundColor: ['#10b981', '#f43f5e'],
+        borderRadius: 8,
+        barThickness: 60
+      }]
+    },
+    options: {
+      ...commonOptions,
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+});
+</script>
 {% endblock content %}
