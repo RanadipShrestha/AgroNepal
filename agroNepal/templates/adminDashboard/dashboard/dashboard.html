@@ -15,12 +15,6 @@
       <span class="adminDashboard-name-glow">{{ user.first_name|default:user.username }}</span>
     </h1>
     <p class="adminDashboard-subtext">Global Administration Dashboard. Monitor the entire AgroNepal platform.</p>
-    
-    <div class="adminDashboard-status-bar">
-      <span class="adminDashboard-status-item"><i class="fa-solid fa-users"></i> Platform active</span>
-      <span class="adminDashboard-status-item"><i class="fa-solid fa-seedling"></i> Crops managed</span>
-      <span class="adminDashboard-status-item"><i class="fa-solid fa-comments"></i> Community engaged</span>
-    </div>
   </div>
 
   <!-- Stats Grid -->
@@ -29,31 +23,26 @@
     <div class="adminDashboard-stat adminDashboard-stat-emerald">
       <div class="adminDashboard-stat-num counter" data-target="{{ total_users }}">{{ total_users }}</div>
       <div class="adminDashboard-stat-label">Total Users</div>
-      <div class="adminDashboard-stat-bar"></div>
     </div>
 
     <div class="adminDashboard-stat adminDashboard-stat-rose">
       <div class="adminDashboard-stat-num counter" data-target="{{ total_crops }}">{{ total_crops }}</div>
       <div class="adminDashboard-stat-label">Master Crops</div>
-      <div class="adminDashboard-stat-bar"></div>
     </div>
 
     <div class="adminDashboard-stat adminDashboard-stat-violet">
       <div class="adminDashboard-stat-num counter" data-target="{{ total_posts }}">{{ total_posts }}</div>
       <div class="adminDashboard-stat-label">Community Posts</div>
-      <div class="adminDashboard-stat-bar"></div>
     </div>
 
     <div class="adminDashboard-stat adminDashboard-stat-sky">
       <div class="adminDashboard-stat-num counter" data-target="{{ total_contacts }}">{{ total_contacts }}</div>
       <div class="adminDashboard-stat-label">Contact Messages</div>
-      <div class="adminDashboard-stat-bar"></div>
     </div>
 
     <div class="adminDashboard-stat adminDashboard-stat-rose">
       <div class="adminDashboard-stat-num counter" data-target="{{ total_events }}">{{ total_events }}</div>
       <div class="adminDashboard-stat-label">Scheduled Events</div>
-      <div class="adminDashboard-stat-bar"></div>
     </div>
 
   </div>
@@ -94,7 +83,7 @@
     <div class="adminDashboard-panel">
       <div class="adminDashboard-panel-head">
         <h2 class="adminDashboard-panel-title">Top Planted Crops</h2>
-        <span class="adminDashboard-status-item"><i class="fa-solid fa-leaf"></i> User Favorites</span>
+        <span class="adminDashboard-status-item">User Favorites</span>
       </div>
       <div class="adminDashboard-panel-body">
         <canvas id="topCropsChart"></canvas>
@@ -105,7 +94,7 @@
     <div class="adminDashboard-panel">
       <div class="adminDashboard-panel-head">
         <h2 class="adminDashboard-panel-title">Top 10 Active Farmers</h2>
-        <span class="adminDashboard-status-item"><i class="fa-solid fa-award"></i> Leaderboard</span>
+        <span class="adminDashboard-status-item">Leaderboard</span>
       </div>
       <div class="adminDashboard-panel-body">
         <canvas id="topUsersChart"></canvas>
@@ -116,25 +105,12 @@
     <div class="adminDashboard-panel">
       <div class="adminDashboard-panel-head">
         <h2 class="adminDashboard-panel-title">Top 10 Ticket Buyers</h2>
-        <span class="adminDashboard-status-item"><i class="fa-solid fa-ticket"></i> Active Attendees</span>
+        <span class="adminDashboard-status-item"> Active Attendees</span>
       </div>
       <div class="adminDashboard-panel-body">
         <canvas id="ticketBuyersChart"></canvas>
       </div>
     </div>
-
-    <!-- Financial Activity Chart -->
-    <div class="adminDashboard-panel" style="grid-column: span 2;">
-      <div class="adminDashboard-panel-head">
-        <h2 class="adminDashboard-panel-title">Financial Activity</h2>
-        <span class="adminDashboard-status-item"><i class="fa-solid fa-money-bill-transfer"></i> Sales vs Expenses</span>
-      </div>
-      <div class="adminDashboard-panel-body" style="height: 300px;">
-        <canvas id="financialChart"></canvas>
-      </div>
-    </div>
-  </div>
-
 </div>
 
 <!-- Load Chart.js -->
@@ -282,29 +258,6 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       plugins: {
         legend: { display: false }
-      }
-    }
-  });
-
-  // Financial Chart
-  const financialCtx = document.getElementById('financialChart').getContext('2d');
-  new Chart(financialCtx, {
-    type: 'bar',
-    data: {
-      labels: ['Sales (NPR)', 'Expenses (NPR)'],
-      datasets: [{
-        label: 'Total Amount',
-        data: [{{ total_sales }}, {{ total_expenses }}],
-        backgroundColor: ['#10b981', '#f43f5e'],
-        borderRadius: 8,
-        barThickness: 60
-      }]
-    },
-    options: {
-      ...commonOptions,
-      scales: {
-        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
-        x: { grid: { display: false } }
       }
     }
   });
