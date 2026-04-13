@@ -528,6 +528,38 @@ def adminUserPlantedCrops(request):
     }
     return render(request, 'adminDashboard/dashboard/crop/user_planted_crops.html', context)
 
+@admin_only_required
+def adminEditUserPlantedCrop(request, crop_id):
+    user_crop = get_object_or_404(UserCropAdd, id=crop_id)
+    if request.method == 'POST':
+        user_crop.planted_date = request.POST.get('planted_date')
+        user_crop.notes = request.POST.get('notes', '')
+        user_crop.is_task_hidden = request.POST.get('is_task_hidden') == 'on'
+        
+        crop_id_new = request.POST.get('crop_id')
+        if crop_id_new:
+            user_crop.crop_id = crop_id_new
+            
+        try:
+            user_crop.save()
+            messages.success(request, "Planted crop record updated successfully.", extra_tags="adminUserCrop")
+            return redirect('adminUserPlantedCrops')
+        except Exception as e:
+            messages.error(request, "Error updating planted crop record.", extra_tags="adminUserCrop")
+            
+    crops = Crop.objects.all()
+    context = {'user_crop': user_crop, 'crops': crops}
+    return render(request, 'adminDashboard/dashboard/crop/edit_user_planted_crop.html', context)
+
+@admin_only_required
+def adminDeleteUserPlantedCrop(request):
+    if request.method == 'POST':
+        crop_id = request.POST.get('crop_id')
+        user_crop = get_object_or_404(UserCropAdd, id=crop_id)
+        user_crop.delete()
+        messages.success(request, "Planted crop record deleted successfully.", extra_tags="adminUserCrop")
+    return redirect('adminUserPlantedCrops')
+
 #------------Community post ----------------
 @admin_only_required
 def adminCommunityPosts(request):

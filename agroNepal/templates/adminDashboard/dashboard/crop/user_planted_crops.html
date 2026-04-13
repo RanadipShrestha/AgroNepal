@@ -4,6 +4,20 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
+    {% if messages %}
+    <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+      {% for message in messages %}
+        {% if 'adminUserCrop' in message.tags %}
+        <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; 
+          {% if 'success' in message.tags %}background:#dcfce3; color:#166534; 
+          {% else %}background:#fee2e2; color:#ef4444;
+          {% endif %}">
+          {{ message }}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
     <!-- Header Section -->
     <div class="admin-dashboard-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
         <div>
@@ -41,6 +55,7 @@
                     <th>Planted Date</th>
                     <th>Notes</th>
                     <th>Task Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,10 +81,20 @@
                             <span class="badge badge-admin" style="background-color: #dcfce3; color: #166534;">Visible</span>
                         {% endif %}
                     </td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="{% url 'adminEditUserPlantedCrop' user_crop.id %}" class="action-btn edit-btn">
+                                <i class="fa-solid fa-edit"></i> Edit
+                            </a>
+                            <button type="button" class="action-btn delete-btn delete-crop-btn" data-cropid="{{ user_crop.id }}" data-cropname="{{ user_crop.crop.name }}" data-username="{{ user_crop.user.username }}">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="empty-state">
+                    <td colspan="6" class="empty-state">
                         {% if search_query %}
                             No planted crops found for "{{ search_query }}".
                         {% else %}
@@ -121,4 +146,57 @@
     {% endif %}
 
 </div>
+
+<!-- Delete User Crop Modal -->
+<div id="deleteCropModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Deletion</h2>
+    </div>
+    <div class="modal-wrapper-body" style="margin: 1rem 0;">
+      <p>Are you sure you want to delete <strong id="deleteCropName"></strong> planted by <strong id="deleteCropUser"></strong>? This cannot be undone.</p>
+    </div>
+    <form method="POST" action="{% url 'adminDeleteUserPlantedCrop' %}" id="deleteCropForm">
+      {% csrf_token %}
+      <input type="hidden" name="crop_id" id="deleteCropId">
+      <div class="modal-wrapper-footer">
+        <button type="button" id="cancelDeleteCropBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+        <button type="submit" class="modal-wrapper-btn modal-wrapper-confirm">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("deleteCropModal");
+    const cancelBtn = document.getElementById("cancelDeleteCropBtn");
+    const deleteBtns = document.querySelectorAll(".delete-crop-btn");
+    
+    deleteBtns.forEach(btn => {
+        btn.addEventListener("click", function() {
+            document.getElementById("deleteCropId").value = this.getAttribute("data-cropid");
+            document.getElementById("deleteCropName").textContent = this.getAttribute("data-cropname");
+            document.getElementById("deleteCropUser").textContent = this.getAttribute("data-username");
+            modal.classList.add("active");
+        });
+    });
+    
+    cancelBtn.addEventListener("click", function() {
+        modal.classList.remove("active");
+    });
+    
+    window.addEventListener("click", function(event) {
+        if (event.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+
+    // Auto dismiss toasts/messages if they exist
+    const toasts = document.querySelectorAll('.toast-message');
+    toasts.forEach(toast => {
+        setTimeout(() => toast.style.display = 'none', 3000);
+    });
+});
+</script>
 {% endblock content %}

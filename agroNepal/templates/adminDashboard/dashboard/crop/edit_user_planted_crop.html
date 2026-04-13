@@ -1,0 +1,52 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}Edit User Planted Crop - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+    <div class="admin-dashboard-header" style="text-align: center;">
+        <h1 class="adminDashboard-heading">Edit User Planted Crop</h1>
+        <p class="adminDashboard-subtext">Update details for the planted crop record.</p>
+    </div>
+
+    <div class="form-container" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color); max-width: 600px; margin: 2rem auto;">
+        <form method="POST" action="{% url 'adminEditUserPlantedCrop' user_crop.id %}">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">User</label>
+                <input type="text" value="{{ user_crop.user.username }}" disabled style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; color: #64748b;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Crop</label>
+                <select name="crop_id" style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1;">
+                    {% for crop in crops %}
+                        <option value="{{ crop.id }}" {% if crop.id == user_crop.crop.id %}selected{% endif %}>{{ crop.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Planted Date (YYYY-MM-DD)</label>
+                <input type="date" name="planted_date" value="{{ user_crop.planted_date|date:'Y-m-d' }}" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Notes</label>
+                <textarea name="notes" rows="4" style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1;">{{ user_crop.notes }}</textarea>
+            </div>
+
+            <div style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" name="is_task_hidden" id="is_task_hidden" {% if user_crop.is_task_hidden %}checked{% endif %} style="width: 18px; height: 18px;">
+                <label for="is_task_hidden" style="font-weight: 500; cursor: pointer;">Hide Task (Task Status: Hidden)</label>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.75rem 1.5rem; border: none; cursor: pointer; border-radius: 6px;">Update Record</button>
+                <a href="{% url 'adminUserPlantedCrops' %}" class="btn" style="padding: 0.75rem 1.5rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 6px; text-decoration: none;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

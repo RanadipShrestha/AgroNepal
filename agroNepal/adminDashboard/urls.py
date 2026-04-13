@@ -44,4 +44,6 @@ urlpatterns = [
     path("adminUserExpenses/", adminUserExpenses, name="adminUserExpenses"),
     path("adminUserSales/", adminUserSales, name="adminUserSales"),
     path("adminUserPlantedCrops/", adminUserPlantedCrops, name="adminUserPlantedCrops"),
+    path("adminUserPlantedCrops/edit/<int:crop_id>/", adminEditUserPlantedCrop, name="adminEditUserPlantedCrop"),
+    path("adminUserPlantedCrops/delete/", adminDeleteUserPlantedCrop, name="adminDeleteUserPlantedCrop"),
 ]
