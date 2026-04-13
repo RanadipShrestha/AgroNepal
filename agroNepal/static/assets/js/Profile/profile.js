@@ -23,3 +23,14 @@ function closeAlert(alertId) {
         }, 400);
     }
 }
+
+ setTimeout(function () {
+   document
+     .querySelectorAll(".messages-container .alert")
+     .forEach(function (alert) {
+       alert.style.animation = "slideOut 0.5s ease forwards";
+       setTimeout(function () {
+         alert.remove();
+       }, 500);
+     });
+ }, 4000);

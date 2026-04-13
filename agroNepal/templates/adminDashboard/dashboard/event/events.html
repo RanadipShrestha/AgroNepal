@@ -4,14 +4,34 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
-  <div class="adminDashboard-welcome">
+  <div class="adminDashboard-welcome" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
     <div>
         <h1 class="adminDashboard-heading" style="margin: 0; color: #1e293b;">Events Management</h1>
         <p class="adminDashboard-subtext" style="margin: 0.25rem 0 0 0; color: #64748b;">Organize and manage AgroNepal community events.</p>
     </div>
-    <a href="{% url 'adminAddEvent' %}" class="add-event-btn">
-        Add New Event
-    </a>
+    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'adminEvents' %}" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ search_query }}" 
+                placeholder="Search by event name or location..." 
+                style="padding: 0.5rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; font-size: 0.95rem; width: 270px;"
+            >
+            <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.5rem 1rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-search"></i> Search
+            </button>
+            {% if search_query %}
+            <a href="{% url 'adminEvents' %}" class="btn" style="padding: 0.5rem 1rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 8px; text-decoration: none;">
+                Clear
+            </a>
+            {% endif %}
+        </form>
+        <a href="{% url 'adminAddEvent' %}" class="add-event-btn">
+            Add New Event
+        </a>
+    </div>
   </div>
 
   {% if messages %}
@@ -101,8 +121,12 @@
                 {% empty %}
                 <tr>
                     <td colspan="7" style="text-align: center; color: #64748b; padding: 4rem;">
-                        <img src="{% static 'assets/img/empty-calendar.svg' %}" alt="" style="width: 64px; opacity: 0.5; margin-bottom: 1rem;">
-                        <p>No active or upcoming events scheduled.</p>
+                        {% if search_query %}
+                            <p>No upcoming events found for "{{ search_query }}".</p>
+                        {% else %}
+                            <img src="{% static 'assets/img/empty-calendar.svg' %}" alt="" style="width: 64px; opacity: 0.5; margin-bottom: 1rem;">
+                            <p>No active or upcoming events scheduled.</p>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -115,7 +139,7 @@
     <div class="admin-pagination-wrapper">
         <nav class="admin-pagination" aria-label="Upcoming events pagination">
             {% if upcoming_events.has_previous %}
-                <a href="?up_page={{ upcoming_events.previous_page_number }}{% if past_events.number > 1 %}&past_page={{ past_events.number }}{% endif %}" class="page-btn">
+                <a href="?up_page={{ upcoming_events.previous_page_number }}{% if past_events.number > 1 %}&past_page={{ past_events.number }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     <i class="fas fa-chevron-left"></i> Previous
                 </a>
             {% else %}
@@ -129,13 +153,13 @@
                     {% if upcoming_events.number == num %}
                         <span class="page-num active">{{ num }}</span>
                     {% elif num > upcoming_events.number|add:'-3' and num < upcoming_events.number|add:'3' %}
-                        <a href="?up_page={{ num }}{% if past_events.number > 1 %}&past_page={{ past_events.number }}{% endif %}" class="page-num">{{ num }}</a>
+                        <a href="?up_page={{ num }}{% if past_events.number > 1 %}&past_page={{ past_events.number }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-num">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
 
             {% if upcoming_events.has_next %}
-                <a href="?up_page={{ upcoming_events.next_page_number }}{% if past_events.number > 1 %}&past_page={{ past_events.number }}{% endif %}" class="page-btn">
+                <a href="?up_page={{ upcoming_events.next_page_number }}{% if past_events.number > 1 %}&past_page={{ past_events.number }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     Next <i class="fas fa-chevron-right"></i>
                 </a>
             {% else %}
@@ -204,7 +228,13 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" style="text-align: center; color: #94a3b8; padding: 3rem;">No past events records.</td>
+                    <td colspan="4" style="text-align: center; color: #94a3b8; padding: 3rem;">
+                        {% if search_query %}
+                            No past events found for "{{ search_query }}".
+                        {% else %}
+                            No past events records.
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -216,7 +246,7 @@
     <div class="admin-pagination-wrapper">
         <nav class="admin-pagination" aria-label="Past events pagination">
             {% if past_events.has_previous %}
-                <a href="?past_page={{ past_events.previous_page_number }}{% if upcoming_events.number > 1 %}&up_page={{ upcoming_events.number }}{% endif %}" class="page-btn">
+                <a href="?past_page={{ past_events.previous_page_number }}{% if upcoming_events.number > 1 %}&up_page={{ upcoming_events.number }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     <i class="fas fa-chevron-left"></i> Previous
                 </a>
             {% else %}
@@ -230,13 +260,13 @@
                     {% if past_events.number == num %}
                         <span class="page-num active">{{ num }}</span>
                     {% elif num > past_events.number|add:'-3' and num < past_events.number|add:'3' %}
-                        <a href="?past_page={{ num }}{% if upcoming_events.number > 1 %}&up_page={{ upcoming_events.number }}{% endif %}" class="page-num">{{ num }}</a>
+                        <a href="?past_page={{ num }}{% if upcoming_events.number > 1 %}&up_page={{ upcoming_events.number }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-num">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
 
             {% if past_events.has_next %}
-                <a href="?past_page={{ past_events.next_page_number }}{% if upcoming_events.number > 1 %}&up_page={{ upcoming_events.number }}{% endif %}" class="page-btn">
+                <a href="?past_page={{ past_events.next_page_number }}{% if upcoming_events.number > 1 %}&up_page={{ upcoming_events.number }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     Next <i class="fas fa-chevron-right"></i>
                 </a>
             {% else %}

@@ -42,7 +42,11 @@ urlpatterns = [
 
     #User expesne, sale and crop planted record
     path("adminUserExpenses/", adminUserExpenses, name="adminUserExpenses"),
+    path("adminUserExpenses/edit/<int:expense_id>/", adminEditUserExpense, name="adminEditUserExpense"),
+    path("adminUserExpenses/delete/", adminDeleteUserExpense, name="adminDeleteUserExpense"),
     path("adminUserSales/", adminUserSales, name="adminUserSales"),
+    path("adminUserSales/edit/<int:sale_id>/", adminEditUserSale, name="adminEditUserSale"),
+    path("adminUserSales/delete/", adminDeleteUserSale, name="adminDeleteUserSale"),
     path("adminUserPlantedCrops/", adminUserPlantedCrops, name="adminUserPlantedCrops"),
     path("adminUserPlantedCrops/edit/<int:crop_id>/", adminEditUserPlantedCrop, name="adminEditUserPlantedCrop"),
     path("adminUserPlantedCrops/delete/", adminDeleteUserPlantedCrop, name="adminDeleteUserPlantedCrop"),

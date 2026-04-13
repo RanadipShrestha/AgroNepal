@@ -1,0 +1,58 @@
+{% extends "adminDashboard.html" %}
+{% load static %}
+{% block title %}Edit User Sale - AgroNepal{% endblock title %}
+
+{% block content %}
+<div class="adminDashboard-dash">
+    <div class="admin-dashboard-header" style="text-align: center;">
+        <h1 class="adminDashboard-heading">Edit User Sale</h1>
+        <p class="adminDashboard-subtext">Update details for this sale record.</p>
+    </div>
+
+    <div class="form-container" style="background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color); max-width: 600px; margin: 2rem auto;">
+        <form method="POST" action="{% url 'adminEditUserSale' sale.id %}">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">User</label>
+                <input type="text" value="{{ sale.user_crop.user.username }}" disabled style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; color: #64748b;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Crop</label>
+                <input type="text" value="{{ sale.user_crop.crop.name }}" disabled style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; color: #64748b;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Amount (Rs.)</label>
+                <input type="number" name="amount" value="{{ sale.amount }}" step="0.01" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Quantity (kg)</label>
+                <input type="number" name="quantity" value="{{ sale.quantity|default_if_none:'' }}" step="0.01" style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Sale Date</label>
+                <input type="date" name="sale_date" value="{{ sale.sale_date|date:'Y-m-d' }}" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Buyer Name</label>
+                <input type="text" name="buyer_name" value="{{ sale.buyer_name|default_if_none:'' }}" style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Note</label>
+                <textarea name="note" rows="4" style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid #cbd5e1;">{{ sale.note|default_if_none:'' }}</textarea>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.75rem 1.5rem; border: none; cursor: pointer; border-radius: 6px;">Update Sale</button>
+                <a href="{% url 'adminUserSales' %}" class="btn" style="padding: 0.75rem 1.5rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 6px; text-decoration: none;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

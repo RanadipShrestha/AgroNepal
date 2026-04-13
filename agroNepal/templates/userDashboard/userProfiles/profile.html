@@ -1,18 +1,29 @@
 {% extends "userdashboard.html" %} {% load static %} {% block content %}
-<!-- Messages Display Section -->
+<!-- Toast Messages -->
 {% if messages %}
-<div class="userProfile-messages-container">
-  {% for message in messages %} {% if 'userProfileUpdate' in message.tags %}
-  <div class="userUpdatd-success">
-    <span class="userUpdatd-alert-message">{{ message }}</span>
-  </div>
-  {% elif 'usernameExistsError' in message.tags or 'EmailExistsError' in
-  message.tags %}
-  <div class="UserProfile-error">
-    <span class="usernameExistsError-alert-message">{{ message }}</span>
-  </div>
-  {% endif %} {% endfor %}
+<div class="messages-container">
+  {% for message in messages %}
+    {% if 'userProfileUpdate' in message.tags %}
+    <div class="alert alert-success">
+      {{ message }}
+      <button class="close-alert" onclick="this.parentElement.remove()">&times;</button>
+    </div>
+    {% elif 'usernameExistsError' in message.tags or 'EmailExistsError' in message.tags %}
+    <div class="alert alert-error">
+      {{ message }}
+      <button class="close-alert" onclick="this.parentElement.remove()">&times;</button>
+    </div>
+    {% endif %}
+  {% endfor %}
 </div>
+<script>
+  setTimeout(function() {
+    document.querySelectorAll('.messages-container .alert').forEach(function(alert) {
+      alert.style.animation = 'slideOut 0.5s ease forwards';
+      setTimeout(function() { alert.remove(); }, 500);
+    });
+  }, 4000);
+</script>
 {% endif %}
 
 <div class="profile-container">

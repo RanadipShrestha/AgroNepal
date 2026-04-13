@@ -4,14 +4,34 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
-  <div class="adminDashboard-welcome" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+  <div class="adminDashboard-welcome" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
     <div>
         <h1 class="adminDashboard-heading">Master Crops Management</h1>
         <p class="adminDashboard-subtext">Manage the global database of crops available for farmers.</p>
     </div>
-    <button class="add-crop-btn" onclick="document.getElementById('addModal').style.display='flex'">
-        Add New Crop
-    </button>
+    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'adminCrops' %}" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ search_query }}" 
+                placeholder="Search by crop name..." 
+                style="padding: 0.5rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; font-size: 0.95rem; width: 220px;"
+            >
+            <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.5rem 1rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-search"></i> Search
+            </button>
+            {% if search_query %}
+            <a href="{% url 'adminCrops' %}" class="btn" style="padding: 0.5rem 1rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 8px; text-decoration: none;">
+                Clear
+            </a>
+            {% endif %}
+        </form>
+        <button class="add-crop-btn" onclick="document.getElementById('addModal').style.display='flex'">
+            Add New Crop
+        </button>
+    </div>
   </div>
 
   {% if messages %}
@@ -75,7 +95,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" style="text-align: center; color: #64748b;">No crops defined in the system.</td>
+                <td colspan="4" style="text-align: center; color: #64748b;">
+                    {% if search_query %}
+                        No crops found for "{{ search_query }}".
+                    {% else %}
+                        No crops defined in the system.
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
     </div>
@@ -85,7 +111,7 @@
     <div class="admin-pagination-wrapper">
         <nav class="admin-pagination" aria-label="Crops pagination">
             {% if crops.has_previous %}
-                <a href="?page={{ crops.previous_page_number }}" class="page-btn">
+                <a href="?page={{ crops.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     <i class="fas fa-chevron-left"></i> Previous
                 </a>
             {% else %}
@@ -99,13 +125,13 @@
                     {% if crops.number == num %}
                         <span class="page-num active">{{ num }}</span>
                     {% elif num > crops.number|add:'-3' and num < crops.number|add:'3' %}
-                        <a href="?page={{ num }}" class="page-num">{{ num }}</a>
+                        <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-num">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
 
             {% if crops.has_next %}
-                <a href="?page={{ crops.next_page_number }}" class="page-btn">
+                <a href="?page={{ crops.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     Next <i class="fas fa-chevron-right"></i>
                 </a>
             {% else %}

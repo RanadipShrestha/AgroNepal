@@ -4,14 +4,34 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
-  <div class="post-adminDashboard-welcome">
+  <div class="post-adminDashboard-welcome" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
     <div>
         <h1 class="adminDashboard-heading">Community Posts Moderation</h1>
         <p class="adminDashboard-subtext">Review user-generated community content and remove inappropriate posts.</p>
     </div>
-    <a href="{% url 'adminAddCommunityPost' %}" class="btn adminDashboard-btn-green">
-        Add New Post
-    </a>
+    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'adminCommunityPosts' %}" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input 
+                type="text" 
+                name="q" 
+                value="{{ search_query }}" 
+                placeholder="Search by title or author..." 
+                style="padding: 0.5rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; font-size: 0.95rem; width: 250px;"
+            >
+            <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.5rem 1rem; border: none; cursor: pointer;">
+                <i class="fa-solid fa-search"></i> Search
+            </button>
+            {% if search_query %}
+            <a href="{% url 'adminCommunityPosts' %}" class="btn" style="padding: 0.5rem 1rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 8px; text-decoration: none;">
+                Clear
+            </a>
+            {% endif %}
+        </form>
+        <a href="{% url 'adminAddCommunityPost' %}" class="btn adminDashboard-btn-green">
+            Add New Post
+        </a>
+    </div>
   </div>
 
      {% if messages %}
@@ -66,7 +86,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" style="text-align: center; color: #64748b;">No community posts found.</td>
+                <td colspan="4" style="text-align: center; color: #64748b;">
+                    {% if search_query %}
+                        No community posts found for "{{ search_query }}".
+                    {% else %}
+                        No community posts found.
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -78,7 +104,7 @@
     <div class="admin-pagination-wrapper">
         <nav class="admin-pagination" aria-label="Community posts pagination">
             {% if posts.has_previous %}
-                <a href="?page={{ posts.previous_page_number }}" class="page-btn">
+                <a href="?page={{ posts.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     <i class="fas fa-chevron-left"></i> Previous
                 </a>
             {% else %}
@@ -92,13 +118,13 @@
                     {% if posts.number == num %}
                         <span class="page-num active">{{ num }}</span>
                     {% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
-                        <a href="?page={{ num }}" class="page-num">{{ num }}</a>
+                        <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-num">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
 
             {% if posts.has_next %}
-                <a href="?page={{ posts.next_page_number }}" class="page-btn">
+                <a href="?page={{ posts.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     Next <i class="fas fa-chevron-right"></i>
                 </a>
             {% else %}

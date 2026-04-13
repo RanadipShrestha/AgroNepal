@@ -87,7 +87,7 @@
 }
 
 .btn-edit {
-  background: #10b981;
+  background: #14a44e;
   color: white;
   border: none;
   padding: 12px 30px;
@@ -100,7 +100,7 @@
 }
 
 .btn-edit:hover {
-  background: #059669;
+  background: #059611;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
@@ -231,7 +231,7 @@
 .btn-change-password {
     display: inline-block;
     padding: 12px 0;
-    background-color: #f7b731;
+    background-color: #3b960e;
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -239,7 +239,7 @@
     transition: background-color 0.3s;
 }
 .btn-change-password:hover {
-    background-color: #fa8231;
+    background-color: #2fcf2c;
 }
 @keyframes fadeIn {
   from { opacity: 0; }

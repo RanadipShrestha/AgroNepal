@@ -4,9 +4,30 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
-  <div class="adminDashboard-welcome" style="margin-bottom: 1rem;">
-    <h1 class="adminDashboard-heading">Contact Messages</h1>
-    <p class="adminDashboard-subtext">Review messages submitted through the public contact form.</p>
+  <div class="adminDashboard-welcome" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <h1 class="adminDashboard-heading">Contact Messages</h1>
+        <p class="adminDashboard-subtext">Review messages submitted through the public contact form.</p>
+    </div>
+    
+    <!-- Search Form -->
+    <form method="GET" action="{% url 'adminContacts' %}" style="display: flex; gap: 0.5rem; align-items: center;">
+        <input 
+            type="text" 
+            name="q" 
+            value="{{ search_query }}" 
+            placeholder="Search by name, email, subject..." 
+            style="padding: 0.5rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; font-size: 0.95rem; width: 280px;"
+        >
+        <button type="submit" class="btn adminDashboard-btn-green" style="padding: 0.5rem 1rem; border: none; cursor: pointer;">
+            <i class="fa-solid fa-search"></i> Search
+        </button>
+        {% if search_query %}
+        <a href="{% url 'adminContacts' %}" class="btn" style="padding: 0.5rem 1rem; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; border-radius: 8px; text-decoration: none;">
+            Clear
+        </a>
+        {% endif %}
+    </form>
   </div>
 
   <!-- Messages -->
@@ -58,6 +79,15 @@
                     </button>
                 </td>
             </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="empty-state" style="text-align: center; padding: 2rem;">
+                    {% if search_query %}
+                        No messages found for "{{ search_query }}".
+                    {% else %}
+                        No contact messages found.
+                    {% endif %}
+                </td>
             {% endfor %}
         </tbody>
     </table>
@@ -68,7 +98,7 @@
     <div class="admin-pagination-wrapper">
         <nav class="admin-pagination" aria-label="Contacts pagination">
             {% if contacts.has_previous %}
-                <a href="?page={{ contacts.previous_page_number }}" class="page-btn">
+                <a href="?page={{ contacts.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     <i class="fas fa-chevron-left"></i> Previous
                 </a>
             {% else %}
@@ -82,13 +112,13 @@
                     {% if contacts.number == num %}
                         <span class="page-num active">{{ num }}</span>
                     {% elif num > contacts.number|add:'-3' and num < contacts.number|add:'3' %}
-                        <a href="?page={{ num }}" class="page-num">{{ num }}</a>
+                        <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-num">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
             </div>
 
             {% if contacts.has_next %}
-                <a href="?page={{ contacts.next_page_number }}" class="page-btn">
+                <a href="?page={{ contacts.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="page-btn">
                     Next <i class="fas fa-chevron-right"></i>
                 </a>
             {% else %}

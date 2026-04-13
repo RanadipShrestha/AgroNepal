@@ -69,47 +69,48 @@
 </div>
 
 <!-- Confirmation Modal -->
-<div id="confirmModal" class="confirmation-modal">
-  <div class="confirmation-modal-content">
-    <div class="confirmation-modal-header">
+<div id="confirmChangesModal" class="edit-user-admin-confirm-changes-modal">
+  <div class="edit-user-admin-confirm-changes-content">
+    <div class="edit-user-admin-confirm-changes-header">
       <h2>Confirm Changes</h2>
     </div>
-    <div class="confirmation-modal-body">
-      <p>Are you sure you want to edit user information?</p>
+    <div class="edit-user-admin-confirm-changes-body">
+      <p>Are you sure you want to update this user's information? This will permanently save the changes.</p>
     </div>
-    <div class="confirmation-modal-footer">
-      <button type="button" class="confirmation-btn-cancel" id="cancelBtn">Cancel</button>
-      <button type="button" class="confirmation-btn-confirm" id="confirmBtn">Yes, Save Changes</button>
+    <div class="edit-user-admin-confirm-changes-footer">
+      <button type="button" class="edit-user-admin-confirm-changes-btn-cancel" id="cancelChangesBtn">Cancel</button>
+      <button type="button" class="edit-user-admin-confirm-changes-btn-confirm" id="confirmChangesBtn">Yes, Save Changes</button>
     </div>
   </div>
 </div>
 
 <script>
-  const modal = document.getElementById('confirmModal');
-  const form = document.getElementById('editUserForm');
-  const confirmBtn = document.getElementById('confirmBtn');
-  const cancelBtn = document.getElementById('cancelBtn');
+  (function() {
+    const modal = document.getElementById('confirmChangesModal');
+    const form = document.getElementById('editUserForm');
+    const confirmBtn = document.getElementById('confirmChangesBtn');
+    const cancelBtn = document.getElementById('cancelChangesBtn');
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    modal.classList.add('confirmation-show');
-  });
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      modal.classList.add('edit-user-admin-confirm-changes-show');
+    });
 
-  confirmBtn.addEventListener('click', function() {
-    modal.classList.remove('confirmation-show');
-    form.submit();
-  });
+    confirmBtn.addEventListener('click', function() {
+      modal.classList.remove('edit-user-admin-confirm-changes-show');
+      form.submit();
+    });
 
-  cancelBtn.addEventListener('click', function() {
-    modal.classList.remove('confirmation-show');
-  });
+    cancelBtn.addEventListener('click', function() {
+      modal.classList.remove('edit-user-admin-confirm-changes-show');
+    });
 
-  // Close modal if user clicks outside of it
-  window.addEventListener('click', function(e) {
-    if (e.target === modal) {
-      modal.classList.remove('confirmation-show');
-    }
-  });
+    window.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.classList.remove('edit-user-admin-confirm-changes-show');
+      }
+    });
+  })();
 </script>
 
 {% endblock content %}

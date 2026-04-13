@@ -4,6 +4,20 @@
 
 {% block content %}
 <div class="adminDashboard-dash">
+    {% if messages %}
+    <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+      {% for message in messages %}
+        {% if 'adminUserSale' in message.tags %}
+        <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; 
+          {% if 'success' in message.tags %}background:#dcfce3; color:#166534; 
+          {% else %}background:#fee2e2; color:#ef4444;
+          {% endif %}">
+          {{ message }}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
     <!-- Header Section -->
     <div class="admin-dashboard-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
         <div>
@@ -42,6 +56,7 @@
                     <th>Buyer</th>
                     <th>Sale Date</th>
                     <th>Note</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,10 +84,20 @@
                             {{ sale.note|default:"-" }}
                         </div>
                     </td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="{% url 'adminEditUserSale' sale.id %}" class="action-btn edit-btn">
+                                <i class="fa-solid fa-edit"></i> Edit
+                            </a>
+                            <button type="button" class="action-btn delete-btn delete-sale-btn" data-saleid="{{ sale.id }}" data-cropname="{{ sale.user_crop.crop.name }}" data-username="{{ sale.user_crop.user.username }}">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="empty-state">
+                    <td colspan="7" class="empty-state">
                         {% if search_query %}
                             No sales found for user "{{ search_query }}".
                         {% else %}
@@ -124,4 +149,56 @@
     {% endif %}
 
 </div>
+
+<!-- Delete Sale Modal -->
+<div id="deleteSaleModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Deletion</h2>
+    </div>
+    <div class="modal-wrapper-body" style="margin: 1rem 0;">
+      <p>Are you sure you want to delete this sale for <strong id="deleteSaleCrop"></strong> by <strong id="deleteSaleUser"></strong>? This cannot be undone.</p>
+    </div>
+    <form method="POST" action="{% url 'adminDeleteUserSale' %}" id="deleteSaleForm">
+      {% csrf_token %}
+      <input type="hidden" name="sale_id" id="deleteSaleId">
+      <div class="modal-wrapper-footer">
+        <button type="button" id="cancelDeleteSaleBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+        <button type="submit" class="modal-wrapper-btn modal-wrapper-confirm">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("deleteSaleModal");
+    const cancelBtn = document.getElementById("cancelDeleteSaleBtn");
+    const deleteBtns = document.querySelectorAll(".delete-sale-btn");
+    
+    deleteBtns.forEach(btn => {
+        btn.addEventListener("click", function() {
+            document.getElementById("deleteSaleId").value = this.getAttribute("data-saleid");
+            document.getElementById("deleteSaleCrop").textContent = this.getAttribute("data-cropname");
+            document.getElementById("deleteSaleUser").textContent = this.getAttribute("data-username");
+            modal.classList.add("active");
+        });
+    });
+    
+    cancelBtn.addEventListener("click", function() {
+        modal.classList.remove("active");
+    });
+    
+    window.addEventListener("click", function(event) {
+        if (event.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+
+    const toasts = document.querySelectorAll('.toast-message');
+    toasts.forEach(toast => {
+        setTimeout(() => toast.style.display = 'none', 3000);
+    });
+});
+</script>
 {% endblock content %}

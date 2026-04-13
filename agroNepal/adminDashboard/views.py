@@ -82,11 +82,18 @@ def adminDashboard(request):
 
 @admin_only_required
 def adminUsers(request):
-  users_list = CustomUser.objects.all().order_by('-date_joined')
+  query = request.GET.get('q', '')
+  if query:
+      users_list = CustomUser.objects.filter(
+          Q(username__icontains=query) | Q(email__icontains=query) | 
+          Q(first_name__icontains=query) | Q(last_name__icontains=query)
+      ).order_by('-date_joined')
+  else:
+      users_list = CustomUser.objects.all().order_by('-date_joined')
   paginator = Paginator(users_list, 10)
   page_number = request.GET.get('page')
   users = paginator.get_page(page_number)
-  return render(request, 'adminDashboard/dashboard/user/users.html', {'users': users}) 
+  return render(request, 'adminDashboard/dashboard/user/users.html', {'users': users, 'search_query': query}) 
 
 @admin_only_required
 def adminAddUser(request):
@@ -182,11 +189,17 @@ def adminDeleteUser(request):
 
 @admin_only_required
 def adminCrops(request):
-    crops_list = Crop.objects.prefetch_related('schedules').all().order_by('-id')
+    query = request.GET.get('q', '')
+    if query:
+        crops_list = Crop.objects.prefetch_related('schedules').filter(
+            Q(name__icontains=query)
+        ).order_by('-id')
+    else:
+        crops_list = Crop.objects.prefetch_related('schedules').all().order_by('-id')
     paginator = Paginator(crops_list, 10)
     page_number = request.GET.get('page')
     crops = paginator.get_page(page_number)
-    return render(request, 'adminDashboard/dashboard/crop/crops.html', {'crops': crops})
+    return render(request, 'adminDashboard/dashboard/crop/crops.html', {'crops': crops, 'search_query': query})
 
 @admin_only_required
 def adminAddCrop(request):
@@ -265,14 +278,25 @@ def adminDeleteCrop(request):
 
 @admin_only_required
 def adminContacts(request):
-    contacts_list = Contact.objects.all().order_by('-id')
+    query = request.GET.get('q', '')
+    if query:
+        contacts_list = Contact.objects.filter(
+            Q(first_name__icontains=query) | 
+            Q(last_name__icontains=query) | 
+            Q(email__icontains=query) | 
+            Q(subject__icontains=query)
+        ).order_by('-id')
+    else:
+        contacts_list = Contact.objects.all().order_by('-id')
+        
     paginator = Paginator(contacts_list, 10)
     page_number = request.GET.get('page')
     contacts = paginator.get_page(page_number)
     context = {
-        'contacts':contacts
+        'contacts': contacts,
+        'search_query': query
     }
-    return render(request, "adminDashboard/dashboard/contact/contacts.html", context)
+    return render(request, 'adminDashboard/dashboard/contact/contacts.html', context)
 
 @admin_only_required
 def adminDeleteContact(request):
@@ -288,8 +312,17 @@ def adminDeleteContact(request):
 @admin_only_required
 def adminEvents(request):
     today = timezone.now().date()
-    upcoming_list = Event.objects.filter(date__gte=today).order_by('date')
-    past_list = Event.objects.filter(date__lt=today).order_by('-date')
+    query = request.GET.get('q', '')
+    
+    upcoming_list = Event.objects.filter(date__gte=today)
+    past_list = Event.objects.filter(date__lt=today)
+    
+    if query:
+        upcoming_list = upcoming_list.filter(Q(name__icontains=query) | Q(location__icontains=query))
+        past_list = past_list.filter(Q(name__icontains=query) | Q(location__icontains=query))
+    
+    upcoming_list = upcoming_list.order_by('date')
+    past_list = past_list.order_by('-date')
     
     # Upcoming events pagination
     up_paginator = Paginator(upcoming_list, 10)
@@ -304,6 +337,7 @@ def adminEvents(request):
     context = {
         'upcoming_events': upcoming_events,
         'past_events': past_events,
+        'search_query': query,
     }
     return render(request, 'adminDashboard/dashboard/event/events.html', context)
 
@@ -387,12 +421,19 @@ def adminDeleteEvent(request):
 
 @admin_only_required
 def adminBlogs(request):
-    blogs_list = Blog.objects.all().order_by('-create_date')
+    query = request.GET.get('q', '')
+    if query:
+        blogs_list = Blog.objects.filter(
+            Q(title__icontains=query) | Q(author__username__icontains=query)
+        ).order_by('-create_date')
+    else:
+        blogs_list = Blog.objects.all().order_by('-create_date')
     paginator = Paginator(blogs_list, 10)
     page_number = request.GET.get('page')
     blogs = paginator.get_page(page_number)
     context = {
-        'blogs': blogs
+        'blogs': blogs,
+        'search_query': query,
     }
     return render(request, 'adminDashboard/dashboard/blog/blogs.html', context)
 
@@ -491,6 +532,33 @@ def adminUserExpenses(request):
     return render(request, 'adminDashboard/dashboard/expenseAndSale/user_expenses.html', context)
 
 @admin_only_required
+def adminEditUserExpense(request, expense_id):
+    expense = get_object_or_404(CropExpense, id=expense_id)
+    if request.method == 'POST':
+        expense.amount = request.POST.get('amount')
+        expense.spend_date = request.POST.get('spend_date')
+        expense.note = request.POST.get('note', '')
+        
+        try:
+            expense.save()
+            messages.success(request, "Expense record updated successfully.", extra_tags="adminUserExpense")
+            return redirect('adminUserExpenses')
+        except Exception as e:
+            messages.error(request, "Error updating expense record.", extra_tags="adminUserExpense")
+            
+    context = {'expense': expense}
+    return render(request, 'adminDashboard/dashboard/expenseAndSale/edit_user_expense.html', context)
+
+@admin_only_required
+def adminDeleteUserExpense(request):
+    if request.method == 'POST':
+        expense_id = request.POST.get('expense_id')
+        expense = get_object_or_404(CropExpense, id=expense_id)
+        expense.delete()
+        messages.success(request, "Expense record deleted successfully.", extra_tags="adminUserExpense")
+    return redirect('adminUserExpenses')
+
+@admin_only_required
 def adminUserSales(request):
     query = request.GET.get('q', '')
     if query:
@@ -507,6 +575,35 @@ def adminUserSales(request):
         'search_query': query
     }
     return render(request, 'adminDashboard/dashboard/expenseAndSale/user_sales.html', context)
+
+@admin_only_required
+def adminEditUserSale(request, sale_id):
+    sale = get_object_or_404(CropSale, id=sale_id)
+    if request.method == 'POST':
+        sale.amount = request.POST.get('amount')
+        sale.quantity = request.POST.get('quantity') or None
+        sale.sale_date = request.POST.get('sale_date')
+        sale.buyer_name = request.POST.get('buyer_name', '')
+        sale.note = request.POST.get('note', '')
+        
+        try:
+            sale.save()
+            messages.success(request, "Sale record updated successfully.", extra_tags="adminUserSale")
+            return redirect('adminUserSales')
+        except Exception as e:
+            messages.error(request, "Error updating sale record.", extra_tags="adminUserSale")
+            
+    context = {'sale': sale}
+    return render(request, 'adminDashboard/dashboard/expenseAndSale/edit_user_sale.html', context)
+
+@admin_only_required
+def adminDeleteUserSale(request):
+    if request.method == 'POST':
+        sale_id = request.POST.get('sale_id')
+        sale = get_object_or_404(CropSale, id=sale_id)
+        sale.delete()
+        messages.success(request, "Sale record deleted successfully.", extra_tags="adminUserSale")
+    return redirect('adminUserSales')
 
 @admin_only_required
 def adminUserPlantedCrops(request):
@@ -563,12 +660,19 @@ def adminDeleteUserPlantedCrop(request):
 #------------Community post ----------------
 @admin_only_required
 def adminCommunityPosts(request):
-    posts_list = CommunityPost.objects.all().order_by('-create_date')
+    query = request.GET.get('q', '')
+    if query:
+        posts_list = CommunityPost.objects.filter(
+            Q(title__icontains=query) | Q(author__username__icontains=query)
+        ).order_by('-create_date')
+    else:
+        posts_list = CommunityPost.objects.all().order_by('-create_date')
     paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
     context = {
-        'posts': posts
+        'posts': posts,
+        'search_query': query,
     }
     return render(request, 'adminDashboard/dashboard/communityPost/community_posts.html', context)
 
