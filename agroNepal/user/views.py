@@ -1,28 +1,48 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout, get_user_model, update_session_auth_hash
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth import login as auth_login, authenticate, logout
-from django.contrib import messages
-from .forms import CustomUserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import get_user_model, update_session_auth_hash
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
+from .forms import CustomUserCreationForm
 
 def register(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff or request.user.is_superuser:
+            return redirect('admindashboard')
+        return redirect('userdashboard')
+
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password1")
             
             user = authenticate(request, email=email, password=password)
             if user:
                 auth_login(request, user)
-                return redirect("login")
+                
+                # Send Welcome Email
+                try:
+                    subject = 'Welcome to AgroNepal!'
+                    html_message = render_to_string('email/register_email.html', {
+                        'first_name': user.first_name,
+                        'dashboard_url': request.build_absolute_uri('/userDashboard/')
+                    })
+                    plain_message = strip_tags(html_message)
+                    from_email = settings.DEFAULT_FROM_EMAIL
+                    to_email = [user.email]
+                    send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
+                except Exception as e:
+                    print(f"Error sending registration email: {e}")
+
+                if user.is_superuser or user.is_staff:
+                    return redirect('admindashboard')
+                else:
+                    return redirect('userdashboard')
         else:
             if form.errors.get('password2'):
                 messages.error(request, "The passwords you entered do not match. Please try again.")
@@ -44,6 +64,11 @@ def register(request):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff or request.user.is_superuser:
+            return redirect('admindashboard')
+        return redirect('userdashboard')
+
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')

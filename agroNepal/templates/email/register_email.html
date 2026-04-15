@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to AgroNepal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .header {
+            background-color: #2d6a4f;
+            padding: 40px 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .content h2 {
+            color: #1b4332;
+            margin-top: 0;
+        }
+        .content p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: #40916c;
+            color: #ffffff;
+            text-decoration: none !important;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .footer {
+            background-color: #f1f1f1;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666666;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AgroNepal</h1>
+        </div>
+        <div class="content">
+            <h2>Welcome to AgroNepal, {{ first_name }} </h2>
+            <p>Thank You for joing our platform. Our mission is to empower farmers and agricultural enthusiasts through technology and shared knowledge.</p>
+            <p>You can now manage your crops, track expenses and sales, and connect with other farmers across Nepal.</p>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="{{ dashboard_url }}" class="btn" style="color: #ffffff;">Go to My Dashboard</a>
+            </div>
+            <p style="margin-top: 30px;">If you have any questions, feel free to contact us or  visit our community section.</p>
+            <p>Happy Farming!<br><strong>The AgroNepal Team</strong></p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 AgroNepal. All rights reserved.</p>
+            <p>Empowering Farmers, Growing Together. Let's build the Community.</p>
+        </div>
+    </div>
+</body>
+</html>
