@@ -36,8 +36,8 @@ def register(request):
                     from_email = settings.DEFAULT_FROM_EMAIL
                     to_email = [user.email]
                     send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
-                except Exception as e:
-                    print(f"Error sending registration email: {e}")
+                except:
+                    print("Error sending registration email")
 
                 if user.is_superuser or user.is_staff:
                     return redirect('admindashboard')

@@ -11,6 +11,10 @@ import base64
 import json
 from decimal import Decimal
 import logging
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -188,6 +192,27 @@ def payment_success(request):
                 amount=total_amount
             )
             event.book_ticket()
+
+            # --- Send Confirmation Email ---
+            try:
+                subject = f"Ticket Purchase Confirmation - {event.name}"
+                html_message = render_to_string('email/ticket_purchase_email.html', {
+                    'first_name': request.user.first_name,
+                    'event_name': event.name,
+                    'event_date': event.date,
+                    'event_time': event.eventStartTime,
+                    'event_location': event.location,
+                    'ticket_id': str(transaction_uuid),
+                    'amount': total_amount,
+                    'dashboard_url': request.build_absolute_uri('/userDashboard/user_tickets/')
+                })
+                plain_message = strip_tags(html_message)
+                from_email = settings.DEFAULT_FROM_EMAIL
+                to_email = [request.user.email]
+                
+                send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
+            except Exception as email_err:
+                logger.error(f"Failed to send ticket confirmation email: {email_err}")
 
         #Clear session after successful ticket creation
         del request.session['pending_payment']
