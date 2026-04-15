@@ -145,8 +145,6 @@
     gap: 0.5rem;
 }
 
-
-
 .current-user-label {
     color: #94a3b8;
     font-size: 0.875rem;
@@ -176,15 +174,15 @@
     background: rgba(15, 23, 42, 0.55);
     backdrop-filter: blur(3px);
     z-index: 9999;
-    display: flex;
+    display: none; /* hidden by default */
     align-items: center;
     justify-content: center;
-    pointer-events: none;
     padding: 1rem;
 }
 
 /* Show modal when active class is added */
 .modal-wrapper.active {
+    display: flex; /* visible when active */
     pointer-events: auto;
     animation: modalFadeIn 0.25s ease;
 }
@@ -296,4 +294,13 @@
 
 .modal-wrapper-confirm:active {
     transform: translateY(0);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .toast-container {
+        top: 1rem !important;
+        right: 1rem !important;
+        left: 1rem !important;
+    }
 }

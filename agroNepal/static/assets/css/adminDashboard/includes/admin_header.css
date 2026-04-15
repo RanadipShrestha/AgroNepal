@@ -33,6 +33,12 @@
   color: #444;
 }
 
+@media (max-width: 480px) {
+  .adminDashboard-menu-toggle {
+    display: block;
+  }
+}
+
 .adminDashboard-menu-toggle {
   display: none;
   background: none;

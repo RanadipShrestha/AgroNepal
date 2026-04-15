@@ -40,12 +40,16 @@ document.querySelectorAll(".delete-event-trigger").forEach((btn) => {
   });
 });
 
-function closeDeleteModal() {
-  deleteModal.classList.remove("active");
+function closeDeleteEventModal() {
+  const deleteModal = document.getElementById("deleteEventModal");
+  if (deleteModal) {
+    deleteModal.classList.remove("active");
+  }
 }
 
 window.onclick = function (event) {
-  if (event.target == deleteModal) {
-    closeDeleteModal();
+  const deleteModal = document.getElementById("deleteEventModal");
+  if (deleteModal && event.target == deleteModal) {
+    closeDeleteEventModal();
   }
 };

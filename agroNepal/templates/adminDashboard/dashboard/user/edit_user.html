@@ -7,6 +7,22 @@
   <div class="adminDashboard-welcome" style="margin-bottom: 1rem;">
     <h1 class="adminDashboard-heading">Edit User Profile</h1>
   </div>
+
+  <!-- Messages Display - Toast Notifications -->
+  {% if messages %}
+  <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+    {% for message in messages %}
+      {% if 'adminUserEditError' in message.tags or 'adminUser' in message.tags %}
+      <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; 
+        {% if 'success' in message.tags %}background:#dcfce3; color:#166534; 
+        {% else %}background:#fee2e2; color:#ef4444;
+        {% endif %}">
+        {{ message }}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
   <div class="admin-user-form-container">
     <form method="POST" action="{% url 'adminEditUser' edit_user.id %}" id="editUserForm">
         {% csrf_token %}
@@ -79,7 +95,7 @@
     </div>
     <div class="edit-user-admin-confirm-changes-footer">
       <button type="button" class="edit-user-admin-confirm-changes-btn-cancel" id="cancelChangesBtn">Cancel</button>
-      <button type="button" class="edit-user-admin-confirm-changes-btn-confirm" id="confirmChangesBtn">Yes, Save Changes</button>
+      <button type="button" class="edit-user-admin-confirm-changes-btn-confirm" id="confirmChangesBtn">Update</button>
     </div>
   </div>
 </div>
@@ -109,6 +125,23 @@
       if (e.target === modal) {
         modal.classList.remove('edit-user-admin-confirm-changes-show');
       }
+    });
+
+    function initializeMessageAutoHide() {
+      const messages = document.querySelectorAll('.toast-message');
+      messages.forEach((messageEl) => {
+        const delay = 4000;
+        setTimeout(() => {
+          messageEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          messageEl.style.opacity = '0';
+          messageEl.style.transform = 'translateX(400px)';
+          setTimeout(() => messageEl.remove(), 400);
+        }, delay);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeMessageAutoHide();
     });
   })();
 </script>

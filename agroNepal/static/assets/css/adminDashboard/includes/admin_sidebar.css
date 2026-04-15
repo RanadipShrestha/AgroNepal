@@ -89,7 +89,7 @@
 }
 
 @media (max-width: 480px) {
-  .menu-toggle {
+  .adminDashboard-menu-toggle {
     display: block;
   }
 

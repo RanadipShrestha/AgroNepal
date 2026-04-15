@@ -155,22 +155,43 @@ def adminAddUser(request):
 def adminEditUser(request, user_id):
     edit_user = get_object_or_404(CustomUser, id=user_id)
     if request.method == "POST":
-        edit_user.first_name = request.POST.get('first_name')
-        edit_user.last_name = request.POST.get('last_name')
-        edit_user.username = request.POST.get('username')
-        edit_user.email = request.POST.get('email')
-        edit_user.phone_number = request.POST.get('phone_number', '')
-        edit_user.address = request.POST.get('address', '')
-        edit_user.land_address = request.POST.get('land_address', '')
-        edit_user.is_staff = request.POST.get('is_staff') == 'true'
-        edit_user.is_active = request.POST.get('is_active') == 'true'
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number', '')
+        address = request.POST.get('address', '')
+        land_address = request.POST.get('land_address', '')
+        is_staff = request.POST.get('is_staff') == 'true'
+        is_active = request.POST.get('is_active') == 'true'
+
+        # Update object in memory for form display in case of error
+        edit_user.first_name = first_name
+        edit_user.last_name = last_name
+        edit_user.username = username
+        edit_user.email = email
+        edit_user.phone_number = phone_number
+        edit_user.address = address
+        edit_user.land_address = land_address
+        edit_user.is_staff = is_staff
+        edit_user.is_active = is_active
+
+        # Check for duplicate username (excluding current user)
+        if CustomUser.objects.filter(username=username).exclude(id=user_id).exists():
+            messages.error(request, f"Username '{username}' is already taken.", extra_tags="adminUserEditError")
+            return render(request, 'adminDashboard/dashboard/user/edit_user.html', {'edit_user': edit_user})
+
+        # Check for duplicate email (excluding current user)
+        if CustomUser.objects.filter(email=email).exclude(id=user_id).exists():
+            messages.error(request, f"Email '{email}' is already registered.", extra_tags="adminUserEditError")
+            return render(request, 'adminDashboard/dashboard/user/edit_user.html', {'edit_user': edit_user})
         
         try:
             edit_user.save()
             messages.success(request, f"User '{edit_user.username}' updated successfully.", extra_tags="adminUser")
             return redirect('adminUsers')
-        except:
-            messages.error(request, f"Error updating user.", extra_tags="adminUser")
+        except Exception as e:
+            messages.error(request, f"Error updating user: {str(e)}", extra_tags="adminUserEditError")
             
     return render(request, 'adminDashboard/dashboard/user/edit_user.html', {'edit_user': edit_user})
 

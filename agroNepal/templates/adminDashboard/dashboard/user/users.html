@@ -3,224 +3,6 @@
 {% block title %}User Management - AgroNepal{% endblock title %}
 
 {% block content %}
-<style>
-  .modal-wrapper {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    background: rgba(15, 23, 42, 0.55) !important;
-    backdrop-filter: blur(3px) !important;
-    z-index: 9999 !important;
-    display: none !important;
-    align-items: center !important;
-    justify-content: center !important;
-    pointer-events: none !important;
-    padding: 1rem !important;
-  }
-
-  .modal-wrapper.active {
-    display: flex !important;
-    pointer-events: auto !important;
-    animation: modalFadeIn 0.25s ease !important;
-  }
-
-  .modal-wrapper-content {
-    background: #ffffff !important;
-    border-radius: 16px !important;
-    max-width: 450px !important;
-    width: 100% !important;
-    overflow: hidden !important;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
-    animation: modalFadeIn 0.25s ease !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-
-  .modal-wrapper-header {
-    padding: 1.5rem !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-    text-align: center !important;
-  }
-
-  .modal-wrapper-header h2 {
-    font-size: 1.25rem !important;
-    font-weight: 700 !important;
-    color: #1e293b !important;
-    margin: 0 !important;
-  }
-
-  .modal-wrapper-body {
-    padding: 2rem 1.5rem !important;
-    text-align: center !important;
-    flex: 1 !important;
-  }
-
-  .modal-wrapper-body p {
-    font-size: 0.95rem !important;
-    color: #475569 !important;
-    line-height: 1.8 !important;
-    margin: 0 !important;
-  }
-
-  .modal-wrapper-body strong {
-    color: #ef4444 !important;
-    font-weight: 700 !important;
-    display: block !important;
-    margin-top: 0.75rem !important;
-  }
-
-  .modal-wrapper-footer {
-    padding: 1.25rem 1.5rem !important;
-    border-top: 1px solid #e2e8f0 !important;
-    display: flex !important;
-    justify-content: center !important;
-    gap: 1rem !important;
-    background-color: #f8fafc !important;
-  }
-
-  .modal-wrapper-btn {
-    padding: 0.75rem 1.75rem !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    font-size: 0.95rem !important;
-    cursor: pointer !important;
-    transition: all 0.2s ease !important;
-    border: none !important;
-    min-width: 110px !important;
-    text-align: center !important;
-  }
-
-  .modal-wrapper-cancel {
-    background: #f1f5f9 !important;
-    color: #475569 !important;
-    border: 2px solid #cbd5e1 !important;
-  }
-
-  .modal-wrapper-cancel:hover {
-    background: #e2e8f0 !important;
-    border-color: #94a3b8 !important;
-    transform: translateY(-2px) !important;
-  }
-
-  .modal-wrapper-confirm {
-    background: #ef4444 !important;
-    color: #ffffff !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 0.5rem !important;
-    min-width: 130px !important;
-    border: none !important;
-  }
-
-  .modal-wrapper-confirm:hover {
-    background: #dc2626 !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4) !important;
-  }
-
-  .modal-wrapper-confirm:active {
-    transform: translateY(0) !important;
-  }
-
-  /* Messages Container - Top Right Toast Style */
-  .messages-container {
-    position: fixed !important;
-    top: 2rem !important;
-    right: 2rem !important;
-    z-index: 5000 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.75rem !important;
-    max-width: 380px !important;
-    pointer-events: auto !important;
-  }
-
-  /* Message Toast Styling */
-  .message {
-    padding: 1rem 1.25rem !important;
-    border-radius: 8px !important;
-    font-size: 0.95rem !important;
-    font-weight: 500 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-    animation: messageSlideIn 0.3s ease !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.75rem !important;
-    word-wrap: break-word !important;
-    line-height: 1.4 !important;
-  }
-
-  .message.success {
-    background-color: #d1fae5 !important;
-    color: #065f46 !important;
-  }
-
-  .message.error {
-    background-color: #fee2e2 !important;
-    color: #991b1b !important;
-  }
-
-  .message::before {
-    content: '';
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-weight: 700 !important;
-    font-size: 1.1rem !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Message Auto-Hide Animation */
-  .message-hide {
-    animation: messageSlideOut 0.4s ease forwards !important;
-  }
-
-  @keyframes modalFadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  @keyframes messageSlideIn {
-    from {
-      opacity: 0;
-      transform: translateX(400px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes messageSlideOut {
-    from {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateX(400px);
-    }
-  }
-
-  /* Mobile Responsive */
-  @media (max-width: 768px) {
-    .messages-container {
-      top: 1rem !important;
-      right: 1rem !important;
-      left: 1rem !important;
-      max-width: none !important;
-    }
-  }
-</style>
 
 <!-- Delete User Modal -->
 <div id="deleteUserModal" class="modal-wrapper">
@@ -235,7 +17,7 @@
       {% csrf_token %}
       <input type="hidden" name="user_id" id="deleteUserId">
       <div class="modal-wrapper-footer">
-        <button type="button" id="cancelDeleteUserBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+        <button type="button" id="cancelDeleteUserBtn" onclick="closeDeleteUserModal()" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
         <button type="submit" class="modal-wrapper-btn modal-wrapper-confirm">
           <i class="fa-solid fa-trash"></i> Delete
         </button>
@@ -277,20 +59,17 @@
     </div>
 
     <!-- Messages Display - Toast Notifications -->
-     {% if messages %}
-<div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
-  {% for message in messages %}
-    {% if 'adminUser' in message.tags %}
-    <div class="toast-message" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500; animation: slideInRight 0.3s ease-out forwards; 
-      {% if 'success' in message.tags %}background:#dcfce3; color:#166534; 
-      {% else %}background:#fee2e2; color:#ef4444;
-      {% endif %}">
-      {{ message }}
+    {% if messages %}
+    <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+        {% for message in messages %}
+            {% if 'adminUser' in message.tags %}
+            <div class="message {% if 'success' in message.tags %}success{% else %}error{% endif %}" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500;">
+                {{ message }}
+            </div>
+            {% endif %}
+        {% endfor %}
     </div>
     {% endif %}
-  {% endfor %}
-</div>
-{% endif %}
 
     <!-- Users Table -->
     <div class="admin-table-container">
@@ -334,7 +113,7 @@
                             <button
                                 type="button"
                                 class="delete-btn"
-                                onclick="openDeleteModal('{{ u.id }}', '{{ u.first_name }} {{ u.last_name }}')">
+                                onclick="openDeleteUserModal('{{ u.id }}', '{{ u.first_name }} {{ u.last_name }}')">
                                 <i class="fa-solid fa-trash"></i> Delete
                             </button>
                             {% else %}
@@ -400,66 +179,46 @@
 </div>
 
 <script>
-    // Get the modal element
-    const deleteUserModal = document.getElementById('deleteUserModal');
-    const cancelDeleteUserBtn = document.getElementById('cancelDeleteUserBtn');
+    window.openDeleteUserModal = function(userId, userName) {
+        const modal = document.getElementById('deleteUserModal');
+        const idInput = document.getElementById('deleteUserId');
+        const nameSpan = document.getElementById('deleteUserName');
+        if (idInput) idInput.value = userId;
+        if (nameSpan) nameSpan.textContent = userName;
+        if (modal) modal.classList.add('active');
+    };
 
-    // Auto-hide messages after 3-4 seconds
+    window.closeDeleteUserModal = function() {
+        const modal = document.getElementById('deleteUserModal');
+        if (modal) modal.classList.remove('active');
+    };
+
     function initializeMessageAutoHide() {
         const messages = document.querySelectorAll('.message');
         messages.forEach((messageEl) => {
-            // Random delay between 3-4 seconds (3000-4000ms)
             const delay = Math.random() * 1000 + 3000;
-            
             setTimeout(() => {
-                messageEl.classList.add('message-hide');
-                
-                // Remove from DOM after animation completes (400ms)
-                setTimeout(() => {
-                    messageEl.remove();
-                }, 400);
+                messageEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                messageEl.style.opacity = '0';
+                messageEl.style.transform = 'translateX(400px)';
+                setTimeout(() => messageEl.remove(), 400);
             }, delay);
         });
     }
 
-    // Call on page load
     document.addEventListener('DOMContentLoaded', function() {
         initializeMessageAutoHide();
-    });
 
-    // Open delete modal
-    function openDeleteModal(userId, userName) {
-        console.log('Opening modal for user:', userId, userName);
-        document.getElementById('deleteUserId').value = userId;
-        document.getElementById('deleteUserName').textContent = userName;
-        deleteUserModal.classList.add('active');
-    }
+        const deleteUserModal = document.getElementById('deleteUserModal');
+        if (deleteUserModal) {
+            deleteUserModal.addEventListener('click', function(e) {
+                if (e.target === this) closeDeleteUserModal();
+            });
+        }
 
-    // Close delete modal
-    function closeDeleteModal() {
-        deleteUserModal.classList.remove('active');
-    }
-
-    // Close modal when clicking cancel button
-    if (cancelDeleteUserBtn) {
-        cancelDeleteUserBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            closeDeleteModal();
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDeleteUserModal();
         });
-    }
-
-    // Close modal when clicking outside (on the backdrop)
-    deleteUserModal.addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeDeleteModal();
-        }
-    });
-
-    // Close modal with Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && deleteUserModal.classList.contains('active')) {
-            closeDeleteModal();
-        }
     });
 </script>
 
