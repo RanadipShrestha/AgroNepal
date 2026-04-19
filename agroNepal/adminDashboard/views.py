@@ -1,4 +1,6 @@
+import uuid
 from django.shortcuts import render, redirect, get_object_or_404
+
 from django.contrib import messages
 from user.models import CustomUser
 from agro.models import Crop, CropSchedule, Contact, Event, Blog, CropExpense, CropSale, UserCropAdd, CommunityPost
@@ -532,6 +534,60 @@ def adminTickets(request):
         'search_query': query
     }
     return render(request, 'adminDashboard/dashboard/ticket/tickets.html', context)
+    
+@admin_only_required
+def adminDeleteTicket(request):
+    if request.method == 'POST':
+        ticket_id = request.POST.get('ticket_id')
+        ticket = get_object_or_404(PurchaseTicket, id=ticket_id)
+        ticket_id_str = str(ticket.ticket_id)[:13]
+        ticket.delete()
+        messages.success(request, f"Ticket '{ticket_id_str}...' deleted successfully.", extra_tags="adminTicket")
+    return redirect('adminTickets')
+    
+@admin_only_required
+def adminAddTicket(request):
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        event_id = request.POST.get('event_id')
+        amount = request.POST.get('amount')
+        status = request.POST.get('status')
+
+        user = get_object_or_404(CustomUser, id=user_id)
+        event = get_object_or_404(Event, id=event_id)
+
+        if event.available_ticket <= 0:
+            messages.error(request, f"Cannot add ticket. Event '{event.name}' is sold out.", extra_tags="adminTicket")
+            return redirect('adminAddTicket')
+
+        try:
+            PurchaseTicket.objects.create(
+                user=user,
+                event=event,
+                amount=amount,
+                status=status,
+                ticket_id=uuid.uuid4()
+            )
+            # Update available tickets
+            event.available_ticket -= 1
+            event.save()
+            
+            messages.success(request, f"Ticket added successfully for user '{user.username}'.", extra_tags="adminTicket")
+            return redirect('adminTickets')
+        except Exception as e:
+            messages.error(request, f"Error adding ticket: {str(e)}", extra_tags="adminTicket")
+            return redirect('adminAddTicket')
+
+    users = CustomUser.objects.all().order_by('username')
+    events = Event.objects.filter(date__gte=timezone.now().date()).order_by('date')
+    context = {
+        'users': users,
+        'events': events,
+        'status_choices': PurchaseTicket.STATUS_CHOICES
+    }
+    return render(request, 'adminDashboard/dashboard/ticket/add_ticket.html', context)
+
+
 
 
 @admin_only_required

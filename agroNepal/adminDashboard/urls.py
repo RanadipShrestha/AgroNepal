@@ -32,6 +32,8 @@ urlpatterns = [
 
     # Manage Tickets
     path("tickets/", adminTickets, name="adminTickets"),
+    path("delete-ticket/", adminDeleteTicket, name="adminDeleteTicket"),
+    path("tickets/add/", adminAddTicket, name="adminAddTicket"),
 
 
     # Manage Community Posts

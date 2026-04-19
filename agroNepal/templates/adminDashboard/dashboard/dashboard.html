@@ -221,14 +221,14 @@ document.addEventListener('DOMContentLoaded', function() {
       datasets: [{
         label: 'Crops Planted',
         data: {{ top_users_data|safe }},
-        backgroundColor: '#6366f1',
+        backgroundColor: '#10b981',
         borderRadius: 5
       }]
     },
     options: {
       ...commonOptions,
       scales: {
-        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+        y: { beginAtZero: true, grid: { color: '#10b981' } },
         x: { grid: { display: false } }
       },
       plugins: {
@@ -246,14 +246,14 @@ document.addEventListener('DOMContentLoaded', function() {
       datasets: [{
         label: 'Tickets Purchased',
         data: {{ ticket_buyers_data|safe }},
-        backgroundColor: '#8b5cf6',
+        backgroundColor: '#22a076',
         borderRadius: 5
       }]
     },
     options: {
       ...commonOptions,
       scales: {
-        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+        y: { beginAtZero: true, grid: { color: '#23a177' } },
         x: { grid: { display: false } }
       },
       plugins: {

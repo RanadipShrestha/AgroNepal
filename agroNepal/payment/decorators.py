@@ -5,10 +5,10 @@ def user_only_payment(view_func):
     """Decorator to allow only non-staff users"""
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.error(request, 'Please login first.', extra_tags="userOnly")
+            messages.error(request, 'Please login first. To buy ticket.', extra_tags="userOnly")
             return redirect('login')
         
-        # Check if user IS staff OR superuser - redirect to login
+        # Check if user IS Admin
         if request.user.is_staff or request.user.is_superuser:
             messages.error(request, 'You do not have permission to buy ticket. Please login User account.',  extra_tags="userOnly")
             logout(request)

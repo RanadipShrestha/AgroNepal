@@ -40,7 +40,7 @@ def verify_signature_from_esewa(payment_data):
         message = ",".join(message_parts)
         secret_key = "8gBm/:&EnhH.1/q"
 
-        # ✅ Fixed: hmac.new() doesn't exist, correct is hmac.new
+        # Fixed: hmac.new() doesn't exist, correct is hmac.new
         h = hmac.new(
             secret_key.encode('utf-8'),
             message.encode('utf-8'),
@@ -48,7 +48,7 @@ def verify_signature_from_esewa(payment_data):
         )
         expected_signature_base64 = base64.b64encode(h.digest()).decode('utf-8')
 
-        # ✅ Timing-safe comparison
+        # Timing-safe comparison
         return hmac.compare_digest(received_signature, expected_signature_base64)
 
     except Exception as e:
@@ -58,7 +58,6 @@ def verify_signature_from_esewa(payment_data):
 
 #  Buy Ticket                                                          
 @user_only_payment
-@login_required
 def buy_ticket(request, slug):
     event = get_object_or_404(Event, slug=slug)
     user = request.user
@@ -73,7 +72,7 @@ def buy_ticket(request, slug):
     transaction_uuid = uuid.uuid4()
     signature = generate_signature(event.price, transaction_uuid)
 
-    # ✅ Store in session instead of DB — no ticket created yet
+    # Store in session instead of DB — no ticket created yet
     request.session['pending_payment'] = {
         'transaction_uuid': str(transaction_uuid),
         'event_slug': event.slug,
@@ -136,7 +135,7 @@ def payment_success(request):
         pending = request.session.get('pending_payment')
 
         if not pending or pending.get('transaction_uuid') != transaction_uuid:
-            # ⚠️ Session lost — fallback: try to find event via amount from eSewa
+            # Session lost — fallback: try to find event via amount from eSewa
             # This is a rare edge case (browser crash, session expiry mid-payment)
             logger.warning(f"Session lost for transaction {transaction_uuid}, attempting fallback.")
             return render(request, 'pages/event/payment_error.html', {

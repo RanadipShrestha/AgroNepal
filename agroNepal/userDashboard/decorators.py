@@ -8,7 +8,7 @@ def user_only_required(view_func):
             messages.error(request, 'Please login first.', extra_tags="userOnly")
             return redirect('login')
         
-        # Check if user IS staff OR superuser - redirect to login
+        # Check if user IS admin - redirect to login
         if request.user.is_staff or request.user.is_superuser:
             messages.error(request, 'You do not have permission to access user dashboard. Please login User account.',  extra_tags="userOnly")
             logout(request)

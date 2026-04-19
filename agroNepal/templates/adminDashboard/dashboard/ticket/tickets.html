@@ -3,6 +3,29 @@
 {% block title %}Ticket Management - AgroNepal{% endblock title %}
 
 {% block content %}
+
+<!-- Delete Ticket Modal -->
+<div id="deleteTicketModal" class="modal-wrapper">
+  <div class="modal-wrapper-content">
+    <div class="modal-wrapper-header">
+      <h2>Confirm Ticket Deletion</h2>
+    </div>
+    <div class="modal-wrapper-body">
+      <p>Are you sure you want to delete ticket? This action cannot be undone.</p>
+    </div>
+    <form method="POST" action="{% url 'adminDeleteTicket' %}" id="deleteTicketForm">
+      {% csrf_token %}
+      <input type="hidden" name="ticket_id" id="deleteTicketId">
+      <div class="modal-wrapper-footer">
+        <button type="button" id="cancelDeleteTicketBtn" onclick="closeDeleteTicketModal()" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
+        <button type="submit" class="modal-wrapper-btn modal-wrapper-confirm">
+          <i class="fa-solid fa-trash"></i> Delete
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="adminDashboard-dash">
     <!-- Header Section -->
     <div class="admin-dashboard-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
@@ -28,8 +51,26 @@
                 Clear
             </a>
             {% endif %}
+            <a href="{% url 'adminAddTicket' %}" class="btn adminDashboard-btn-green" style="padding: 0.5rem 1rem; border: none; cursor: pointer; text-decoration: none;">
+                 Add New Ticket
+            </a>
         </form>
     </div>
+
+
+    <!-- Messages Display - Toast Notifications -->
+    {% if messages %}
+    <div class="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px;">
+        {% for message in messages %}
+            {% if 'adminTicket' in message.tags %}
+            <div class="message {% if 'success' in message.tags %}success{% else %}error{% endif %}" style="padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 0.9rem; font-weight: 500;">
+                {{ message }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
     
     <!-- Tickets Table -->
     <div class="admin-table-container">
@@ -42,7 +83,9 @@
                     <th>Amount</th>
                     <th>Status</th>
                     <th>Purchase Date</th>
+                    <th>Actions</th>
                 </tr>
+
             </thead>
             <tbody>
                 {% for ticket in tickets %}
@@ -68,7 +111,18 @@
                         {% endif %}
                     </td>
                     <td class="table-date">{{ ticket.purchase_date|date:"M d, Y H:i" }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button
+                                type="button"
+                                class="delete-btn"
+                                onclick="openDeleteTicketModal('{{ ticket.id }}', '{{ ticket.ticket_id|stringformat:"s"|truncatechars:13 }}')">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </td>
                 </tr>
+
                 {% empty %}
                 <tr>
                     <td colspan="6" class="empty-state">
@@ -123,4 +177,48 @@
     {% endif %}
 
 </div>
+
+<script>
+    window.openDeleteTicketModal = function(ticketId, ticketDisplayId) {
+        const modal = document.getElementById('deleteTicketModal');
+        const idInput = document.getElementById('deleteTicketId');
+        const idSpan = document.getElementById('deleteTicketIdDisplay');
+        if (idInput) idInput.value = ticketId;
+        if (idSpan) idSpan.textContent = ticketDisplayId;
+        if (modal) modal.classList.add('active');
+    };
+
+    window.closeDeleteTicketModal = function() {
+        const modal = document.getElementById('deleteTicketModal');
+        if (modal) modal.classList.remove('active');
+    };
+
+    function initializeMessageAutoHide() {
+        const messages = document.querySelectorAll('.message');
+        messages.forEach((messageEl) => {
+            const delay = Math.random() * 1000 + 3000;
+            setTimeout(() => {
+                messageEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                messageEl.style.opacity = '0';
+                messageEl.style.transform = 'translateX(400px)';
+                setTimeout(() => messageEl.remove(), 400);
+            }, delay);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeMessageAutoHide();
+
+        const deleteTicketModal = document.getElementById('deleteTicketModal');
+        if (deleteTicketModal) {
+            deleteTicketModal.addEventListener('click', function(e) {
+                if (e.target === this) closeDeleteTicketModal();
+            });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDeleteTicketModal();
+        });
+    });
+</script>
 {% endblock content %}
