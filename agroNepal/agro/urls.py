@@ -16,4 +16,7 @@ urlpatterns = [
   path("community_public_post_comment/<slug:slug>/comment/", community_public_post_comment, name="community_public_post_comment"),
   path("delete_commmunity_post_comment/<int:comment_id>/delete/", delete_commmunity_post_comment, name="delete_commmunity_post_comment"),
   path("edit_community_post_comment/<int:comment_id>/edit/", edit_community_post_comment, name="edit_community_post_comment"),
+  
+  # Temporary route to preview 404 page with DEBUG=True
+  path("404-test/", custom_404_view, name="test_404"),
 ]
