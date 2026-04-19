@@ -104,9 +104,12 @@
                 </td>
             </tr>
             {% endfor %}
-    </div>
+        </tbody>
+    </table>
+</div>
 
-    <!-- Pagination -->
+
+<!-- Pagination -->
     {% if crops.has_other_pages %}
     <div class="admin-pagination-wrapper">
         <nav class="admin-pagination" aria-label="Crops pagination">
@@ -143,8 +146,10 @@
         <p class="admin-pagination-info">Page {{ crops.number }} of {{ crops.paginator.num_pages }}</p>
     </div>
     {% endif %}
+     
 
 </div>
+
 
 <!-- Add Modal -->
 <div id="addModal" class="modal">
@@ -245,7 +250,7 @@
     </div>
     <div class="modal-wrapper-footer">
       <button type="button" id="cancelAddBtn" class="modal-wrapper-btn modal-wrapper-cancel">Cancel</button>
-      <button type="button" id="confirmAddBtn" class="modal-wrapper-btn modal-wrapper-confirm" style="background =10b98">Confirm Add</button>
+      <button type="button" id="confirmAddBtn" class="modal-wrapper-btn modal-wrapper-confirm" style="background-color: #2E7D32;">Confirm Add</button>
     </div>
   </div>
 </div>
@@ -265,4 +270,5 @@
     </div>
   </div>
 </div>
+
 {% endblock content %}

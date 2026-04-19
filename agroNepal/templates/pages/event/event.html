@@ -4,7 +4,20 @@
 <div class="events-section">
   <div class="container">
     <h1 class="section-title">Upcoming Events</h1>
-    <p class="section-subtitle">Discover agriculture-focused events happening around Nepal.</p> 
+    <p class="section-subtitle">Discover agriculture-focused events happening around Nepal.</p>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <div class="search-box">
+        <form method="GET">
+          <input type="text" name="search" placeholder="Search events by name, location, guest..." value="{{ search_data }}">
+          <button type="submit" style="background: none; border: none; cursor: pointer;">
+            <i class="fas fa-search search-icon"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
     <div class="event-grid">
       {% for event in events %} 
       <div class="event-card">
@@ -29,7 +42,7 @@
             <span>Event Duration : {{ event.event_duration }}</span> 
           </p>
           <p class="event-description">
-            Discription: {{event.description|truncatewords:35}}
+            {{event.description|truncatewords:15}}
           </p>
           <p  class="event-details">
             <span style="font-weight:600; color: #2a774bff;">Total Ticket : {{event.total_ticket}}</span>

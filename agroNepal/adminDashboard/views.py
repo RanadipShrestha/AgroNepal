@@ -346,12 +346,12 @@ def adminEvents(request):
     past_list = past_list.order_by('-date')
     
     # Upcoming events pagination
-    up_paginator = Paginator(upcoming_list, 10)
+    up_paginator = Paginator(upcoming_list, 5)
     up_page = request.GET.get('up_page')
     upcoming_events = up_paginator.get_page(up_page)
     
     # Past events pagination
-    past_paginator = Paginator(past_list, 10)
+    past_paginator = Paginator(past_list, 5)
     past_page = request.GET.get('past_page')
     past_events = past_paginator.get_page(past_page)
     
@@ -449,7 +449,7 @@ def adminBlogs(request):
         ).order_by('-create_date')
     else:
         blogs_list = Blog.objects.all().order_by('-create_date')
-    paginator = Paginator(blogs_list, 10)
+    paginator = Paginator(blogs_list, 5)
     page_number = request.GET.get('page')
     blogs = paginator.get_page(page_number)
     context = {
@@ -523,7 +523,7 @@ def adminTickets(request):
     else:
         tickets_list = PurchaseTicket.objects.all().order_by('-purchase_date')
         
-    paginator = Paginator(tickets_list, 10)
+    paginator = Paginator(tickets_list, 5)
     page_number = request.GET.get('page')
     tickets = paginator.get_page(page_number)
     
@@ -542,7 +542,7 @@ def adminUserExpenses(request):
     else:
         expenses_list = CropExpense.objects.all().order_by('-spend_date')
         
-    paginator = Paginator(expenses_list, 10)
+    paginator = Paginator(expenses_list, 5)
     page_number = request.GET.get('page')
     expenses = paginator.get_page(page_number)
     
@@ -587,7 +587,7 @@ def adminUserSales(request):
     else:
         sales_list = CropSale.objects.all().order_by('-sale_date')
         
-    paginator = Paginator(sales_list, 10)
+    paginator = Paginator(sales_list, 5)
     page_number = request.GET.get('page')
     sales = paginator.get_page(page_number)
     
@@ -688,7 +688,7 @@ def adminCommunityPosts(request):
         ).order_by('-create_date')
     else:
         posts_list = CommunityPost.objects.all().order_by('-create_date')
-    paginator = Paginator(posts_list, 10)
+    paginator = Paginator(posts_list, 5)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
     context = {

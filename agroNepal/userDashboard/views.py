@@ -168,6 +168,7 @@ def deleteExpense(request):
     return redirect('cropExpense')
 
 #Delect all the Expense
+@user_only_required
 def deleteCropExpenses(request):
     if request.method == 'POST': 
         crop_id = request.POST.get('crop_id')

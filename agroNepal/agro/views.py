@@ -118,14 +118,27 @@ def edit_blog_comment(request, comment_id):
 
 def event(request):
   today = timezone.now().date()
-  events_list = Event.objects.filter(date__gte=today).order_by('date')
+  search_data = request.GET.get('search', '')
+
+  events_list = Event.objects.filter(date__gte=today)
+
+  if search_data:
+    events_list = events_list.filter(
+      Q(name__icontains=search_data) |
+      Q(description__icontains=search_data) |
+      Q(location__icontains=search_data) |
+      Q(guest__icontains=search_data)
+    )
+
+  events_list = events_list.order_by('date')
   
-  paginator = Paginator(events_list, 6)
+  paginator = Paginator(events_list, 9)
   page_number = request.GET.get('page')
   events = paginator.get_page(page_number)
   
   context = {
-    "events":events
+    "events": events,
+    "search_data": search_data,
   }
   return render(request, "pages/event/event.html", context)
 

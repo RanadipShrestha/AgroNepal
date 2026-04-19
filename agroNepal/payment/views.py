@@ -15,7 +15,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
-
+from .decorators import user_only_payment
 logger = logging.getLogger(__name__)
 
 #  Signature Verification                                           
@@ -57,7 +57,7 @@ def verify_signature_from_esewa(payment_data):
 
 
 #  Buy Ticket                                                          
-
+@user_only_payment
 @login_required
 def buy_ticket(request, slug):
     event = get_object_or_404(Event, slug=slug)
@@ -89,7 +89,8 @@ def buy_ticket(request, slug):
 
 
 
-#  Payment Success                                                     
+#  Payment Success  
+@user_only_payment                                                   
 @login_required
 def payment_success(request):
     encoded_data = request.GET.get('data')

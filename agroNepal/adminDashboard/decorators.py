@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 
 def admin_only_required(view_func):  
     def wrapper(request, *args, **kwargs):
@@ -14,6 +15,7 @@ def admin_only_required(view_func):
                 'You do not have permission to access Admin Dashboard. Please login Admin account.',
                 extra_tags="adminOnly"
             )
+            logout(request)
             return redirect('login') 
         
         return view_func(request, *args, **kwargs)

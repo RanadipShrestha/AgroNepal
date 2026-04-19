@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import logout
-def user_only_required(view_func):
+def user_only_payment(view_func):
     """Decorator to allow only non-staff users"""
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -10,7 +10,7 @@ def user_only_required(view_func):
         
         # Check if user IS staff OR superuser - redirect to login
         if request.user.is_staff or request.user.is_superuser:
-            messages.error(request, 'You do not have permission to access user dashboard. Please login User account.',  extra_tags="userOnly")
+            messages.error(request, 'You do not have permission to buy ticket. Please login User account.',  extra_tags="userOnly")
             logout(request)
             return redirect('login')
         
