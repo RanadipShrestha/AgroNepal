@@ -92,7 +92,7 @@ def adminUsers(request):
       ).order_by('-date_joined')
   else:
       users_list = CustomUser.objects.all().order_by('-date_joined')
-  paginator = Paginator(users_list, 10)
+  paginator = Paginator(users_list, 5)
   page_number = request.GET.get('page')
   users = paginator.get_page(page_number)
   return render(request, 'adminDashboard/dashboard/user/users.html', {'users': users, 'search_query': query}) 
@@ -219,7 +219,7 @@ def adminCrops(request):
         ).order_by('-id')
     else:
         crops_list = Crop.objects.prefetch_related('schedules').all().order_by('-id')
-    paginator = Paginator(crops_list, 10)
+    paginator = Paginator(crops_list, 5)
     page_number = request.GET.get('page')
     crops = paginator.get_page(page_number)
     return render(request, 'adminDashboard/dashboard/crop/crops.html', {'crops': crops, 'search_query': query})
@@ -312,7 +312,7 @@ def adminContacts(request):
     else:
         contacts_list = Contact.objects.all().order_by('-id')
         
-    paginator = Paginator(contacts_list, 10)
+    paginator = Paginator(contacts_list, 5)
     page_number = request.GET.get('page')
     contacts = paginator.get_page(page_number)
     context = {
@@ -692,7 +692,7 @@ def adminUserPlantedCrops(request):
     else:
         user_crops_list = UserCropAdd.objects.all().order_by('-planted_date')
         
-    paginator = Paginator(user_crops_list, 10)
+    paginator = Paginator(user_crops_list, 5)
     page_number = request.GET.get('page')
     user_crops = paginator.get_page(page_number)
     

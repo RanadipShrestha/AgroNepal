@@ -132,7 +132,7 @@ def event(request):
 
   events_list = events_list.order_by('date')
   
-  paginator = Paginator(events_list, 9)
+  paginator = Paginator(events_list, 6)
   page_number = request.GET.get('page')
   events = paginator.get_page(page_number)
   
