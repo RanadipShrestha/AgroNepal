@@ -131,10 +131,9 @@ def cropExpense(request):
     
     user_crops_with_expenses = UserCropAdd.objects.filter(
         user=request.user,
-        crop_expenses__isnull=False  # Changed from cropexpense to crop_expenses
+        crop_expenses__isnull=False  
     ).distinct().select_related('crop').prefetch_related('crop_expenses').order_by('crop__name', '-planted_date')
     
-    # Structure data for template:  each user_crop is separate
     crops_data = []
     for user_crop in user_crops_with_expenses:
         expenses = user_crop.crop_expenses.all().order_by('-spend_date')  # Changed here too
@@ -146,7 +145,6 @@ def cropExpense(request):
             'expenses': expenses
         })
     
-    # Get all user's planted crops for the form dropdown
     all_user_crops = UserCropAdd.objects.filter(user=request. user).select_related('crop').order_by('-planted_date')
     
     context = {

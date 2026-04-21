@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 def user_only_required(view_func):
-    """Decorator to allow only non-staff users"""
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.error(request, 'Please login first.', extra_tags="userOnly")
